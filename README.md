@@ -1,6 +1,6 @@
 # AutoJoin for SteamGifts
 
-_Automatically enters giveaways from Steamgifts.com_
+Automatically enters giveaways from Steamgifts.com
 
 Haven't tried the extension yet? Try it now [on the chrome web store](https://chrome.google.com/webstore/detail/autojoin-for-steamgifts/bchhlccjhoedhhegglilngpbnldfcidc)!
 
