@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [master, organize-repo]
+    branches: [main]
   pull_request:
-    branches: [master]
+    branches: [main]
 
 jobs:
   check:
