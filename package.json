@@ -1,0 +1,25 @@
+{
+  "name": "autojoin-for-steamgifts",
+  "version": "1.0.0",
+  "description": "A browser extension to automatically join SteamGifts giveaways",
+  "main": "js/backgroundpage.js",
+  "scripts": {
+    "check": "echo 'No checks configured yet. Add linters/tests here.'",
+    "test": "echo 'No tests configured yet. Add test runner here.'"
+  },
+  "keywords": [
+    "steamgifts",
+    "browser-extension",
+    "automation"
+  ],
+  "author": "bernardopg",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bernardopg/AutoJoin-for-SteamGifts.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bernardopg/AutoJoin-for-SteamGifts/issues"
+  },
+  "homepage": "https://github.com/bernardopg/AutoJoin-for-SteamGifts#readme"
+}
