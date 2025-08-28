@@ -5,10 +5,12 @@
   "content_scripts": [
     {
       "run_at": "document_start",
-      "css": ["css/general.css"],
+      "css": ["css/general.css", "css/night.css"],
       "js": [
+        "js/utils-enhanced.js",
+        "js/core/giveaway.js",
+        "js/core/page-enhancements.js",
         "js/autoentry.js",
-        "js/misc.js",
         "js/settings.js"
       ],
       "matches": [
@@ -21,12 +23,8 @@
       ]
     },
     {
-      "js": ["js/autojoinSteamQueue.js"],
-      "matches": ["*://store.steampowered.com/*"]
-    },
-    {
-      "css": ["css/general.css"],
-      "js": ["js/misc.js"],
+      "css": ["css/general.css", "css/night.css"],
+      "js": ["js/utils-enhanced.js", "js/core/page-enhancements.js"],
       "matches": [
         "*://steamgifts.com/giveaways/created/*",
         "*://www.steamgifts.com/giveaways/created/*",
@@ -71,25 +69,22 @@
   "manifest_version": 3,
   "name": "AutoJoin for SteamGifts",
   "short_name": "AutoJoin",
-  "description": "Automatically enters giveaways from Steamgifts.com and site enhancements",
-  "permissions": [
-    "alarms",
-    "notifications",
-    "storage",
-    "offscreen"
-  ],
+  "description": "Enhanced AutoJoin for SteamGifts with modern UI, improved accessibility, and optimized performance",
+  "permissions": ["alarms", "notifications", "storage", "offscreen"],
   "host_permissions": [
     "*://www.steamgifts.com/*",
     "*://store.steampowered.com/*"
   ],
   "optional_host_permissions": ["*://steamcommunity.com/profiles/*"],
-  "version": "1.10.8",
-  "web_accessible_resources": [{
-    "use_dynamic_url": true,
-    "resources": ["html/settings.html", "css/night.css", "media/audio.mp3"],
-    "matches": ["*://steamgifts.com/*", "*://www.steamgifts.com/*"],
-    "extension_ids": []
-  }],
+  "version": "2.0.0",
+  "web_accessible_resources": [
+    {
+      "use_dynamic_url": true,
+      "resources": ["html/settings.html", "css/night.css", "media/audio.mp3"],
+      "matches": ["*://steamgifts.com/*", "*://www.steamgifts.com/*"],
+      "extension_ids": []
+    }
+  ],
   "options_ui": {
     "page": "html/settings.html"
   }

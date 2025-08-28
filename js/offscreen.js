@@ -1,14 +1,26 @@
 chrome.runtime.onMessage.addListener((msg) => {
   switch (msg.task) {
-    case 'parse':
+    case 'parse': {
       const data = parse(msg.data);
       chrome.runtime.sendMessage(data);
       break;
-    case 'audio':
+    }
+    case 'audio': {
       const audio = new Audio('/media/audio.mp3');
       audio.volume = msg.data;
       audio.play();
       break;
+    }
+    case 'redeemKeys': {
+      try {
+        const parser = new DOMParser();
+        const wonPage = parser.parseFromString(msg.data.html, 'text/html');
+        redeemKeysFromWonPage(wonPage);
+      } catch (e) {
+        console.error('Offscreen redeemKeys error:', e);
+      }
+      break;
+    }
     case 'fetch':
     case 'checkPermission':
       break;
@@ -20,6 +32,135 @@ chrome.runtime.onMessage.addListener((msg) => {
   }
 });
 
+const parseWon = (dom) => {
+  return !!dom.querySelector('.popup--gift-received');
+};
+
+const parseWonName = (dom) => {
+  return dom.querySelector('.table__column__heading')?.textContent?.trim();
+};
+
+const parseMyLevel = (dom) => {
+  return parseInt(
+    dom.querySelector('a[href="/account"] span:last-child').title,
+    10
+  );
+};
+
+const parseMyPoints = (dom) => {
+  return parseInt(
+    dom
+      .querySelector('a[href="/account"] span.nav__points')
+      ?.textContent.replace(',', ''),
+    10
+  );
+};
+
+const parseToken = (dom) => {
+  return dom.querySelector('input[name=xsrf_token]').value;
+};
+
+const parseGiveawayCode = (item) => {
+  const t = item.href.match(/giveaway\/(.+)\//);
+  return t.length > 0 ? t[1] : '';
+};
+
+const parseGiveawayLevel = (ga) => {
+  const levelElement = ga.querySelector(
+    '.giveaway__column--contributor-level--positive'
+  );
+  return levelElement ? levelElement.innerHTML.match(/(\d+)/)[1] : 0;
+};
+
+const parseSteamAppInfo = (ga) => {
+  const s = ga.querySelector('.giveaway_image_thumbnail')?.style
+    ?.backgroundImage;
+  const result = { GAsteamAppID: '0', GAsteamIDType: 'app' };
+
+  if (s !== undefined) {
+    const c = s.match(/.+(?:apps|subs)\/(\d+)\/cap.+/);
+    if (s && c) {
+      result.GAsteamAppID = c[1];
+      result.GAsteamIDType = s.includes('/apps/') ? 'app' : 'sub';
+    }
+  }
+
+  return result;
+};
+
+const parseGiveawayCopies = (ga) => {
+  const regexResult = ga
+    .querySelector('.giveaway__heading__thin')
+    .textContent.replace(',', '')
+    .match(/\((\d+) Copies\)/);
+  return regexResult ? regexResult[1] : 1;
+};
+
+const parseGiveawayData = (item) => {
+  const resultGA = {
+    GAcode: '',
+    GAlevel: 0,
+    GAsteamAppID: '0',
+    GAsteamIDType: 'app',
+    cost: '',
+    timeEnd: 0,
+    timeStart: 0,
+    isGroupGA: false,
+    levelTooHigh: false,
+    numberOfEntries: 100,
+    numberOfCopies: 1,
+  };
+
+  const ga = item.parentElement.parentElement.parentElement;
+
+  resultGA.GAcode = parseGiveawayCode(item);
+  resultGA.levelTooHigh = !!ga.querySelector(
+    '.giveaway__column--contributor-level--negative'
+  );
+  resultGA.GAlevel = parseGiveawayLevel(ga);
+
+  const steamInfo = parseSteamAppInfo(ga);
+  resultGA.GAsteamAppID = steamInfo.GAsteamAppID;
+  resultGA.GAsteamIDType = steamInfo.GAsteamIDType;
+
+  resultGA.cost = [...ga.querySelectorAll('.giveaway__heading__thin')]
+    .pop()
+    .innerHTML.match(/\d+/)[0];
+
+  resultGA.timeEnd = parseInt(
+    ga.querySelector('.fa-clock-o').parentElement.querySelector('span').dataset
+      .timestamp,
+    10
+  );
+
+  resultGA.numberOfEntries = parseInt(
+    ga
+      .querySelector('.giveaway__links a[href$="/entries"]')
+      ?.textContent.replace(',', ''),
+    10
+  );
+
+  resultGA.numberOfCopies = parseGiveawayCopies(ga);
+
+  resultGA.timeStart = parseInt(
+    ga.querySelector('.giveaway__username').parentElement.querySelector('span')
+      .dataset.timestamp,
+    10
+  );
+
+  return resultGA;
+};
+
+const parseGiveaways = (dom) => {
+  const gaElements = [
+    ...dom.querySelectorAll(
+      '.giveaway__row-inner-wrap:not(.is-faded) .giveaway__heading__name'
+    ),
+  ];
+
+  return gaElements.map(parseGiveawayData);
+};
+
 const parse = (data) => {
   const result = {};
   const html = data.html;
@@ -29,129 +170,31 @@ const parse = (data) => {
   for (const item of data.items) {
     switch (item) {
       case 'won':
-        if (dom.querySelector('.popup--gift-received')) {
-          result.won = true;
-        } else {
-          result.won = false;
-        }
+        result.won = parseWon(dom);
         break;
+      case 'wonName': {
+        const name = parseWonName(dom);
+        if (name) result.wonName = name;
+        break;
+      }
       case 'myLevel':
-        result.myLevel = parseInt(
-          dom.querySelector('a[href="/account"] span:last-child').title,
-          10
-        );
+        result.myLevel = parseMyLevel(dom);
         break;
       case 'myPoints':
-        result.myPoints = parseInt(
-          dom
-            .querySelector('a[href="/account"] span.nav__points')
-            ?.textContent.replace(',', ''),
-          10
-        );
+        result.myPoints = parseMyPoints(dom);
         break;
       case 'token':
-        result.token = dom.querySelector('input[name=xsrf_token]').value;
+        result.token = parseToken(dom);
         break;
-      case 'giveawaysWithoutPinned':
+      case 'giveawaysWithoutPinned': {
         const withoutPinned = dom.querySelector(
           ':not(.pinned-giveaways__inner-wrap) > .giveaway__row-outer-wrap'
         )?.parentElement;
         dom = withoutPinned || document.createElement('empty');
+        break;
+      }
       case 'giveaways':
-        const gaElements = [
-          ...dom.querySelectorAll(
-            '.giveaway__row-inner-wrap:not(.is-faded) .giveaway__heading__name'
-          ),
-        ];
-        let giveaways = [];
-        for (const item of gaElements) {
-          const resultGA = {
-            GAcode: '',
-            GAlevel: 0,
-            GAsteamAppID: '0',
-            cost: '',
-            timeEnd: 0,
-            timeStart: 0,
-            isGroupGA: false,
-            levelTooHigh: false,
-            numberOfEntries: 100,
-            numberOfCopies: 1,
-          };
-          const ga = item.parentElement.parentElement.parentElement;
-
-          // giveaway code
-          const t = item.href.match(/giveaway\/(.+)\//);
-          if (t.length > 0) {
-            resultGA.GAcode = t[1];
-          }
-
-          // if level is too high
-          if (
-            ga.querySelector('.giveaway__column--contributor-level--negative')
-          ) {
-            resultGA.levelTooHigh = true;
-          }
-
-          // level required (only if not too high)
-          if (
-            ga.querySelector('.giveaway__column--contributor-level--positive')
-          ) {
-            resultGA.GAlevel = ga
-              .querySelector('.giveaway__column--contributor-level--positive')
-              .innerHTML.match(/(\d+)/)[1];
-          }
-
-          // steam app id
-          const s = ga.querySelector('.giveaway_image_thumbnail')?.style
-            ?.backgroundImage;
-          if (s !== undefined) {
-            // undefined when no thumbnail is available (mostly non-steam bundles)
-            const c = s.match(/.+(?:apps|subs)\/(\d+)\/cap.+/);
-            if (s && c) {
-              resultGA.GAsteamAppID = c[1]; // TODO: differentiate between sub ID and app ID
-            }
-          }
-
-          // how much points to enter giveaway
-          resultGA.cost = [...ga.querySelectorAll('.giveaway__heading__thin')]
-            .pop()
-            .innerHTML.match(/\d+/)[0];
-
-          // when giveaway ends
-          resultGA.timeEnd = parseInt(
-            ga.querySelector('.fa-clock-o').parentElement.querySelector('span')
-              .dataset.timestamp,
-            10
-          );
-
-          // number of entries
-          resultGA.numberOfEntries = parseInt(
-            ga
-              .querySelector('.giveaway__links a[href$="/entries"]')
-              ?.textContent.replace(',', ''),
-            10
-          );
-
-          // if more than one copy there's a text field "(N Copies)"
-          let regexResult = ga
-            .querySelector('.giveaway__heading__thin')
-            .textContent.replace(',', '')
-            .match(/\((\d+) Copies\)/);
-          if (regexResult) {
-            resultGA.numberOfCopies = regexResult[1];
-          }
-
-          // when giveaway started
-          resultGA.timeStart = parseInt(
-            ga
-              .querySelector('.giveaway__username')
-              .parentElement.querySelector('span').dataset.timestamp,
-            10
-          );
-
-          giveaways.push(resultGA);
-        }
-        result[item] = giveaways;
+        result[item] = parseGiveaways(dom);
         break;
       default:
         console.log(
@@ -162,3 +205,95 @@ const parse = (data) => {
 
   return result;
 };
+
+// Redeem Steam keys found on the won page and notify via background
+async function redeemKeysFromWonPage(wonPage) {
+  const notify = (message) => {
+    chrome.runtime.sendMessage({ task: 'notifyKey', message });
+  };
+
+  const keyButtons = wonPage.querySelectorAll('.view_key_btn');
+  for (const keyBtn of keyButtons) {
+    try {
+      const dataForm =
+        keyBtn.parentElement.nextElementSibling.querySelector('form');
+      const winnerId = dataForm.querySelector("input[name='winner_id']").value;
+      const xsrfToken = dataForm.querySelector(
+        "input[name='xsrf_token']"
+      ).value;
+
+      const formData = new FormData();
+      formData.append('do', 'view_key');
+      formData.append('winner_id', winnerId);
+      formData.append('xsrf_token', xsrfToken);
+
+      const res = await fetch('https://www.steamgifts.com/ajax.php', {
+        method: 'post',
+        body: formData,
+        credentials: 'include',
+      });
+      if (!res.ok) {
+        console.error(
+          'Failed to request key from SteamGifts, HTTP',
+          res.status
+        );
+        continue;
+      }
+      const json = await res.json();
+      const data = JSON.stringify(json);
+      const startIndex = data.indexOf('?key=') + 5;
+      const endIndex =
+        startIndex + data.substring(data.indexOf('?key=')).indexOf('\\') - 5;
+      const key = data.substring(startIndex, endIndex);
+
+      if (!/^[A-Z0-9]{4,6}-[A-Z0-9]{4,6}-[A-Z0-9]{4,6}$/i.test(key)) {
+        console.warn('Invalid key format received:', key);
+        notify(`Invalid Format!\nCode: ${key} was not redeemed!`);
+        continue;
+      }
+
+      const storeRes = await fetch('https://store.steampowered.com', {
+        credentials: 'include',
+      });
+      const storeHtml = await storeRes.text();
+      if (storeHtml.indexOf('g_sessionID') === -1) {
+        console.warn('Steam session not available in offscreen context');
+        notify(
+          `Could not redeem code automatically. Please redeem manually: ${key}`
+        );
+        continue;
+      }
+
+      const steamSessionId = storeHtml.substring(
+        storeHtml.indexOf('g_sessionID') + 15,
+        storeHtml.indexOf('g_sessionID') + 15 + 24
+      );
+      const regData = new FormData();
+      regData.append('product_key', key);
+      regData.append('sessionid', steamSessionId);
+      const regRes = await fetch(
+        'https://store.steampowered.com/account/ajaxregisterkey/',
+        {
+          method: 'post',
+          body: regData,
+          credentials: 'include',
+        }
+      );
+      if (!regRes.ok) {
+        console.error('Steam key redeem request failed, HTTP', regRes.status);
+        notify(`Redeem failed (HTTP ${regRes.status}). Code: ${key}`);
+        continue;
+      }
+      const regJson = await regRes.json();
+      if (regJson && regJson.success === 1) {
+        notify(`Code redeemed! ${key}`);
+      } else {
+        const reason = regJson?.purchase_result_details ?? 'Unknown';
+        notify(`Redeem unsuccessful (${reason}). Code: ${key}`);
+      }
+    } catch (e) {
+      console.error('Error during key redemption:', e);
+      notify('Unexpected error while redeeming a key.');
+    }
+  }
+}

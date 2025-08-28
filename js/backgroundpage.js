@@ -1,4 +1,4 @@
-/* 
+/*
   This script page is the background script. autoentry.js is the autojoin button and other page
   modifications
 */
@@ -30,10 +30,10 @@ const setupOffscreenDocument = async (path) => {
   }
 };
 
-const parseHTML = (html) => {
-  return new Promise(async (resolve, reject) => {
-    await setupOffscreenDocument('html/offscreen.html');
+const parseHTML = async (html) => {
+  await setupOffscreenDocument('html/offscreen.html');
 
+  return new Promise((resolve, reject) => {
     const onDone = (result) => {
       resolve(result);
     };
@@ -156,7 +156,6 @@ const findAndRedeemKeys = async (wonPage) => {
     const winnerId = dataForm.querySelector("input[name='winner_id']").value;
     const xsrfToken = dataForm.querySelector("input[name='xsrf_token']").value;
     let latestSteamKeyRedeemResponse = ''; // for debugging
-    let latestSteamGiftsKeyRequestResponse = ''; // for debugging
 
     // Request the won key
     const formData = new FormData();
@@ -173,22 +172,23 @@ const findAndRedeemKeys = async (wonPage) => {
 
       // This should be remade
       const data = JSON.stringify(json);
-      const key = data.substr(
-        data.indexOf('?key=') + 5,
-        data.substr(data.indexOf('?key=')).indexOf('\\') - 5
-      ); // RIP
-      latestSteamGiftsKeyRequestResponse = data; // for debugging
+      const keyStartIndex = data.indexOf('?key=') + 5;
+      const keyEndIndex =
+        keyStartIndex + data.substring(data.indexOf('?key=')).indexOf('\\') - 5;
+      const key = data.substring(keyStartIndex, keyEndIndex); // RIP
 
       // Check key format
-      if (/^[a-zA-Z0-9]{4,6}\-[a-zA-Z0-9]{4,6}\-[a-zA-Z0-9]{4,6}$/.test(key)) {
+      if (
+        /^[a-zA-Z0-9]{4,6}\\-[a-zA-Z0-9]{4,6}\\-[a-zA-Z0-9]{4,6}$/.test(key)
+      ) {
         const res = await fetch('//store.steampowered.com');
         const data = await res.text();
 
         // Check if user is logged in on Steam
         if (data.indexOf('playerAvatar') != -1) {
-          const steamSessionId = data.substr(
+          const steamSessionId = data.substring(
             data.indexOf('g_sessionID') + 15,
-            24
+            data.indexOf('g_sessionID') + 15 + 24
           );
 
           const formData = new FormData();
@@ -286,7 +286,7 @@ const findAndRedeemKeys = async (wonPage) => {
               );
             }
           } else {
-            `Error registering key on Steam: HTTP ${res.status}`;
+            console.error(`Error registering key on Steam: HTTP ${res.status}`);
           }
         } else {
           console.log(
@@ -308,19 +308,26 @@ const findAndRedeemKeys = async (wonPage) => {
   }
 };
 
-class Giveaway {
-  constructor(code, level, appid, odds, cost, timeleft) {
-    this.code = code;
-    this.level = level;
-    this.steamlink = appid;
-    this.odds = odds;
-    this.cost = cost;
-    this.timeleft = timeleft;
-    this.showInfo = function () {
-      console.log(`
-    Giveaway https://www.steamgifts.com/giveaway/${this.code}/ (${this.cost} P) | Level: ${this.level} | Time left: ${this.timeleft} s
-    Steam: https://store.steampowered.com/app/${this.steamlink} Odds of winning: ${this.odds}`);
+// Minimal Giveaway representation for background worker (decoupled from content scripts)
+class BGGiveaway {
+  constructor(data) {
+    this.code = data.code;
+    this.appid = data.appid;
+    this.cost = data.cost;
+    this.timeleft = data.timeleft;
+    this.level = data.level;
+    this.numberOfCopies = data.numberOfCopies || 1;
+    this.numberOfEntries = data.numberOfEntries || 0;
+    this.status = data.status || {
+      Entered: false,
+      NoPoints: false,
+      NoLevel: false,
     };
+    this.odds = data.odds || 0;
+  }
+
+  getUrl() {
+    return `https://www.steamgifts.com/giveaway/${this.code}/`;
   }
 }
 
@@ -346,14 +353,23 @@ const calculateWinChance = (
 const notify = async (type, msg) => {
   switch (type) {
     case 'win':
-      const response = await fetch('https://www.steamgifts.com/giveaways/won');
-      if (response.ok) {
-        wonPageHtml = await res.text();
-        const parser = new DOMParser();
-        const wonPage = parser.parseFromString(text, 'text/html');
-        const name = wonPage.querySelector(
-          '.table__column__heading'
-        ).textContent;
+      try {
+        const response = await fetch(
+          'https://www.steamgifts.com/giveaways/won'
+        );
+        if (!response.ok) {
+          console.error(
+            `Could not fetch /giveaways/won page: HTTP ${response.status}`
+          );
+          break;
+        }
+        const wonPageHtml = await response.text();
+        // Parse name via offscreen document (service workers don't have DOMParser)
+        const parsed = await parseHTML({
+          items: ['won', 'wonName'],
+          html: wonPageHtml,
+        });
+        const name = parsed.wonName || 'a game';
 
         chrome.notifications.clear('won_notification', () => {
           const e = {
@@ -373,13 +389,17 @@ const notify = async (type, msg) => {
             );
           });
         });
-        if (settings.AutoRedeemKey) {
-          findAndRedeemKeys(wonPage);
+        if (settings?.AutoRedeemKey) {
+          // Delegate key redemption to offscreen document
+          await setupOffscreenDocument('html/offscreen.html');
+          chrome.runtime.sendMessage({
+            task: 'redeemKeys',
+            target: 'offscreen',
+            data: { html: wonPageHtml },
+          });
         }
-      } else {
-        console.error(
-          `Could not fetch /giveaways/won page: HTTP ${response.status}`
-        );
+      } catch (err) {
+        console.error('Error while notifying about a win:', err);
       }
       break;
     case 'points':
@@ -403,8 +423,10 @@ const notify = async (type, msg) => {
         };
         chrome.notifications.create('key_notification', e);
       });
+      break;
     default:
       console.log('Unknown notification type');
+      break;
   }
 };
 
@@ -444,14 +466,17 @@ const scanpage = async (html) => {
       timePageLoaded
     );
     arr.push(
-      new Giveaway(
-        giveaway.GAcode,
-        parseInt(giveaway.GAlevel, 10),
-        giveaway.GAsteamAppID,
-        oddsOfWinning,
-        parseInt(giveaway.cost, 10),
-        giveaway.timeLeft
-      )
+      new BGGiveaway({
+        code: giveaway.GAcode,
+        level: parseInt(giveaway.GAlevel, 10),
+        appid: giveaway.GAsteamAppID,
+        cost: parseInt(giveaway.cost, 10),
+        timeleft: giveaway.timeLeft,
+        numberOfCopies: giveaway.numberOfCopies || 1,
+        numberOfEntries: giveaway.numberOfEntries || 0,
+        status: { Entered: false, NoPoints: false, NoLevel: false },
+        odds: oddsOfWinning,
+      })
     );
   }
 
@@ -502,21 +527,33 @@ function pagesloaded() {
       continue;
     }
     if (ga.cost < settings.MinCostBG) {
-      ga.showInfo();
+      console.log(
+        `Giveaway ${ga.getUrl()} (${ga.cost} P) | Level: ${
+          ga.level
+        } | Time left: ${ga.timeleft} s`
+      );
       console.log(
         `^Skipped, cost: ${ga.cost}, your settings.MinCostBG is ${settings.MinCostBG}`
       );
       continue;
     }
     if (settings.MaxCostBG != -1 && ga.cost > settings.MaxCostBG) {
-      ga.showInfo();
+      console.log(
+        `Giveaway ${ga.getUrl()} (${ga.cost} P) | Level: ${
+          ga.level
+        } | Time left: ${ga.timeleft} s`
+      );
       console.log(
         `^Skipped, cost: ${ga.cost}, your settings.MaxCostBG is ${settings.MaxCostBG}`
       );
       continue;
     }
     if (ga.timeleft > settings.MaxTimeLeftBG && settings.MaxTimeLeftBG !== 0) {
-      ga.showInfo();
+      console.log(
+        `Giveaway ${ga.getUrl()} (${ga.cost} P) | Level: ${
+          ga.level
+        } | Time left: ${ga.timeleft} s`
+      );
       console.log(
         `^Skipped, timeleft: ${ga.timeleft}, your settings.MaxTimeLeftBG is ${settings.MaxTimeLeftBG}`
       );
@@ -535,27 +572,29 @@ function pagesloaded() {
           body: formData,
         });
         const jsonResponse = await res.json();
-        ga.showInfo();
+        console.log(
+          `Giveaway ${ga.getUrl()} (${ga.cost} P) | Level: ${
+            ga.level
+          } | Time left: ${ga.timeleft} s`
+        );
 
         let clearTimeouts = false;
-        if (jsonResponse.msg === 'Not Enough Points') {
-          clearTimeouts = true;
-        } else if (
-          jsonResponse.points < settings.PointsToPreserve &&
-          useWishlistPriorityForMainBG &&
-          settings.IgnorePreserveWishlistOnMainBG
+        if (
+          jsonResponse.msg === 'Not Enough Points' ||
+          (jsonResponse.points < settings.PointsToPreserve &&
+            useWishlistPriorityForMainBG &&
+            settings.IgnorePreserveWishlistOnMainBG)
         ) {
-          if (totalWishlistGAcnt === 1 || e > totalWishlistGAcnt - 2) {
-            clearTimeouts = true;
-          }
+          // Stop to preserve points when wishlist priority is enabled or not enough points
+          clearTimeouts = true;
         }
 
         if (clearTimeouts) {
           console.log(
             "^Not Enough Points or your PointsToPreserve limit reached, we're done for now"
           );
-          for (let i = 0; i < timeouts.length; i++) {
-            clearTimeout(timeouts[i]);
+          for (const timeout of timeouts) {
+            clearTimeout(timeout);
           }
           timeouts = [];
         } else {
@@ -661,7 +700,6 @@ const settingsloaded = async () => {
       chrome.storage.sync.set({ LastKnownLevel: mylevel });
     }
 
-    // var numOfGAsOnPage = parseInt($(data).find('.pagination__results').children().next().text(), 10);
     if (
       currPoints >= settings.PointsToPreserve ||
       (useWishlistPriorityForMainBG && settings.IgnorePreserveWishlistOnMainBG)
@@ -754,6 +792,7 @@ chrome.runtime.onStartup.addListener(createAlarm);
 
 /* Creating a new tab if notification is clicked */
 chrome.notifications.onClicked.addListener((notificationId) => {
+  let url;
   switch (notificationId) {
     case '1.5.0 announcement':
       url =
@@ -838,6 +877,10 @@ chrome.runtime.onInstalled.addListener((updateInfo) => {
 });
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request.task === 'notifyKey' && request.message) {
+    notify('key', request.message);
+    return;
+  }
   if (request.task === 'checkPermission') {
     // Check if we have "*://steamcommunity.com/profiles/*" permission, ask for them if not
     console.log(

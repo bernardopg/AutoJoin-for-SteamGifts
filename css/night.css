@@ -1,27 +1,198 @@
-div.page__outer-wrap {
-    filter: invert(100%);
+/* Night Theme Styles */
+/* Enhanced dark theme with better contrast and modern design */
+
+/* Apply dark theme data attribute when night theme is enabled */
+body.night-theme {
+  --bg-primary: var(--gray-900);
+  --bg-secondary: #2f3540;
+  --text-primary: var(--white);
+  --text-secondary: #BBBBBB;
+  --border-color: rgba(255, 255, 255, 0.1);
+  --overlay-bg: rgba(0, 0, 0, 0.9);
 }
 
-div.page__outer-wrap .giveaway_image_thumbnail, 
-div.page__outer-wrap .giveaway_image_avatar,
-.comments .global__image-inner-wrap,
-.comment .global__image-inner-wrap,
-.table_image_thumbnail,
-.table_image_avatar,
-.comment__summary img,
-.markdown img,
-.widget-container img
-{
-    filter: invert(100%);
+/* Avoid inverting the whole SteamGifts page to prevent visual breakage */
+/* We theme only our own components in night mode. */
+
+/* Preserve image colors by double-inverting */
+body.night-theme div.page__outer-wrap .giveaway_image_thumbnail,
+body.night-theme div.page__outer-wrap .giveaway_image_avatar,
+body.night-theme .comments .global__image-inner-wrap,
+body.night-theme .comment .global__image-inner-wrap,
+body.night-theme .table_image_thumbnail,
+body.night-theme .table_image_avatar,
+body.night-theme .comment__summary img,
+body.night-theme .markdown img,
+body.night-theme .widget-container img {
+  filter: invert(100%);
+  border-radius: var(--radius-sm);
 }
 
-.pointsFloating{
-	z-index: 2;
-	color: #BBBBBB !important;
+/* AutoJoin specific elements */
+body.night-theme .pointsFloating {
+  z-index: var(--z-fixed);
+  color: var(--text-secondary) !important;
+  background: rgba(0, 0, 0, 0.95);
+  border: 1px solid var(--border-color);
+  backdrop-filter: blur(10px);
 }
 
+/* Scope dark backgrounds to our footer elements only */
+body.night-theme #ajFooter #ajFooterArrowWrap,
+body.night-theme #ajFooter footer {
+  background-color: var(--bg-primary);
+}
+
+/* Enhanced dark theme for AutoJoin components */
+body.night-theme #info {
+  background: rgba(0, 0, 0, 0.95);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+body.night-theme .btnSingle {
+  box-shadow: var(--shadow-md);
+}
+
+body.night-theme .btnSingle:hover:not(:disabled) {
+  box-shadow: var(--shadow-lg);
+}
+
+/* Settings modal dark theme */
+body.night-theme #settingsDiv {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+
+body.night-theme .settings-header {
+  background: var(--gradient-primary);
+}
+
+body.night-theme .settings-tabs {
+  background: var(--bg-secondary);
+  border-bottom-color: var(--border-color);
+}
+
+body.night-theme .tab-button {
+  color: var(--text-secondary);
+}
+
+body.night-theme .tab-button:hover {
+  background: var(--border-color);
+  color: var(--text-primary);
+}
+
+body.night-theme .tab-button.active {
+  color: var(--primary-color);
+  background: var(--bg-primary);
+}
+
+body.night-theme .settings-section {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--border-color);
+}
+
+body.night-theme .settings-section:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+body.night-theme .setting-item {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: var(--border-color);
+}
+
+body.night-theme .setting-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+body.night-theme .warning-section {
+  background: rgba(255, 152, 0, 0.1);
+  border-left-color: var(--warning-color);
+}
+
+body.night-theme .warning-message {
+  background: rgba(255, 152, 0, 0.15);
+  border-color: rgba(255, 152, 0, 0.4);
+}
+
+/* Form elements in dark theme */
+body.night-theme input[type="text"],
+body.night-theme input[type="number"],
+body.night-theme select,
+body.night-theme textarea {
+  background: var(--gray-800);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+body.night-theme input[type="text"]:focus,
+body.night-theme input[type="number"]:focus,
+body.night-theme select:focus,
+body.night-theme textarea:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.2);
+}
+
+/* Links container dark theme */
+body.night-theme #linksContainer {
+  background: var(--bg-secondary);
+}
+
+body.night-theme .link-item a {
+  color: var(--text-secondary);
+}
+
+body.night-theme .link-item a:hover {
+  background: var(--bg-primary);
+  color: var(--primary-color);
+}
+
+/* Scrollbar dark theme */
+body.night-theme ::-webkit-scrollbar-track {
+  background: var(--gray-700);
+}
+
+body.night-theme ::-webkit-scrollbar-thumb {
+  background: var(--gray-500);
+}
+
+body.night-theme ::-webkit-scrollbar-thumb:hover {
+  background: var(--gray-400);
+}
+
+/* Description content dark theme */
+body.night-theme .descriptionContent {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--border-color);
+}
+
+body.night-theme .descriptionContent.visible {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* Suspension notice dark theme */
+body.night-theme #suspensionNotice {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: rgba(244, 67, 54, 0.18);
+  border: 1px solid rgba(244, 67, 54, 0.45);
+  color: #ff8a80;
+}
+
+/* Smooth transitions for theme switching */
 body,
 #ajFooter #ajFooterArrowWrap,
-#ajFooter footer {
-	background-color: #141414;
+#ajFooter footer,
+.pointsFloating,
+#info,
+#settingsDiv,
+.settings-section,
+.setting-item {
+  transition: background-color var(--transition-base),
+    color var(--transition-base),
+    border-color var(--transition-base);
 }
