@@ -2,11 +2,16 @@ chrome.runtime.onMessage.addListener((msg) => {
   switch (msg.task) {
     case 'parse': {
       const data = parse(msg.data);
-      chrome.runtime.sendMessage(data);
+      chrome.runtime.sendMessage({
+        target: 'background',
+        type: 'parsed',
+        requestId: msg.requestId,
+        payload: data,
+      });
       break;
     }
     case 'audio': {
-      const audio = new Audio('/media/audio.mp3');
+      const audio = new Audio(chrome.runtime.getURL('/media/audio.mp3'));
       audio.volume = msg.data;
       audio.play();
       break;
@@ -41,28 +46,24 @@ const parseWonName = (dom) => {
 };
 
 const parseMyLevel = (dom) => {
-  return parseInt(
-    dom.querySelector('a[href="/account"] span:last-child').title,
-    10
-  );
+  const el = dom.querySelector('a[href="/account"] span:last-child');
+  const t = el?.getAttribute('title') || el?.textContent || '0';
+  const m = (t.match(/\d+/) || [0])[0];
+  return parseInt(m, 10) || 0;
 };
 
 const parseMyPoints = (dom) => {
-  return parseInt(
-    dom
-      .querySelector('a[href="/account"] span.nav__points')
-      ?.textContent.replace(',', ''),
-    10
-  );
+  const txt = dom.querySelector('span.nav__points')?.textContent || '0';
+  return parseInt(txt.replace(/,/g, ''), 10) || 0;
 };
 
 const parseToken = (dom) => {
-  return dom.querySelector('input[name=xsrf_token]').value;
+  return dom.querySelector('input[name=xsrf_token]')?.value || '';
 };
 
 const parseGiveawayCode = (item) => {
   const t = item.href.match(/giveaway\/(.+)\//);
-  return t.length > 0 ? t[1] : '';
+  return t && t.length > 1 ? t[1] : '';
 };
 
 const parseGiveawayLevel = (ga) => {
@@ -93,7 +94,7 @@ const parseGiveawayCopies = (ga) => {
     .querySelector('.giveaway__heading__thin')
     .textContent.replace(',', '')
     .match(/\((\d+) Copies\)/);
-  return regexResult ? regexResult[1] : 1;
+  return regexResult ? parseInt(regexResult[1], 10) : 1;
 };
 
 const parseGiveawayData = (item) => {
@@ -187,10 +188,11 @@ const parse = (data) => {
         result.token = parseToken(dom);
         break;
       case 'giveawaysWithoutPinned': {
-        const withoutPinned = dom.querySelector(
+        const container = dom.querySelector(
           ':not(.pinned-giveaways__inner-wrap) > .giveaway__row-outer-wrap'
         )?.parentElement;
-        dom = withoutPinned || document.createElement('empty');
+        const scope = container || dom;
+        result.giveawaysWithoutPinned = parseGiveaways(scope);
         break;
       }
       case 'giveaways':

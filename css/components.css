@@ -1,0 +1,198 @@
+/* Component Styles */
+/* Buttons, Forms, and Interactive Elements */
+
+/* Base Button Styles */
+.btnSingle {
+  cursor: pointer;
+  width: 130px;
+  height: 80px;
+  border: none;
+  border-radius: var(--radius-lg);
+  font-weight: bold;
+  font-size: 14px;
+  transition: all var(--transition-slow);
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
+  will-change: transform, box-shadow;
+}
+
+.btnSingle:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.btnSingle:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
+}
+
+.btnSingle:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: var(--shadow-sm);
+}
+
+.btnSingle:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+/* Button States */
+.btnSingle[walkState="join"] {
+  background: var(--gradient-success);
+  color: var(--white);
+}
+
+.btnSingle[walkState="join"]:hover:not(:disabled) {
+  background: linear-gradient(135deg, #45a049 0%, #3d8b40 100%);
+}
+
+.btnSingle[walkState="leave"] {
+  background: var(--gradient-danger);
+  color: var(--white);
+}
+
+.btnSingle[walkState="leave"]:hover:not(:disabled) {
+  background: linear-gradient(135deg, #d32f2f 0%, #b71c1c 100%);
+}
+
+.btnSingle[walkState|="no"] {
+  background: var(--gradient-secondary);
+  color: var(--white);
+  cursor: not-allowed;
+}
+
+.btnSingle[walkState|="no"]:hover {
+  background: linear-gradient(135deg, #757575 0%, #616161 100%);
+}
+
+/* Loading State */
+.btnSingle.loading {
+  position: relative;
+  color: transparent !important;
+  pointer-events: none;
+}
+
+.btnSingle.loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 16px;
+  height: 16px;
+  margin: -8px 0 0 -8px;
+  border: 2px solid transparent;
+  border-top-color: var(--white);
+  border-radius: 50%;
+  animation: button-loading-spinner 1s ease infinite;
+}
+
+/* Primary Action Button */
+#btnAutoJoin {
+  position: relative;
+  width: 150px;
+  cursor: pointer;
+  background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+  color: var(--white);
+  border: none;
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg) var(--spacing-2xl);
+  font-weight: bold;
+  font-size: 16px;
+  transition: all var(--transition-slow);
+  box-shadow: var(--shadow-sm);
+  will-change: transform, box-shadow;
+}
+
+#btnAutoJoin:hover {
+  background: linear-gradient(135deg, #1976D2 0%, #1565C0 100%);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+#btnAutoJoin:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
+}
+
+#btnAutoJoin:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: var(--shadow-sm);
+}
+
+#btnAutoJoin:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+/* Settings Toggle Button */
+#btnSettings.AutoJoinButtonEnabled {
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  background: var(--gradient-warning);
+  border: none;
+  border-radius: 50%;
+  transition: all var(--transition-slow);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  will-change: transform, box-shadow;
+}
+
+#btnSettings.AutoJoinButtonEnabled:hover {
+  background: linear-gradient(135deg, #F57C00 0%, #EF6C00 100%);
+  transform: scale(1.05);
+  box-shadow: var(--shadow-md);
+}
+
+#btnSettings.AutoJoinButtonEnabled i {
+  color: var(--white);
+  font-size: 1.5rem;
+}
+
+#btnSettings.AutoJoinButtonEnabled:focus-visible {
+  outline: 2px solid var(--warning-color);
+  outline-offset: 2px;
+}
+
+/* Form Elements */
+.setting-input-error {
+  border-color: var(--error-color) !important;
+  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
+}
+
+.btnSingle.success {
+  background: linear-gradient(135deg, var(--success-color) 0%, var(--success-light) 100%) !important;
+  animation: successPulse 0.6s ease-in-out;
+}
+
+/* Animations */
+@keyframes successPulse {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.05);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes button-loading-spinner {
+  from {
+    transform: rotate(0turn);
+  }
+
+  to {
+    transform: rotate(1turn);
+  }
+}

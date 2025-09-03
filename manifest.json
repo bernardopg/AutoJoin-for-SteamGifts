@@ -76,7 +76,7 @@
     "*://store.steampowered.com/*"
   ],
   "optional_host_permissions": ["*://steamcommunity.com/profiles/*"],
-  "version": "2.0.0",
+  "version": "2.0.1",
   "web_accessible_resources": [
     {
       "use_dynamic_url": true,
@@ -86,6 +86,7 @@
     }
   ],
   "options_ui": {
-    "page": "html/settings.html"
+    "page": "html/settings.html",
+    "open_in_tab": true
   }
 }

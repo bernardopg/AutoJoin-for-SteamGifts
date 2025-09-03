@@ -312,15 +312,46 @@ function settingsAttachEventListeners() {
 
   // Add keyboard shortcuts
   document.addEventListener('keydown', (e) => {
+    // Save shortcut
     if (e.ctrlKey || e.metaKey) {
-      switch (e.key) {
-        case 's':
+      if (e.key === 's') {
+        e.preventDefault();
+        saveButtonEl.click();
+        return;
+      }
+    }
+
+    // Close on Escape even without modifiers when modal is open
+    if (
+      e.key === 'Escape' &&
+      document.body.classList.contains('aj-modal-open')
+    ) {
+      e.preventDefault();
+      document.querySelector('.settingsCancel')?.click();
+      return;
+    }
+
+    // Trap focus within modal while open
+    if (e.key === 'Tab' && document.body.classList.contains('aj-modal-open')) {
+      const modal = document.getElementById('settingsDiv');
+      if (!modal) return;
+      const focusable = modal.querySelectorAll(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      const active = document.activeElement;
+      if (e.shiftKey) {
+        if (active === first || !modal.contains(active)) {
           e.preventDefault();
-          saveButtonEl.click();
-          break;
-        case 'Escape':
-          document.querySelector('.settingsCancel').click();
-          break;
+          last.focus();
+        }
+      } else {
+        if (active === last || !modal.contains(active)) {
+          e.preventDefault();
+          first.focus();
+        }
       }
     }
   });
@@ -379,6 +410,8 @@ function settingsAttachEventListeners() {
       settingsShadeEl.classList.add('fadeOut');
       settingsDivEl.classList.remove('fadeIn');
       settingsDivEl.classList.add('fadeOut');
+      // Re-enable page scrolling when modal closes
+      document.body.classList.remove('aj-modal-open');
     });
   });
 

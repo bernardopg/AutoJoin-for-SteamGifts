@@ -33,15 +33,26 @@ const setupOffscreenDocument = async (path) => {
 const parseHTML = async (html) => {
   await setupOffscreenDocument('html/offscreen.html');
 
-  return new Promise((resolve, reject) => {
-    const onDone = (result) => {
-      resolve(result);
+  return new Promise((resolve) => {
+    // Correlate requests to a single response from offscreen context
+    const requestId = `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+    const onDone = (msg) => {
+      if (
+        msg &&
+        msg.target === 'background' &&
+        msg.type === 'parsed' &&
+        msg.requestId === requestId
+      ) {
+        chrome.runtime.onMessage.removeListener(onDone);
+        resolve(msg.payload);
+      }
     };
     chrome.runtime.onMessage.addListener(onDone);
     // Send message to offscreen document
     chrome.runtime.sendMessage({
       task: 'parse',
       target: 'offscreen',
+      requestId,
       data: html,
     });
   });
@@ -916,6 +927,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         }
       }
     );
+    // Keep the message channel open for async sendResponse
+    return true;
   }
 
   if (request.task === 'fetch') {
@@ -954,7 +967,13 @@ const fetchHelper = async (url) => {
     }
   }
 
-  const res = await fetch(url);
+  const res = await fetch(url, {
+    // Include cookies for cross-origin requests to Steam Community/Store
+    credentials: 'include',
+    redirect: 'follow',
+    // Let the browser set CORS headers; extensions with host permissions can fetch cross-origin
+    mode: 'cors',
+  });
   result.status = res.status;
   if (res.ok) {
     const text = await res.text();

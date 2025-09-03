@@ -14,19 +14,7 @@ body.night-theme {
 /* Avoid inverting the whole SteamGifts page to prevent visual breakage */
 /* We theme only our own components in night mode. */
 
-/* Preserve image colors by double-inverting */
-body.night-theme div.page__outer-wrap .giveaway_image_thumbnail,
-body.night-theme div.page__outer-wrap .giveaway_image_avatar,
-body.night-theme .comments .global__image-inner-wrap,
-body.night-theme .comment .global__image-inner-wrap,
-body.night-theme .table_image_thumbnail,
-body.night-theme .table_image_avatar,
-body.night-theme .comment__summary img,
-body.night-theme .markdown img,
-body.night-theme .widget-container img {
-  filter: invert(100%);
-  border-radius: var(--radius-sm);
-}
+/* Do not invert site images; preserve original colors to avoid negative-looking thumbnails */
 
 /* AutoJoin specific elements */
 body.night-theme .pointsFloating {
@@ -65,8 +53,22 @@ body.night-theme #settingsDiv {
   border: 1px solid var(--border-color);
 }
 
+/* Keep the shade dark in night theme as well */
+body.night-theme #settingsShade {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
 body.night-theme .settings-header {
   background: var(--gradient-primary);
+}
+
+body.night-theme .settings-close {
+  background: rgba(0, 0, 0, 0.45);
+  color: var(--white);
+}
+
+body.night-theme .settings-close:hover {
+  background: rgba(0, 0, 0, 0.55);
 }
 
 body.night-theme .settings-tabs {
@@ -176,11 +178,22 @@ body.night-theme .descriptionContent.visible {
 /* Suspension notice dark theme */
 body.night-theme #suspensionNotice {
   display: inline-block;
-  padding: 6px 10px;
-  border-radius: 6px;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-md);
   background: rgba(244, 67, 54, 0.18);
   border: 1px solid rgba(244, 67, 54, 0.45);
   color: #ff8a80;
+}
+
+/* Permission banner dark theme */
+body.night-theme .aj-permission-banner {
+  background: rgba(255, 152, 0, 0.1);
+  border-color: rgba(255, 152, 0, 0.3);
+  color: #ffcc80;
+}
+
+body.night-theme .aj-permission-banner a {
+  color: #ffb74d;
 }
 
 /* Smooth transitions for theme switching */

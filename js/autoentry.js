@@ -465,13 +465,27 @@ async function fetchAndStoreSteamData(steamProfileID) {
     let url = `https://steamcommunity.com/profiles/${steamProfileID}/games?tab=all`;
     let response = await chrome.runtime.sendMessage({ task: 'fetch', url });
     if (response.status === 200) {
-      const regex = /rgGames\s=\s(.*);/g;
-      const regexResponse = regex.exec(response.text);
-      if (regexResponse != null) {
-        const jsonResponse = JSON.parse(regexResponse[1]);
-        ownedSteamApps = [];
-        for (let i = 0, numApps = jsonResponse.length; i < numApps; i++) {
-          ownedSteamApps.push(jsonResponse[i].appid);
+      // Try multiple patterns Steam has used historically
+      // 1) rgGames = [...];  2) var rgGames = [...];  3) RG.games = [...];
+      const patterns = [
+        /rgGames\s*=\s*(\[.*?\])/s,
+        /var\s+rgGames\s*=\s*(\[.*?\])/s,
+        /RG\.games\s*=\s*(\[.*?\])/s,
+      ];
+      let jsonArrayStr = null;
+      for (const pat of patterns) {
+        const m = pat.exec(response.text);
+        if (m && m[1]) {
+          jsonArrayStr = m[1];
+          break;
+        }
+      }
+      if (jsonArrayStr) {
+        try {
+          const jsonResponse = JSON.parse(jsonArrayStr);
+          ownedSteamApps = jsonResponse.map((g) => g.appid).filter(Boolean);
+        } catch (e) {
+          console.info('Failed to parse owned games JSON');
         }
       } else {
         console.info(
@@ -510,6 +524,52 @@ async function fetchAndStoreSteamData(steamProfileID) {
       ownedGames: ownedSteamApps.length,
       wishlist: wishList.length,
     });
+
+    // If both are empty, optionally surface a small helper banner near controls
+    if (ownedSteamApps.length === 0 && wishList.length === 0) {
+      const featuredSummary = document.querySelector('.featured__summary');
+      const anchor = featuredSummary || document.body;
+      let banner = document.getElementById('aj-permission-banner');
+      if (!banner) {
+        banner = document.createElement('div');
+        banner.id = 'aj-permission-banner';
+        banner.className = 'aj-permission-banner';
+        banner.innerHTML =
+          '<strong>Steam data unavailable.</strong> Grant permission when prompted and ensure your Steam profile game details and wishlist are public. <a href="#" id="aj-perm-retry">Check permission again</a>.';
+        if (featuredSummary) {
+          anchor.prepend(banner);
+        } else {
+          anchor.appendChild(banner);
+        }
+        banner.style.display = 'block';
+        const retry = banner.querySelector('#aj-perm-retry');
+        retry?.addEventListener('click', (e) => {
+          e.preventDefault();
+          // Re-trigger permission request flow
+          const profileId = (function () {
+            const link = document.querySelector(
+              '.nav__button-container--notification a.nav__avatar-outer-wrap'
+            );
+            const href = link?.href || '';
+            const m = /steamcommunity\.com\/profiles\/(\d+)/.exec(href);
+            return m ? m[1] : null;
+          })();
+          if (profileId) {
+            requestSteamCommunityPermissionAndUpdate(profileId);
+          } else {
+            chrome.runtime.sendMessage({
+              task: 'checkPermission',
+              ask: 'true',
+            });
+          }
+        });
+      } else {
+        banner.style.display = 'block';
+      }
+    } else {
+      const banner = document.getElementById('aj-permission-banner');
+      if (banner) banner.style.display = 'none';
+    }
   } catch (e) {
     console.error('Error updating Steam data:', e);
   }
@@ -607,34 +667,73 @@ function onPageLoad() {
       document.body.appendChild(buttonsAJ);
     }
   } else {
-    const navbar = document.querySelector('.nav__left-container');
-    const buttonContainer = document.createElement('div');
-    buttonContainer.className = 'nav__button-container';
-    const button = document.createElement('a');
-    button.className = 'nav__button';
-    button.id = 'btnSettings';
-    button.textContent = 'AutoJoin Settings';
-    buttonContainer.appendChild(button);
-    navbar.appendChild(buttonContainer);
+    // Add a Settings button to the navbar if not already present
+    if (!document.getElementById('ajSettingsNavBtn')) {
+      const navbar = document.querySelector('.nav__left-container');
+      if (navbar) {
+        const buttonContainer = document.createElement('div');
+        buttonContainer.className = 'nav__button-container';
+        const button = document.createElement('a');
+        button.className = 'nav__button';
+        // Use a unique ID distinct from the circular cog button
+        button.id = 'ajSettingsNavBtn';
+        button.textContent = 'AutoJoin Settings';
+        buttonContainer.appendChild(button);
+        navbar.appendChild(buttonContainer);
+      }
+    }
   }
 
   /* First time cog/settings button is pressed inject part of settings.html and show it
      If settings already injected just show them */
-  document.getElementById('btnSettings').addEventListener('click', (e) => {
-    e.preventDefault();
-    if (chrome?.runtime?.openOptionsPage) {
-      chrome.runtime.openOptionsPage();
-      return;
-    }
-    // Fallback to inline modal if options page API unavailable
-    if (settingsInjected) {
-      document
-        .getElementById('settingsShade')
-        .classList.replace('fadeOut', 'fadeIn');
-      document
-        .getElementById('settingsDiv')
-        .classList.replace('fadeOut', 'fadeIn');
-    } else {
+  const bindSettingsOpener = (el) => {
+    if (!el) return;
+    el.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (chrome?.runtime?.openOptionsPage) {
+        chrome.runtime.openOptionsPage();
+        return;
+      }
+      // Reuse existing modal if present
+      const existing = document.getElementById('settingsDiv');
+      if (existing) {
+        document.getElementById('settingsShade')?.classList.add('fadeIn');
+        existing.classList.add('fadeIn');
+        document.body.classList.add('aj-modal-open');
+        setTimeout(() => {
+          existing.querySelector('button, input, select, textarea, a')?.focus();
+        }, 0);
+        return;
+      }
+
+      // Guard against duplicate injection from parallel instances
+      const htmlEl = document.documentElement;
+      if (
+        htmlEl.dataset.ajSettingsInjecting === 'true' ||
+        htmlEl.dataset.ajSettingsInjected === 'true'
+      ) {
+        const start = Date.now();
+        const wait = setInterval(() => {
+          const modal = document.getElementById('settingsDiv');
+          if (modal) {
+            clearInterval(wait);
+            document.getElementById('settingsShade')?.classList.add('fadeIn');
+            modal.classList.add('fadeIn');
+            document.body.classList.add('aj-modal-open');
+            setTimeout(() => {
+              modal
+                .querySelector('button, input, select, textarea, a')
+                ?.focus();
+            }, 0);
+          } else if (Date.now() - start > 3000) {
+            clearInterval(wait);
+          }
+        }, 50);
+        return;
+      }
+
+      // Inject once
+      htmlEl.dataset.ajSettingsInjecting = 'true';
       settingsInjected = true;
       fetch(chrome.runtime.getURL('/html/settings.html'))
         .then((resp) => resp.text())
@@ -643,12 +742,40 @@ function onPageLoad() {
           const settingsDOM = parser.parseFromString(settingsHTML, 'text/html');
           const settingsDiv = settingsDOM.getElementById('bodyWrapper');
           document.querySelector('body').appendChild(settingsDiv);
+          htmlEl.dataset.ajSettingsInjected = 'true';
+          htmlEl.dataset.ajSettingsInjecting = 'false';
+          // Make sure Font Awesome is loaded when injecting inline
+          if (
+            !document.querySelector(
+              'link[href*="font-awesome"], link[href*="fontawesome"]'
+            )
+          ) {
+            const fa = document.createElement('link');
+            fa.rel = 'stylesheet';
+            fa.href =
+              'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css';
+            document.head.appendChild(fa);
+          }
           loadSettings();
           document.getElementById('settingsShade').classList.add('fadeIn');
           document.getElementById('settingsDiv').classList.add('fadeIn');
+          document.body.classList.add('aj-modal-open');
+          setTimeout(() => {
+            document
+              .querySelector(
+                '#settingsDiv button, #settingsDiv input, #settingsDiv select, #settingsDiv textarea, #settingsDiv a'
+              )
+              ?.focus();
+          }, 0);
+        })
+        .catch(() => {
+          htmlEl.dataset.ajSettingsInjecting = 'false';
         });
-    }
-  });
+    });
+  };
+
+  bindSettingsOpener(document.getElementById('btnSettings'));
+  bindSettingsOpener(document.getElementById('ajSettingsNavBtn'));
 
   const postsElement = document.querySelector(
     ':not(.pinned-giveaways__inner-wrap) > .giveaway__row-outer-wrap'
@@ -713,7 +840,8 @@ function onPageLoad() {
       if (gaElements.length < 50) {
         lastPage = true;
         pagesLoaded = 9999;
-        document.querySelector('.pagination').display = 'none';
+        const p = document.querySelector('.pagination');
+        if (p) p.style.display = 'none';
       }
       modifyPageDOM(containerEl, timeLoaded);
       [...document.querySelectorAll('#posts')].at(-1).append(containerEl);
@@ -826,15 +954,16 @@ function onPageLoad() {
                       }
                       timeouts = [];
                     }
-                    if (entered < 1) {
-                      document.querySelector('#info').textContent =
-                        'No giveaways entered.';
-                    } else {
-                      document.querySelector(
-                        '#info'
-                      ).textContent = `Entered ${entered} giveaway${
-                        entered !== 1 ? 's' : ''
-                      }.`;
+                    const infoEl = document.querySelector('#info');
+                    if (infoEl) {
+                      if (entered < 1) {
+                        infoEl.textContent = 'No giveaways entered.';
+                      } else {
+                        infoEl.textContent = `Entered ${entered} giveaway${
+                          entered !== 1 ? 's' : ''
+                        }.`;
+                      }
+                      infoEl.style.display = 'block';
                     }
                   });
               }, timeouts.length * settings.Delay * 1000 +
@@ -881,10 +1010,15 @@ function onPageLoad() {
           }
         }
 
-        // Reset button after delay
+        // Reset button after delay and hide info banner for a clean layout
         setTimeout(() => {
           btnAutoJoin.classList.remove('success');
           btnAutoJoin.value = 'AutoJoin';
+          const infoEl = document.querySelector('#info');
+          if (infoEl) {
+            infoEl.style.display = 'none';
+            infoEl.textContent = '';
+          }
         }, 3000);
       }
     }, timeouts.length * settings.Delay * 1000 + 2000);
@@ -917,43 +1051,46 @@ function onPageLoad() {
     //   lastPage = 100;
     // }
     loadingNextPage = false;
-    if (settings.InfiniteScrolling) {
+    // Avoid double infinite-scroll when PageEnhancer already set it up
+    const enhancerActivated = Boolean(window.__AJ_InfScrollActivated);
+    if (settings.InfiniteScrolling && !enhancerActivated) {
       const spinnerEl = document.createElement('div');
       spinnerEl.style.marginLeft = 'auto';
       spinnerEl.style.marginRight = 'auto';
       const spinnerInnerEl = document.createElement('i');
       spinnerInnerEl.classList.add('fa', 'fa-refresh', 'fa-spin');
       spinnerEl.append(spinnerInnerEl);
-      document.querySelector('.pagination').replaceChildren(spinnerEl);
+      const pagination = document.querySelector('.pagination');
+      if (pagination) {
+        pagination.innerHTML = '';
+        pagination.append(spinnerEl);
+      }
     }
-    window.addEventListener('scroll', () => {
-      const currentPos = document.querySelector('html').scrollTop;
+    // Throttled scroll handler to reduce forced reflow
+    const onScroll = AutoJoinUtils.throttle(() => {
+      const docEl = document.documentElement;
+      const currentPos = window.pageYOffset || docEl.scrollTop;
       const viewHeight = window.innerHeight;
-      const pageHeight = document.body.scrollHeight;
+      const pageHeight = docEl.scrollHeight;
 
-      if (currentPos > viewHeight * 2 && settings.ShowPoints) {
-        if (accountInfo) {
-          // todo: return animations
+      if (settings.ShowPoints && accountInfo) {
+        if (currentPos > viewHeight * 2) {
           accountInfo.style.display = 'block';
           accountInfo.style.opacity = '1';
-        }
-      } else if (
-        currentPos < viewHeight + viewHeight / 2 &&
-        settings.ShowPoints
-      ) {
-        if (accountInfo) {
-          // todo: return animations
+        } else if (currentPos < viewHeight + viewHeight / 2) {
           accountInfo.style.display = 'none';
           accountInfo.style.opacity = '0';
         }
       }
       if (
-        currentPos + viewHeight > pageHeight - 600 &&
-        settings.InfiniteScrolling
+        settings.InfiniteScrolling &&
+        !enhancerActivated &&
+        currentPos + viewHeight > pageHeight - 600
       ) {
         loadPage();
       }
-    });
+    }, 150);
+    window.addEventListener('scroll', onScroll, { passive: true });
   }
 
   function updateButtons() {
@@ -1431,30 +1568,30 @@ async function checkSteamPackageApps(appIds, packageId, giveaway, timeLoaded) {
         url,
       });
       if (response.status === 200) {
-        let jsonResponse = JSON.parse(response.text);
-        if (jsonResponse[appId]?.success == true) {
-          tradingCards =
-            jsonResponse[appId].data.categories != undefined
-              ? jsonResponse[appId].data.categories.some(function (data) {
-                  return data.id == 29;
-                })
+        // Fetch app details for this specific app to get type and categories
+        const appUrl = `https://store.steampowered.com/api/appdetails?appids=${appId}&filters=basic,categories`;
+        const appResp = await chrome.runtime.sendMessage({
+          task: 'fetch',
+          url: appUrl,
+        });
+        if (appResp.status === 200) {
+          const appJson = JSON.parse(appResp.text);
+          if (appJson[appId]?.success === true) {
+            const data = appJson[appId].data;
+            const hasCats = Array.isArray(data.categories);
+            let tradingCards = hasCats
+              ? data.categories.some((c) => c && c.id == 29)
               : false;
-          cacheSteamAppData(
-            appId,
-            jsonResponse[appId].data.type,
-            tradingCards,
-            lastUpdated,
-            timeLoaded
-          );
-          if (
-            !filterGiveaway(
-              giveaway,
+            cacheSteamAppData(
               appId,
-              jsonResponse[appId].data.type,
-              tradingCards
-            )
-          ) {
-            removePackage = false;
+              data.type,
+              tradingCards,
+              lastUpdated,
+              timeLoaded
+            );
+            if (!filterGiveaway(giveaway, appId, data.type, tradingCards)) {
+              removePackage = false;
+            }
           }
         }
       }

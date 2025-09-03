@@ -5,13 +5,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AutoJoin for SteamGifts - Settings</title>
-  <link rel="stylesheet" href="../css/general.css" />
-  <link rel="stylesheet" href="../css/night.css" />
-  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-    onload="this.onload=null;this.rel='stylesheet'">
-  <noscript>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  </noscript>
+  <link rel="stylesheet" href="../css/main.css" />
+
+  <link rel="stylesheet" href="../css/fontawesome/fontawesome.min.css" />
   <script type="text/javascript" src="../js/settings.js" defer></script>
 </head>
 
@@ -20,10 +16,11 @@
   <div id="notification-container" class="notification-container"></div>
 
   <div id="bodyWrapper">
-    <div id="settingsDiv">
+    <div id="settingsDiv" role="dialog" aria-modal="true" aria-labelledby="settings-title">
       <div class="settings-header">
-        <h1><i class="fas fa-cog"></i> AutoJoin Settings</h1>
+        <h1 id="settings-title"><i class="fas fa-cog" aria-hidden="true"></i> AutoJoin Settings</h1>
         <p>Configure the AutoJoin extension to match your preferences</p>
+        <button type="button" class="settingsCancel settings-close" aria-label="Close settings">&times;</button>
       </div>
 
       <div class="settings-tabs" role="tablist" aria-label="Settings Categories">

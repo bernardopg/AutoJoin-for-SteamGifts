@@ -57,7 +57,8 @@ class PageEnhancer {
     if (!navbar) return;
 
     // If a button already exists, only (re)bind the handler
-    let btn = document.getElementById('btnSettings');
+    // Use a unique ID here to avoid clashing with the circular cog button in autoentry.js
+    let btn = document.getElementById('ajSettingsNavBtn');
     if (!btn) {
       const container = AutoJoinUtils.createElement('div', {
         className: 'nav__button-container',
@@ -66,7 +67,7 @@ class PageEnhancer {
         'a',
         {
           className: 'nav__button',
-          id: 'btnSettings',
+          id: 'ajSettingsNavBtn',
           href: '#',
           role: 'button',
           tabindex: '0',
@@ -96,6 +97,11 @@ class PageEnhancer {
       if (e.key === 'Enter' || e.key === ' ') openOptions(e);
     });
     btn.replaceWith(freshBtn);
+
+    // Mark that we've bound the navbar settings button to avoid duplicate bindings elsewhere
+    try {
+      window.__AJ_SettingsNavBound = true;
+    } catch (e) {}
   }
 
   /**
@@ -297,6 +303,13 @@ class PageEnhancer {
 
     currentPage = parseInt(pageParam, 10) - 1;
 
+    // Mark global inf-scroll flag to avoid double registration from legacy code
+    try {
+      window.__AJ_InfScrollActivated = true;
+    } catch (e) {
+      // no-op in non-window contexts
+    }
+
     // Setup scroll listener
     const scrollHandler = AutoJoinUtils.throttle(async () => {
       if (isLoading || !hasNextPage) return;
@@ -313,7 +326,7 @@ class PageEnhancer {
       }
     }, 250);
 
-    window.addEventListener('scroll', scrollHandler);
+    window.addEventListener('scroll', scrollHandler, { passive: true });
 
     // Load next page function
     this.loadNextPage = async (baseUrl, pageNum, extraParams) => {
@@ -552,7 +565,7 @@ class PageEnhancer {
     const skipToSettings = AutoJoinUtils.createElement(
       'a',
       {
-        href: '#btnSettings',
+        href: '#ajSettingsNavBtn',
         style: 'color: var(--primary-color); text-decoration: none;',
       },
       'Pular para configurações'
@@ -592,7 +605,10 @@ class PageEnhancer {
         switch (e.key) {
           case 's':
             e.preventDefault();
-            document.getElementById('btnSettings')?.click();
+            const pref =
+              document.getElementById('btnSettings') ||
+              document.getElementById('ajSettingsNavBtn');
+            pref?.click();
             break;
           case 'j':
             e.preventDefault();
