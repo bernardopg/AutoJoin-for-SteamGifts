@@ -18,3 +18,12 @@ build/
 *.crx
 # Ignore compiled zip files
 AutoJoin_*.zip
+
+# Backup files (sensitive)
+*~
+*.bak
+*.backup
+*.old
+*.tmp
+*.swp
+*.swo

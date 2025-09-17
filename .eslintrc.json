@@ -19,5 +19,13 @@
         "func-names": "off",
         "no-console": "off",
         "no-param-reassign": ["error", { "props": false }]
-    }
+    },
+    "overrides": [
+        {
+            "files": ["tests/**/*.js"],
+            "env": {
+                "node": true
+            }
+        }
+    ]
 }
