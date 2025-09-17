@@ -3,12 +3,155 @@
 
 /* Apply dark theme data attribute when night theme is enabled */
 body.night-theme {
-  --bg-primary: var(--gray-900);
-  --bg-secondary: #2f3540;
-  --text-primary: var(--white);
-  --text-secondary: #bbbbbb;
-  --border-color: rgba(255, 255, 255, 0.1);
-  --overlay-bg: rgba(0, 0, 0, 0.9);
+  --bg-primary: #111723;
+  --bg-secondary: #1b2231;
+  --text-primary: #f4f6ff;
+  --text-secondary: #c0c9e6;
+  --border-color: rgba(98, 116, 164, 0.45);
+  --overlay-bg: rgba(7, 10, 18, 0.92);
+  --warning-color: #ff9800;
+  --warning-light: rgba(255, 152, 0, 0.1);
+  --warning-border: rgba(255, 152, 0, 0.3);
+  --warning-text: #ffcc80;
+  background: radial-gradient(circle at top, #161d2b 0%, #0d131d 45%, #070b12 100%);
+  color: var(--text-primary);
+}
+
+body.night-theme a {
+  color: #7cc7ff;
+}
+
+body.night-theme a:hover {
+  color: #9fd6ff;
+  text-decoration: underline;
+}
+
+body.night-theme .featured__inner-wrap,
+body.night-theme .featured__outer-wrap--home {
+  background: rgba(19, 26, 39, 0.92);
+
+}
+
+body.night-theme header,
+body.night-theme .page__outer-wrap,
+body.night-theme .page__inner-wrap,
+body.night-theme .widget-container,
+body.night-theme .sidebar,
+body.night-theme .featured__outer-wrap,
+body.night-theme .featured__summary,
+body.night-theme .giveaway__row-inner-wrap,
+body.night-theme .giveaway__links,
+body.night-theme .page__heading,
+body.night-theme .pagination,
+body.night-theme .pagination__navigation a,
+body.night-theme .sidebar__navigation__item {
+  background: rgba(23, 30, 44, 0.92);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+body.night-theme .sidebar__navigation__item.is-selected,
+body.night-theme .giveaway__row-inner-wrap:hover,
+body.night-theme .featured__outer-wrap:hover {
+  background: rgba(28, 35, 45, 0.98);
+}
+
+body.night-theme .giveaway__heading__name,
+body.night-theme .featured__heading__medium,
+body.night-theme .giveaway__heading__name a,
+body.night-theme .featured__heading__medium a {
+  color: #f6f8ff;
+}
+
+body.night-theme .giveaway__heading__thin,
+body.night-theme .giveaway__column,
+body.night-theme .giveaway__column--width-fill,
+body.night-theme .giveaway__column--region-restricted,
+body.night-theme .giveaway__links span,
+body.night-theme .sidebar__navigation__item__name,
+body.night-theme .pagination__navigation a {
+  color: #e8f1ff !important; /* Muito mais claro para melhor contraste */
+  font-weight: 500; /* Ligeiramente mais pesado para melhor legibilidade */
+}
+
+body.night-theme .giveaway__links a,
+body.night-theme .sidebar__navigation__item__link,
+body.night-theme .page__heading__breadcrumbs a {
+  color: #d6e6ff;
+  text-shadow: 0 0 6px rgba(12, 18, 26, 0.85);
+}
+
+body.night-theme .giveaway__links a:hover,
+body.night-theme .sidebar__navigation__item__link:hover,
+body.night-theme .page__heading__breadcrumbs a:hover {
+  color: #ffffff;
+  text-shadow: 0 0 8px rgba(18, 89, 160, 0.45);
+}
+
+body.night-theme .featured__outer-wrap,
+body.night-theme .featured__outer-wrap--home {
+  background: rgba(19, 26, 39, 0.92);
+}
+
+body.night-theme .giveaway__links a:hover,
+body.night-theme .sidebar__navigation__item__link:hover,
+body.night-theme .page__heading__breadcrumbs a:hover {
+  color: #9fd6ff;
+}
+
+body.night-theme .featured__outer-wrap {
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.45);
+}
+
+body.night-theme .pagination__navigation a.is-selected,
+body.night-theme .sidebar__navigation__item.is-selected .sidebar__navigation__item__link {
+  background: rgba(82, 156, 255, 0.32);
+  color: #bfe1ff;
+  border-color: rgba(82, 156, 255, 0.5);
+}
+
+body.night-theme .sidebar__search-container {
+  background: rgba(12, 18, 26, 0.9);
+  border-color: var(--border-color);
+}
+
+body.night-theme .sidebar__search-input {
+  background: transparent;
+  color: var(--text-primary);
+}
+
+body.night-theme .sidebar__search-input::placeholder {
+  color: rgba(192, 201, 230, 0.65);
+}
+
+body.night-theme .featured__heading__medium a,
+body.night-theme .giveaway__heading__name a {
+  color: #e4e9ff;
+}
+
+body.night-theme .featured__heading__medium a:hover,
+body.night-theme .giveaway__heading__name:hover {
+  color: #9fd6ff;
+}
+
+body.night-theme .featured__column {
+  color: #d2dcff;
+}
+
+body.night-theme .giveaway__column--width-fill,
+body.night-theme .giveaway__links span,
+body.night-theme .featured__column {
+  color: #b1bce4;
+}
+
+body.night-theme .giveaway__row-inner-wrap {
+  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.35);
+}
+
+body.night-theme .sidebar,
+body.night-theme .sidebar__navigation,
+body.night-theme .sidebar__navigation__item {
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
 }
 
 /* Avoid inverting the whole SteamGifts page to prevent visual breakage */
@@ -46,110 +189,261 @@ body.night-theme .btnSingle:hover:not(:disabled) {
   box-shadow: var(--shadow-lg);
 }
 
-/* Settings modal dark theme */
+/* =================================
+   SETTINGS MODAL COMPLETE DARK THEME
+   ================================= */
+
+/* Modal Container with proper dark theme */
 body.night-theme #settingsDiv {
-  background: var(--bg-primary);
-  color: var(--text-primary);
-  border: 1px solid var(--border-color);
+  background: #161d2b !important;
+  color: #f4f6ff !important;
+  border: 1px solid rgba(98, 116, 164, 0.45) !important;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8) !important;
 }
 
-/* Keep the shade dark in night theme as well */
+/* Modal backdrop */
 body.night-theme #settingsShade {
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0, 0.85) !important;
 }
 
+/* Header with gradient */
 body.night-theme .settings-header {
-  background: var(--gradient-primary);
+  background: linear-gradient(135deg, #7cc7ff 0%, #6495ed 100%) !important;
+  color: #ffffff !important;
 }
 
+body.night-theme .settings-header h1 {
+  color: #ffffff !important;
+}
+
+body.night-theme .settings-header p {
+  color: #f0f8ff !important;
+  opacity: 0.95;
+}
+
+/* Close button */
 body.night-theme .settings-close {
-  background: rgba(0, 0, 0, 0.45);
-  color: var(--white);
+  background: rgba(0, 0, 0, 0.6) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 body.night-theme .settings-close:hover {
-  background: rgba(0, 0, 0, 0.55);
+  background: rgba(0, 0, 0, 0.8) !important;
+  transform: scale(1.05);
 }
 
+/* Tabs system */
 body.night-theme .settings-tabs {
-  background: var(--bg-secondary);
-  border-bottom-color: var(--border-color);
+  background: #1b2231 !important;
+  border-bottom: 1px solid rgba(98, 116, 164, 0.45) !important;
 }
 
 body.night-theme .tab-button {
-  color: var(--text-secondary);
+  color: #c0c9e6 !important;
+  background: transparent !important;
 }
 
 body.night-theme .tab-button:hover {
-  background: var(--border-color);
-  color: var(--text-primary);
+  background: rgba(124, 203, 255, 0.1) !important;
+  color: #f4f6ff !important;
 }
 
 body.night-theme .tab-button.active {
-  color: var(--primary-color);
-  background: var(--bg-primary);
+  color: #7cc7ff !important;
+  background: #161d2b !important;
+  border-bottom-color: #7cc7ff !important;
 }
 
+body.night-theme .tab-button i {
+  color: inherit !important;
+}
+
+/* Tab content */
+body.night-theme .tab-content {
+  background: #161d2b !important;
+}
+
+/* Settings sections */
 body.night-theme .settings-section {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: var(--border-color);
+  background: rgba(27, 34, 49, 0.6) !important;
+  border: 1px solid rgba(98, 116, 164, 0.3) !important;
+  border-radius: 12px !important;
 }
 
-body.night-theme .settings-section:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.2);
+body.night-theme .settings-section h3 {
+  color: #f4f6ff !important;
 }
 
-body.night-theme .setting-item {
-  background: rgba(255, 255, 255, 0.03);
-  border-color: var(--border-color);
+body.night-theme .settings-section h3 i {
+  color: #7cc7ff !important;
 }
 
-body.night-theme .setting-item:hover {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.15);
+/* Warning sections */
+body.night-theme .settings-section.warning-section {
+  background: rgba(255, 152, 0, 0.1) !important;
+  border-left: 4px solid #ff9800 !important;
 }
 
-body.night-theme .warning-section {
-  background: rgba(255, 152, 0, 0.1);
-  border-left-color: var(--warning-color);
+body.night-theme .warning-section h3 i.warning-icon {
+  color: #ff9800 !important;
 }
 
 body.night-theme .warning-message {
-  background: rgba(255, 152, 0, 0.15);
-  border-color: rgba(255, 152, 0, 0.4);
+  background: rgba(255, 152, 0, 0.15) !important;
+  border: 1px solid rgba(255, 152, 0, 0.4) !important;
+  color: #ffcc80 !important;
 }
 
-/* Form elements in dark theme */
-body.night-theme input[type='text'],
-body.night-theme input[type='number'],
-body.night-theme select,
-body.night-theme textarea {
-  background: var(--gray-800);
-  border-color: var(--border-color);
-  color: var(--text-primary);
+body.night-theme .warning-message i {
+  color: #ff9800 !important;
 }
 
-body.night-theme input[type='text']:focus,
-body.night-theme input[type='number']:focus,
-body.night-theme select:focus,
-body.night-theme textarea:focus {
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.2);
+/* Setting items */
+body.night-theme .setting-item {
+  background: rgba(22, 29, 43, 0.8) !important;
+  border: 1px solid rgba(98, 116, 164, 0.2) !important;
+  border-radius: 8px !important;
 }
 
-/* Links container dark theme */
+body.night-theme .setting-item:hover {
+  background: rgba(27, 34, 49, 0.9) !important;
+  border-color: rgba(124, 203, 255, 0.3) !important;
+}
+
+body.night-theme .setting-item label {
+  color: #f4f6ff !important;
+}
+
+body.night-theme .setting-text {
+  color: #f4f6ff !important;
+}
+
+/* Form elements */
+body.night-theme #settingsDiv input[type='text'],
+body.night-theme #settingsDiv input[type='number'],
+body.night-theme #settingsDiv select,
+body.night-theme #settingsDiv textarea {
+  background: #0d131d !important;
+  border: 2px solid rgba(98, 116, 164, 0.4) !important;
+  color: #f4f6ff !important;
+  border-radius: 8px !important;
+}
+
+body.night-theme #settingsDiv input[type='text']:focus,
+body.night-theme #settingsDiv input[type='number']:focus,
+body.night-theme #settingsDiv select:focus,
+body.night-theme #settingsDiv textarea:focus {
+  border-color: #7cc7ff !important;
+  box-shadow: 0 0 0 3px rgba(124, 203, 255, 0.2) !important;
+}
+
+/* Checkboxes and radio buttons */
+body.night-theme #settingsDiv input[type='checkbox'],
+body.night-theme #settingsDiv input[type='radio'] {
+  accent-color: #7cc7ff !important;
+}
+
+/* Range sliders */
+body.night-theme #settingsDiv input[type='range'] {
+  background: rgba(98, 116, 164, 0.4) !important;
+}
+
+body.night-theme #settingsDiv input[type='range']::-webkit-slider-thumb {
+  background: #7cc7ff !important;
+}
+
+body.night-theme #settingsDiv input[type='range']::-moz-range-thumb {
+  background: #7cc7ff !important;
+}
+
+/* Subsections */
+body.night-theme .subsection {
+  background: rgba(11, 15, 25, 0.8) !important;
+  border: 1px solid rgba(98, 116, 164, 0.3) !important;
+  border-radius: 10px !important;
+}
+
+body.night-theme .subsection h4 {
+  color: #f4f6ff !important;
+}
+
+body.night-theme .subsection h4 i {
+  color: #7cc7ff !important;
+}
+
+/* Save/Cancel buttons */
+body.night-theme #SaveCancelContainer {
+  background: rgba(22, 29, 43, 0.6) !important;
+  border-top: 1px solid rgba(98, 116, 164, 0.4) !important;
+}
+
+body.night-theme #btnSetSave {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%) !important;
+  color: #ffffff !important;
+  border: none !important;
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3) !important;
+}
+
+body.night-theme #btnSetSave:hover:not(:disabled) {
+  background: linear-gradient(135deg, #20c997 0%, #17a2b8 100%) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4) !important;
+}
+
+body.night-theme #btnSetSave:disabled {
+  background: rgba(40, 167, 69, 0.6) !important;
+  opacity: 0.7;
+}
+
+body.night-theme #btnSetCancel {
+  background: rgba(22, 29, 43, 0.9) !important;
+  color: #c0c9e6 !important;
+  border: 2px solid rgba(98, 116, 164, 0.4) !important;
+}
+
+body.night-theme #btnSetCancel:hover {
+  background: rgba(27, 34, 49, 1) !important;
+  border-color: rgba(124, 203, 255, 0.6) !important;
+  color: #f4f6ff !important;
+}
+
+/* Links container */
 body.night-theme #linksContainer {
-  background: var(--bg-secondary);
+  background: rgba(22, 29, 43, 0.8) !important;
+  border-top: 1px solid rgba(98, 116, 164, 0.4) !important;
 }
 
 body.night-theme .link-item a {
-  color: var(--text-secondary);
+  color: #c0c9e6 !important;
 }
 
 body.night-theme .link-item a:hover {
-  background: var(--bg-primary);
-  color: var(--primary-color);
+  background: rgba(124, 203, 255, 0.1) !important;
+  color: #7cc7ff !important;
+}
+
+body.night-theme .link-item a i {
+  color: #7cc7ff !important;
+}
+
+/* Scrollbar for settings modal */
+body.night-theme #settingsDiv::-webkit-scrollbar {
+  width: 12px;
+}
+
+body.night-theme #settingsDiv::-webkit-scrollbar-track {
+  background: rgba(11, 15, 25, 0.8) !important;
+  border-radius: 6px;
+}
+
+body.night-theme #settingsDiv::-webkit-scrollbar-thumb {
+  background: rgba(124, 203, 255, 0.6) !important;
+  border-radius: 6px;
+}
+
+body.night-theme #settingsDiv::-webkit-scrollbar-thumb:hover {
+  background: rgba(124, 203, 255, 0.8) !important;
 }
 
 /* Scrollbar dark theme */
@@ -185,15 +479,282 @@ body.night-theme #suspensionNotice {
   color: #ff8a80;
 }
 
-/* Permission banner dark theme */
+/* =================================
+   AUTOJOIN ELEMENTS - PROFESSIONAL REDESIGN
+   ================================= */
+
+/* Permission banner - Clean and modern */
 body.night-theme .aj-permission-banner {
-  background: rgba(255, 152, 0, 0.1);
-  border-color: rgba(255, 152, 0, 0.3);
-  color: #ffcc80;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(99, 102, 241, 0.06) 100%) !important;
+  border: 1px solid rgba(59, 130, 246, 0.2) !important;
+  border-left: 3px solid #3b82f6 !important;
+  border-radius: 8px !important;
+  padding: 12px 16px !important;
+  margin: 16px 0 !important;
+  color: #e2e8f0 !important;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  line-height: 1.5 !important;
+  backdrop-filter: blur(8px);
+}
+
+body.night-theme .aj-permission-banner strong {
+  color: #f1f5f9 !important;
+  font-weight: 500 !important;
 }
 
 body.night-theme .aj-permission-banner a {
-  color: #ffb74d;
+  color: #60a5fa !important;
+  font-weight: 500 !important;
+  text-decoration: none !important;
+  padding: 2px 8px !important;
+  border-radius: 4px !important;
+  transition: all 0.2s ease !important;
+}
+
+body.night-theme .aj-permission-banner a:hover {
+  color: #93c5fd !important;
+  background: rgba(59, 130, 246, 0.1) !important;
+}
+
+/* AutoJoin button - Modern and professional */
+body.night-theme #btnAutoJoin {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
+  border: none !important;
+  border-radius: 8px !important;
+  color: #ffffff !important;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  padding: 12px 24px !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(5, 150, 105, 0.3) !important;
+  min-width: 120px !important;
+  height: auto !important;
+  width: auto !important;
+}
+
+body.night-theme #btnAutoJoin:hover:not(:disabled) {
+  background: linear-gradient(135deg, #047857 0%, #065f46 100%) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3), 0 0 0 1px rgba(5, 150, 105, 0.4) !important;
+}
+
+body.night-theme #btnAutoJoin:active {
+  transform: translateY(0) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2) !important;
+}
+
+body.night-theme #btnAutoJoin:disabled {
+  background: rgba(107, 114, 128, 0.5) !important;
+  color: rgba(255, 255, 255, 0.6) !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Settings button - Minimal and elegant */
+body.night-theme #btnSettings.AutoJoinButtonEnabled {
+  background: rgba(71, 85, 105, 0.8) !important;
+  border: 1px solid rgba(148, 163, 184, 0.3) !important;
+  border-radius: 8px !important;
+  width: 44px !important;
+  height: 44px !important;
+  padding: 0 !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  backdrop-filter: blur(8px) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+body.night-theme #btnSettings.AutoJoinButtonEnabled:hover {
+  background: rgba(100, 116, 139, 0.9) !important;
+  border-color: rgba(148, 163, 184, 0.5) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+}
+
+body.night-theme #btnSettings.AutoJoinButtonEnabled i {
+  color: #cbd5e1 !important;
+  font-size: 18px !important; /* Reduzido de fa-4x */
+}
+
+body.night-theme #btnSettings.AutoJoinButtonEnabled:hover i {
+  color: #e2e8f0 !important;
+}
+
+/* Suspension notice - Clean dismissible design */
+body.night-theme #suspensionNotice {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.08) 0%, rgba(220, 38, 38, 0.06) 100%) !important;
+  border: 1px solid rgba(239, 68, 68, 0.2) !important;
+  border-left: 3px solid #ef4444 !important;
+  border-radius: 8px !important;
+  padding: 12px 16px !important;
+  margin: 16px 0 8px 0 !important;
+  backdrop-filter: blur(8px);
+  position: relative !important;
+  transition: all 0.3s ease !important;
+}
+
+/* Add dismiss button to suspension notice */
+body.night-theme #suspensionNotice::after {
+  content: '×' !important;
+  position: absolute !important;
+  top: 8px !important;
+  right: 12px !important;
+  width: 20px !important;
+  height: 20px !important;
+  background: rgba(239, 68, 68, 0.2) !important;
+  color: #fca5a5 !important;
+  border: 1px solid rgba(239, 68, 68, 0.4) !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 14px !important;
+  font-weight: bold !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  line-height: 1 !important;
+  z-index: 10 !important;
+}
+
+body.night-theme #suspensionNotice::after:hover {
+  background: rgba(239, 68, 68, 0.3) !important;
+  color: #fecaca !important;
+  transform: scale(1.1) !important;
+}
+
+/* Hidden state for suspension notice */
+body.night-theme #suspensionNotice.aj-hidden {
+  opacity: 0 !important;
+  transform: translateY(-10px) !important;
+  pointer-events: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  height: 0 !important;
+  overflow: hidden !important;
+}
+
+/* Alternative: Completely hide suspension notice option */
+body.night-theme #suspensionNotice.aj-permanently-hidden {
+  display: none !important;
+}
+
+/* Minimized state - shows just a tiny indicator */
+body.night-theme #suspensionNotice.aj-minimized {
+  padding: 6px 12px !important;
+  margin: 8px 0 !important;
+  background: rgba(239, 68, 68, 0.05) !important;
+  border-left-width: 2px !important;
+  cursor: pointer !important;
+}
+
+body.night-theme #suspensionNotice.aj-minimized a {
+  display: none !important;
+}
+
+body.night-theme #suspensionNotice.aj-minimized::before {
+  content: '⚠️ Click to view suspension warning' !important;
+  color: #94a3b8 !important;
+  font-size: 12px !important;
+  font-weight: 400 !important;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+}
+
+body.night-theme #suspensionNotice.aj-minimized::after {
+  display: none !important;
+}
+
+/* Normal suspension notice content */
+body.night-theme #suspensionNotice a {
+  color: #fca5a5 !important;
+  text-decoration: none !important;
+  display: block !important;
+  transition: color 0.2s ease !important;
+  padding-right: 30px !important; /* Space for close button */
+}
+
+body.night-theme #suspensionNotice a:hover {
+  color: #fecaca !important;
+}
+
+body.night-theme #suspensionNotice p {
+  margin: 0 !important;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 400 !important;
+  line-height: 1.4 !important;
+  color: #fca5a5 !important;
+}
+
+body.night-theme #suspensionNotice p:first-child {
+  font-weight: 500 !important;
+  margin-bottom: 4px !important;
+}
+
+/* Quick dismiss option - make entire notice less prominent by default */
+body.night-theme #suspensionNotice {
+  opacity: 0.8 !important;
+  transform: scale(0.95) !important;
+}
+
+body.night-theme #suspensionNotice:hover {
+  opacity: 1 !important;
+  transform: scale(1) !important;
+}
+
+/* Button container layout - Clean spacing */
+body.night-theme #buttonsAJ {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  margin: 16px 0 !important;
+  flex-wrap: wrap !important;
+}
+
+/* Info container - Professional styling */
+body.night-theme #info {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(15, 23, 42, 0.95) 100%) !important;
+  border: 1px solid rgba(71, 85, 105, 0.3) !important;
+  border-radius: 8px !important;
+  padding: 12px 16px !important;
+  margin: 16px 0 !important;
+  color: #e2e8f0 !important;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  line-height: 1.5 !important;
+  backdrop-filter: blur(12px) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+  text-align: left !important;
+  width: auto !important;
+  max-width: 480px !important;
+}
+
+/* Remove animations and pulse effects for cleaner look */
+body.night-theme #buttonsAJ:hover #suspensionNotice {
+  animation: none !important;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1 !important;
+  }
+  50% {
+    opacity: 1 !important;
+  }
+}
+
+/* Clean focus states */
+body.night-theme #btnAutoJoin:focus,
+body.night-theme #btnSettings:focus {
+  outline: 2px solid rgba(59, 130, 246, 0.5) !important;
+  outline-offset: 2px !important;
 }
 
 /* Smooth transitions for theme switching */
@@ -209,4 +770,355 @@ body,
     background-color var(--transition-base),
     color var(--transition-base),
     border-color var(--transition-base);
+}
+
+/* =================================
+   CRITICAL FIXES FOR INLINE STYLES
+   ================================= */
+
+/* Fix featured giveaway background that has inline style */
+body.night-theme .featured__outer-wrap.featured__outer-wrap--home[style*="background-color"] {
+  background-color: rgba(19, 26, 39, 0.92) !important;
+  background-image: radial-gradient(circle at center, rgba(89, 86, 0, 0.1) 0%, transparent 60%) !important;
+}
+
+/* Fix inline colored icons and text with better dark theme colors */
+body.night-theme .featured__column i[style*="color"],
+body.night-theme .featured__column a[style*="color"] {
+  color: #e4c96a !important;
+  /* Warm gold that works on dark backgrounds */
+}
+
+/* Fix Steam store links with inline styles */
+body.night-theme a[style*="background-color: rgb(124, 116, 255)"] {
+  background-color: rgba(100, 149, 237, 0.9) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(100, 149, 237, 0.3);
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+}
+
+body.night-theme a[style*="background-color: rgb(124, 116, 255)"]:hover {
+  background-color: rgba(100, 149, 237, 1) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(100, 149, 237, 0.3);
+}
+
+/* Fix fanatical and bundle containers with inline styles */
+body.night-theme .fanatical_container[style*="background-color"] {
+  background-color: rgba(100, 149, 237, 0.9) !important;
+  border: 1px solid rgba(100, 149, 237, 0.3);
+  border-radius: var(--radius-md);
+}
+
+/* Fix elements with light borders that conflict with dark theme */
+body.night-theme .lixhebt[style*="border-bottom: 1px solid rgb(210, 214, 224)"] {
+  border-bottom-color: var(--border-color) !important;
+  box-shadow: none !important;
+}
+
+/* Fix elements with white box-shadow that don't belong in dark theme */
+body.night-theme [style*="box-shadow"][style*="255, 255, 255"] {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Fix skip links with proper dark theme variables */
+body.night-theme .skip-links[style*="background: var(--bg-primary)"] {
+  background-color: var(--bg-primary) !important;
+  border-color: var(--border-color) !important;
+}
+
+body.night-theme .skip-links a[style*="color: var(--primary-color)"] {
+  color: #7cc7ff !important;
+}
+
+/* Fix ad containers to be less intrusive in dark theme */
+body.night-theme .adsbygoogle,
+body.night-theme [id*="aswift"] {
+  opacity: 0.8;
+  filter: brightness(0.9) contrast(1.1);
+  border-radius: var(--radius-md);
+}
+
+/* Fix footer Steam logo with inline styles */
+body.night-theme .footer_steam_logo[style*="background-color"] {
+  background-color: rgba(100, 149, 237, 0.9) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(100, 149, 237, 0.3);
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+}
+
+body.night-theme .footer_steam_logo[style*="background-color"]:hover {
+  background-color: rgba(100, 149, 237, 1) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(100, 149, 237, 0.4);
+}
+
+/* =================================
+   ENHANCED ACCESSIBILITY & UX
+   ================================= */
+
+/* Improve focus states for better keyboard navigation */
+body.night-theme *:focus {
+  outline: 2px solid #7cc7ff !important;
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* Enhanced giveaway cards with better visual hierarchy */
+body.night-theme .giveaway__row-outer-wrap:hover {
+  transform: translateY(-2px);
+  transition: transform var(--transition-base);
+}
+
+/* Better visual feedback for interactive elements */
+body.night-theme .giveaway__icon:hover,
+body.night-theme .nav__button:hover,
+body.night-theme .sidebar__navigation__item__link:hover {
+  background-color: rgba(124, 203, 255, 0.1) !important;
+  border-radius: var(--radius-sm);
+  transition: background-color var(--transition-fast);
+}
+
+/* Improved text contrast for better readability */
+body.night-theme .giveaway__username,
+body.night-theme .featured__column a {
+  color: #b8d4ff !important;
+  font-weight: 500;
+}
+
+body.night-theme .giveaway__username:hover,
+body.night-theme .featured__column a:hover {
+  color: #d4e8ff !important;
+  text-shadow: 0 0 8px rgba(180, 212, 255, 0.3);
+}
+
+/* =================================
+   LOADING STATES & ANIMATIONS
+   ================================= */
+
+/* Smooth loading for theme-aware elements */
+body.night-theme .giveaway__row-outer-wrap,
+body.night-theme .sidebar__navigation__item,
+body.night-theme .featured__outer-wrap {
+  opacity: 0;
+  animation: fadeInUp 0.4s ease forwards;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Staggered animation delays for visual hierarchy */
+body.night-theme .giveaway__row-outer-wrap:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+body.night-theme .giveaway__row-outer-wrap:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+body.night-theme .giveaway__row-outer-wrap:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+body.night-theme .giveaway__row-outer-wrap:nth-child(4) {
+  animation-delay: 0.4s;
+}
+
+body.night-theme .giveaway__row-outer-wrap:nth-child(5) {
+  animation-delay: 0.5s;
+}
+
+/* =================================
+   RESPONSIVE ENHANCEMENTS
+   ================================= */
+
+/* Better mobile experience in night theme */
+@media (max-width: 768px) {
+  body.night-theme {
+    background-attachment: fixed;
+  }
+
+  body.night-theme .giveaway__row-inner-wrap {
+    margin-bottom: var(--spacing-md);
+    border-radius: var(--radius-lg);
+  }
+
+  body.night-theme .sidebar {
+    background-color: rgba(17, 23, 35, 0.98) !important;
+    backdrop-filter: blur(20px);
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  body.night-theme {
+    --text-primary: #ffffff;
+    --text-secondary: #e0e0e0;
+    --border-color: rgba(255, 255, 255, 0.3);
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+
+  body.night-theme *,
+  body.night-theme *::before,
+  body.night-theme *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* =================================
+   PROFESSIONAL MINIMALIST GIVEAWAY COLUMNS
+   ================================= */
+
+/* Clean, professional typography for giveaway columns */
+body.night-theme .giveaway__columns {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  letter-spacing: -0.01em;
+  line-height: 1.4;
+}
+
+/* Minimalist icon styling - subtle but clear */
+body.night-theme .giveaway__columns .fa-clock-o,
+body.night-theme .giveaway__columns .fa-trophy {
+  color: #a0a7b8 !important;
+  font-size: 13px;
+  margin-right: 6px;
+  opacity: 0.8;
+}
+
+/* Clean text styling - excellent readability without excess */
+body.night-theme .giveaway__columns,
+body.night-theme .giveaway__columns div,
+body.night-theme .giveaway__columns span {
+  color: #e5e7eb !important;
+  font-weight: 400;
+  font-size: 13px;
+  text-shadow: none;
+  background: none;
+  padding: 0;
+  border: none;
+}
+
+/* Professional username links - subtle accent */
+body.night-theme .giveaway__columns .giveaway__username {
+  color: #94a3b8 !important;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+body.night-theme .giveaway__columns .giveaway__username:hover {
+  color: #cbd5e1 !important;
+  text-shadow: none;
+}
+
+/* Clean timestamp styling */
+body.night-theme span[data-timestamp] {
+  color: #e5e7eb !important;
+  font-weight: 400;
+  background: none !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  border: none !important;
+}
+
+/* Minimal odds styling - clean and professional */
+body.night-theme .giveaway__columns div[title="approx. odds of winning"] {
+  color: #e5e7eb !important;
+  font-weight: 400;
+  background: none !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  border: none !important;
+}
+
+/* Clean "ago by" text */
+body.night-theme .giveaway__columns .text-right {
+  color: #9ca3af !important;
+  font-size: 13px;
+  font-weight: 400;
+}
+
+/* Remove all excessive styling from column elements */
+body.night-theme .giveaway__columns *,
+body.night-theme .featured__columns * {
+  text-shadow: none !important;
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Professional featured columns styling */
+body.night-theme .featured__columns {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+body.night-theme .featured__columns,
+body.night-theme .featured__columns div,
+body.night-theme .featured__columns span {
+  color: #e5e7eb !important;
+  font-weight: 400;
+  font-size: 13px;
+}
+
+body.night-theme .featured__columns i {
+  color: #a0a7b8 !important;
+  opacity: 0.8;
+  margin-right: 6px;
+}
+
+body.night-theme .featured__columns a {
+  color: #94a3b8 !important;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+body.night-theme .featured__columns a:hover {
+  color: #cbd5e1 !important;
+}
+
+/* Clean tooltip styling */
+body.night-theme [data-ui-tooltip] {
+  color: inherit !important;
+}
+
+/* Override any problematic inline styles with minimal approach */
+body.night-theme .giveaway__columns [style*="color"] {
+  color: #e5e7eb !important;
+}
+
+/* Subtle spacing improvements */
+body.night-theme .giveaway__columns > div {
+  margin-bottom: 2px;
+}
+
+body.night-theme .giveaway__columns > div:last-child {
+  margin-bottom: 0;
+}
+
+/* Professional hover states - very subtle */
+body.night-theme .giveaway__row-inner-wrap:hover .giveaway__columns {
+  opacity: 1;
+}
+
+body.night-theme .giveaway__row-inner-wrap:hover .giveaway__columns .fa-clock-o,
+body.night-theme .giveaway__row-inner-wrap:hover .giveaway__columns .fa-trophy {
+  opacity: 1;
+  color: #b4bcc8 !important;
 }

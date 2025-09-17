@@ -81,12 +81,32 @@
   --z-toast: 1080;
 }
 
-/* Dark Theme Variables */
+/* Dark Theme Variables - Synchronized with night.css */
 body.night-theme {
-  --bg-primary: var(--gray-900);
-  --bg-secondary: #2f3540;
-  --text-primary: var(--white);
-  --text-secondary: #bbbbbb;
-  --border-color: rgba(255, 255, 255, 0.1);
-  --overlay-bg: rgba(0, 0, 0, 0.9);
+  --bg-primary: #111723;
+  --bg-secondary: #1b2231;
+  --text-primary: #f4f6ff;
+  --text-secondary: #c0c9e6;
+  --border-color: rgba(98, 116, 164, 0.45);
+  --overlay-bg: rgba(7, 10, 18, 0.92);
+
+  /* Enhanced warning system for dark theme */
+  --warning-color: #ff9800;
+  --warning-light: rgba(255, 152, 0, 0.1);
+  --warning-border: rgba(255, 152, 0, 0.3);
+  --warning-text: #ffcc80;
+
+  /* Enhanced brand colors for dark theme */
+  --primary-color: #7cc7ff;
+  --primary-hover: #9fd6ff;
+
+  /* Dark theme specific gradients */
+  --gradient-primary: linear-gradient(135deg, #7cc7ff 0%, #6495ed 100%);
+  --gradient-dark: radial-gradient(circle at top, #161d2b 0%, #0d131d 45%, #070b12 100%);
+
+  /* Dark theme shadows */
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.6);
 }

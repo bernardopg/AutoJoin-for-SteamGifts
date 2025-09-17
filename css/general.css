@@ -1,32 +1,5 @@
-/* Style for page */
-
-/* Accessible color system (light theme defaults) */
-:root {
-  --white: #ffffff;
-  --gray-400: #adb5bd;
-  --gray-500: #6c757d;
-  --gray-700: #495057;
-  --gray-800: #343a40;
-  --gray-900: #121212;
-
-  --bg-primary: #ffffff;
-  --bg-secondary: #f8f9fa;
-  --text-primary: #212529;
-  /* meets AA on white */
-  --text-secondary: #495057;
-  /* meets AA on bg-secondary */
-  --border-color: #dee2e6;
-  --overlay-bg: rgba(0, 0, 0, 0.55);
-  --primary-color: #3f51b5;
-  /* indigo 600 */
-  --warning-color: #e65100;
-  /* deep orange 900 */
-  --gradient-primary: linear-gradient(135deg, #3f51b5 0%, #4527a0 100%);
-  /* darker for contrast */
-  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.15);
-  --shadow-lg: 0 6px 16px rgba(0, 0, 0, 0.2);
-  --transition-base: 0.2s ease;
-}
+/* General Styles for AutoJoin Extension */
+/* Note: CSS Variables are defined in variables.css */
 
 .btnSingle {
   cursor: pointer;
@@ -623,7 +596,7 @@
   border-top: 1px solid #e9ecef;
 }
 
-#settingsDiv #SaveCancelContainer > button {
+#settingsDiv #SaveCancelContainer>button {
   margin: 0 10px;
 }
 
@@ -1006,6 +979,17 @@ body:not(.night-theme) .page__outer-wrap .footer_column_link,
   /* deeper orange for better contrast */
   font-weight: 500;
 }
+
+.approx-odds {
+  font-size: 0.9em;
+  color: #000000;
+  background: #fff;
+}
+
+
+
+
+
 
 /* Tab system: duplicates removed; earlier canonical block is authoritative. */
 

@@ -12,7 +12,8 @@
         "js/core/giveaway.js",
         "js/core/page-enhancements.js",
         "js/autoentry.js",
-        "js/settings.js"
+        "js/settings.js",
+        "js/suspension-notice.js"
       ],
       "matches": [
         "*://www.steamgifts.com/",
