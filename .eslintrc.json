@@ -1,17 +1,17 @@
 {
   "extends": "airbnb-base",
-    "env": {
-        "browser": true,
-        "es2021": true
-    },
-    "globals": {
-        "$": false,
-        "chrome": false,
-        "loadSettings": true,
-        "importScripts": false,
-        "AutoJoinUtils": false,
-        "Giveaway": false
-    },
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "globals": {
+    "$": false,
+    "chrome": false,
+    "loadSettings": true,
+    "importScripts": false,
+    "AutoJoinUtils": false,
+    "Giveaway": false
+  },
   "parserOptions": {
     "ecmaVersion": 2022
   },

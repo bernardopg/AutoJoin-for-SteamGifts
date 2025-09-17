@@ -38,9 +38,7 @@ const deriveSettingKey = (element) => {
     candidates.push(normalized.replace(/^(chk|txt|sel|input)/, ''));
     candidates.push(normalized.replace(/field/g, ''));
     candidates.push(
-      normalized
-        .replace(/^(chk|txt|sel|input)/, '')
-        .replace(/field/g, ''),
+      normalized.replace(/^(chk|txt|sel|input)/, '').replace(/field/g, ''),
     );
   };
 

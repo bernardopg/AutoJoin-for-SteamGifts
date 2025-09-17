@@ -35,22 +35,27 @@
 Existem várias maneiras de contribuir para o AutoJoin for SteamGifts:
 
 #### 🐛 **Reportar Bugs**
+
 - Encontrou um problema? Relate-o usando nossos templates
 - Inclua informações detalhadas para facilitar a correção
 
 #### 💡 **Sugerir Melhorias**
+
 - Tem uma ideia legal? Compartilhe conosco!
 - Use nossos templates para estruturar a sugestão
 
 #### 🔧 **Contribuir com Código**
+
 - Correções de bugs, novos recursos, melhorias de performance
 - Siga nossos padrões e diretrizes de desenvolvimento
 
 #### 📝 **Melhorar Documentação**
+
 - Documentação clara é essencial para o projeto
 - Corrija typos, adicione exemplos, melhore explicações
 
 #### 🌐 **Traduções**
+
 - Ajude a tornar o projeto acessível globalmente
 - Português e Inglês são nossas linguagens principais
 
@@ -170,6 +175,7 @@ npm run package       # Criar .zip para distribuição
 #### 📏 Estilo de Código
 
 **JavaScript:**
+
 ```javascript
 // ✅ Bom
 const processGiveaways = async (giveaways) => {
@@ -185,6 +191,7 @@ return Promise.all(valid.map(joinGiveaway))
 ```
 
 **CSS:**
+
 ```css
 /* ✅ Bom - BEM methodology */
 .autojoin-button {
@@ -512,22 +519,27 @@ Contribuidores são reconhecidos:
 There are several ways to contribute to AutoJoin for SteamGifts:
 
 #### 🐛 **Report Bugs**
+
 - Found an issue? Report it using our templates
 - Include detailed information to facilitate fixes
 
 #### 💡 **Suggest Improvements**
+
 - Have a cool idea? Share it with us!
 - Use our templates to structure suggestions
 
 #### 🔧 **Contribute Code**
+
 - Bug fixes, new features, performance improvements
 - Follow our standards and development guidelines
 
 #### 📝 **Improve Documentation**
+
 - Clear documentation is essential for the project
 - Fix typos, add examples, improve explanations
 
 #### 🌐 **Translations**
+
 - Help make the project globally accessible
 - Portuguese and English are our primary languages
 
@@ -696,11 +708,13 @@ We recognize all forms of contribution:
 ## 📞 Contato | Contact
 
 ### 🇧🇷 Português
+
 - **Issues**: [GitHub Issues](https://github.com/bernardopg/AutoJoin-for-SteamGifts/issues)
 - **Discussões**: [GitHub Discussions](https://github.com/bernardopg/AutoJoin-for-SteamGifts/discussions)
 - **Email**: Para questões sensíveis ou privadas
 
 ### 🇺🇸 English
+
 - **Issues**: [GitHub Issues](https://github.com/bernardopg/AutoJoin-for-SteamGifts/issues)
 - **Discussions**: [GitHub Discussions](https://github.com/bernardopg/AutoJoin-for-SteamGifts/discussions)
 - **Email**: For sensitive or private matters

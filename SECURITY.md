@@ -31,17 +31,20 @@
 O **AutoJoin for SteamGifts** leva a segurança a sério. Nosso compromisso inclui:
 
 #### 🔒 **Privacidade Total**
+
 - **Zero telemetria**: Nenhum dado é coletado ou enviado para serviços externos
 - **Armazenamento local**: Todas as configurações ficam no seu navegador
 - **Transparência**: Código 100% aberto para auditoria
 
 #### 🛡️ **Segurança por Design**
+
 - **Manifest V3**: Utilizamos a arquitetura mais segura para extensões
 - **Permissões mínimas**: Solicitamos apenas as permissões estritamente necessárias
 - **Isolamento**: Content Scripts e Service Workers isolados
 - **CSP rigoroso**: Content Security Policy para prevenir XSS
 
 #### 🔍 **Auditoria Contínua**
+
 - **Code review**: Todo código passa por revisão
 - **Testes automatizados**: Verificações de segurança em CI/CD
 - **Atualizações proativas**: Correções rápidas para vulnerabilidades descobertas
@@ -71,7 +74,7 @@ Mantemos suporte de segurança para as seguintes versões:
 **Para vulnerabilidades de segurança, NÃO abra issues públicas.**
 Use os canais seguros:
 
-1. **Email Seguro**: security@autojoin-steamgifts.dev
+1. **Email Seguro**: <security@autojoin-steamgifts.dev>
 2. **GitHub Security Advisories**: [Reportar Privadamente](https://github.com/bernardopg/AutoJoin-for-SteamGifts/security/advisories/new)
 3. **PGP/GPG**: Para comunicação extra-segura
 
@@ -129,24 +132,28 @@ Screenshots, logs, PoC (se seguro)
 #### 🚨 Classificação de Severidade
 
 **🔴 Crítica**
+
 - Execução remota de código (RCE)
 - Bypass completo de autenticação
 - Vazamento em massa de dados
 - Privilégios administrativos não autorizados
 
 **🟠 Alta**
+
 - Cross-Site Scripting (XSS) que afeta dados sensíveis
 - Injeção SQL ou similares
 - Bypass de permissões significativo
 - Vazamento de dados pessoais
 
 **🟡 Média**
+
 - XSS não-persistente
 - Vazamento de informações menores
 - Bypass de validações
 - DoS local
 
 **🟢 Baixa**
+
 - Problemas de configuração
 - Vazamento de informações públicas
 - Issues de usabilidade com implicações de segurança
@@ -178,6 +185,7 @@ Screenshots, logs, PoC (se seguro)
 #### 🔒 Arquitetura Segura
 
 **Content Security Policy (CSP)**
+
 ```javascript
 // Política rigorosa aplicada
 {
@@ -188,6 +196,7 @@ Screenshots, logs, PoC (se seguro)
 ```
 
 **Permissões Mínimas**
+
 ```javascript
 // Apenas permissões essenciais
 {
@@ -250,12 +259,14 @@ async function secureStorage(data) {
 #### 🔍 Ferramentas de Auditoria
 
 **Automatizadas:**
+
 - **ESLint Security**: Verificações estáticas
 - **npm audit**: Vulnerabilidades em dependências
 - **GitHub CodeQL**: Análise semântica
 - **Dependabot**: Monitoramento de dependências
 
 **Manuais:**
+
 - **Code Review**: Revisão por pares especializada
 - **Penetration Testing**: Testes de intrusão periódicos
 - **Third-party Audits**: Auditorias independentes anuais
@@ -340,11 +351,13 @@ Embora não oferecemos recompensas monetárias, reconhecemos contribuições com
 **AutoJoin for SteamGifts** takes security seriously. Our commitment includes:
 
 #### 🔒 **Total Privacy**
+
 - **Zero telemetry**: No data collected or sent to external services
 - **Local storage**: All settings remain in your browser
 - **Transparency**: 100% open code for auditing
 
 #### 🛡️ **Security by Design**
+
 - **Manifest V3**: Using the most secure architecture for extensions
 - **Minimal permissions**: Request only strictly necessary permissions
 - **Isolation**: Content Scripts and Service Workers isolated
@@ -368,7 +381,7 @@ We maintain security support for the following versions:
 **For security vulnerabilities, DO NOT open public issues.**
 Use secure channels:
 
-1. **Secure Email**: security@autojoin-steamgifts.dev
+1. **Secure Email**: <security@autojoin-steamgifts.dev>
 2. **GitHub Security Advisories**: [Report Privately](https://github.com/bernardopg/AutoJoin-for-SteamGifts/security/advisories/new)
 3. **PGP/GPG**: For extra-secure communication
 
@@ -386,24 +399,28 @@ Use secure channels:
 #### 🚨 Severity Classification
 
 **🔴 Critical**
+
 - Remote Code Execution (RCE)
 - Complete authentication bypass
 - Mass data leak
 - Unauthorized administrative privileges
 
 **🟠 High**
+
 - Cross-Site Scripting (XSS) affecting sensitive data
 - SQL injection or similar
 - Significant permission bypass
 - Personal data leak
 
 **🟡 Medium**
+
 - Non-persistent XSS
 - Minor information disclosure
 - Validation bypass
 - Local DoS
 
 **🟢 Low**
+
 - Configuration issues
 - Public information disclosure
 - Usability issues with security implications
@@ -413,6 +430,7 @@ Use secure channels:
 #### 🔒 Secure Architecture
 
 **Content Security Policy (CSP)**
+
 ```javascript
 // Strict policy applied
 {
@@ -423,6 +441,7 @@ Use secure channels:
 ```
 
 **Minimal Permissions**
+
 ```javascript
 // Only essential permissions
 {
@@ -444,12 +463,14 @@ Use secure channels:
 #### 🔍 Audit Tools
 
 **Automated:**
+
 - **ESLint Security**: Static checks
 - **npm audit**: Dependency vulnerabilities
 - **GitHub CodeQL**: Semantic analysis
 - **Dependabot**: Dependency monitoring
 
 **Manual:**
+
 - **Code Review**: Specialized peer review
 - **Penetration Testing**: Periodic intrusion tests
 - **Third-party Audits**: Independent annual audits
@@ -505,12 +526,14 @@ While we don't offer monetary rewards, we recognize contributions with:
 ## 📞 Contato de Segurança | Security Contact
 
 ### 🇧🇷 Português
-- **Email Seguro**: security@autojoin-steamgifts.dev
+
+- **Email Seguro**: <security@autojoin-steamgifts.dev>
 - **GitHub Security**: [Security Advisories](https://github.com/bernardopg/AutoJoin-for-SteamGifts/security)
 - **Emergência**: Para vulnerabilidades críticas, marque como URGENTE no assunto
 
 ### 🇺🇸 English
-- **Secure Email**: security@autojoin-steamgifts.dev
+
+- **Secure Email**: <security@autojoin-steamgifts.dev>
 - **GitHub Security**: [Security Advisories](https://github.com/bernardopg/AutoJoin-for-SteamGifts/security)
 - **Emergency**: For critical vulnerabilities, mark as URGENT in subject
 

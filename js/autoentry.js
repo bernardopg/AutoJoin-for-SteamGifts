@@ -1452,7 +1452,7 @@ function cacheSteamAppData(
       version: thisVersion,
     };
 
-  const cacheAppData = {};
+    const cacheAppData = {};
     cacheAppData.Apps = steamAppData;
     chrome.storage.local.set(cacheAppData, () => {
       if (chrome.runtime.lastError) {

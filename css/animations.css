@@ -81,7 +81,6 @@
 }
 
 @keyframes loading-dots {
-
   0%,
   80%,
   100% {
@@ -161,7 +160,6 @@
 
 /* Shake Animation for Errors */
 @keyframes shake {
-
   0%,
   100% {
     transform: translateX(0);
@@ -185,7 +183,6 @@
 
 /* Bounce Animation */
 @keyframes bounce {
-
   0%,
   20%,
   53%,
@@ -237,7 +234,6 @@
 }
 
 @keyframes blink-caret {
-
   from,
   to {
     border-color: transparent;
@@ -308,7 +304,6 @@
 
 /* Reduced Motion Overrides */
 @media (prefers-reduced-motion: reduce) {
-
   .animate-fade-in,
   .animate-modal-in,
   .animate-pulse,

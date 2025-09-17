@@ -13,6 +13,7 @@ Uma descrição clara e concisa do problema encontrado.
 ## 🔄 Passos para Reproduzir
 
 **Passos para reproduzir o comportamento:**
+
 1. Vá para '...'
 2. Clique em '....'
 3. Role até '....'
@@ -33,6 +34,7 @@ Se aplicável, adicione screenshots para ajudar a explicar o problema.
 ## 🖥️ Informações do Ambiente
 
 **Por favor, complete as seguintes informações:**
+
 - **Sistema Operacional:** [ex: Windows 11, Ubuntu 22.04, macOS 13.0]
 - **Navegador:** [ex: Chrome 120, Firefox 119, Safari 17]
 - **Versão da Extensão:** [ex: 2.0.1]
@@ -41,12 +43,15 @@ Se aplicável, adicione screenshots para ajudar a explicar o problema.
 ## 📋 Informações Adicionais
 
 ### 🔍 Console Logs
+
 Se houver erros no console, cole-os aqui:
+
 ```
 [Cole os logs aqui]
 ```
 
 ### ⚙️ Configurações da Extensão
+
 - Tema escuro ativado: [Sim/Não]
 - Auto-join ativado: [Sim/Não]
 - Filtros configurados: [Descreva]

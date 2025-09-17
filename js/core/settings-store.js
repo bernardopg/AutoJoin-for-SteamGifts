@@ -60,7 +60,8 @@
     lastLaunchedVersion: 0,
   });
 
-  const wrapChrome = (storageArea, method) =>
+  const wrapChrome =
+    (storageArea, method) =>
     (...args) =>
       new Promise((resolve, reject) => {
         storageArea[method](...args, (result) => {

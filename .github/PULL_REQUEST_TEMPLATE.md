@@ -1,20 +1,24 @@
 ## 📋 Descrição das Mudanças
 
 ### 🎯 O que esta PR faz?
+
 Breve resumo das mudanças implementadas.
 
 ### 🔗 Issue Relacionada
+
 Fixes #(número da issue)
 Relates to #(número da issue)
 
 ## 🧪 Como Testar
 
 ### 📝 Passos para Testar
+
 1. Vá para...
 2. Clique em...
 3. Verifique se...
 
 ### 🎮 Cenários de Teste
+
 - [ ] **Cenário 1**: [Descreva o cenário e resultado esperado]
 - [ ] **Cenário 2**: [Descreva o cenário e resultado esperado]
 - [ ] **Edge Case**: [Descreva casos extremos testados]
@@ -22,12 +26,15 @@ Relates to #(número da issue)
 ## 📸 Screenshots/GIFs
 
 ### 🖼️ Antes
+
 [Screenshot do comportamento anterior, se aplicável]
 
 ### 🖼️ Depois
+
 [Screenshot do comportamento novo]
 
 ### 🎬 Demonstração
+
 [GIF mostrando a funcionalidade em ação, se aplicável]
 
 ## 📋 Tipo de Mudança
@@ -45,18 +52,21 @@ Relates to #(número da issue)
 ## 📊 Impacto das Mudanças
 
 ### 👥 Usuários Afetados
+
 - [ ] Todos os usuários
 - [ ] Apenas usuários que usam [funcionalidade específica]
 - [ ] Apenas desenvolvedores
 - [ ] Nenhum usuário (mudanças internas)
 
 ### 📱 Compatibilidade
+
 - [ ] Chrome/Chromium
 - [ ] Firefox
 - [ ] Edge
 - [ ] Safari (se aplicável)
 
 ### ⚡ Performance
+
 - [ ] Melhora a performance
 - [ ] Mantém a performance
 - [ ] Pode afetar a performance (explicar por quê)
@@ -68,6 +78,7 @@ Relates to #(número da issue)
 - [ ] Esta PR requer revisão de segurança adicional
 
 ### 🛡️ Checklist de Segurança
+
 - [ ] Inputs de usuário são validados
 - [ ] Não há XSS vulnerabilities
 - [ ] Permissões mínimas são respeitadas
@@ -76,15 +87,18 @@ Relates to #(número da issue)
 ## 📝 Notas Adicionais
 
 ### 🔄 Dependências
+
 - [ ] Esta PR adiciona novas dependências
 - [ ] Esta PR atualiza dependências existentes
 - [ ] Esta PR remove dependências
 
 ### 📋 TODOs
+
 - [ ] [TODO item 1 se houver]
 - [ ] [TODO item 2 se houver]
 
 ### 🌐 Contexto Adicional
+
 [Qualquer informação adicional relevante para os revisores]
 
 ---
@@ -92,6 +106,7 @@ Relates to #(número da issue)
 ## ✅ Checklist do Desenvolvedor
 
 ### 🧪 Testes
+
 - [ ] Testes unitários passam (`npm test`)
 - [ ] Lint passa sem erros (`npm run lint`)
 - [ ] Formatação está correta (`npm run format`)
@@ -99,17 +114,20 @@ Relates to #(número da issue)
 - [ ] Testei em diferentes navegadores (se aplicável)
 
 ### 📚 Documentação
+
 - [ ] Documentação atualizada (README, comentários, etc.)
 - [ ] Changelogs atualizados (se aplicável)
 - [ ] Exemplos de uso adicionados (se nova feature)
 
 ### 🔄 Código
+
 - [ ] Código segue os padrões do projeto
 - [ ] Não há código comentado desnecessário
 - [ ] Variáveis e funções têm nomes descritivos
 - [ ] Código é eficiente e não tem duplicações
 
 ### 🎯 Git
+
 - [ ] Commits seguem o padrão Conventional Commits
 - [ ] Branch está atualizada com develop/main
 - [ ] Não há merge conflicts
@@ -123,6 +141,7 @@ Relates to #(número da issue)
 - [ ] @community (para feedback geral)
 
 ### 🔍 Tipo de Revisão Necessária
+
 - [ ] **Code Review**: Revisão técnica do código
 - [ ] **Security Review**: Análise de segurança
 - [ ] **UX Review**: Análise de experiência do usuário

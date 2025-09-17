@@ -44,7 +44,7 @@ Os mantenedores do projeto têm o direito e a responsabilidade de:
 
 Este Código de Conduta se aplica tanto aos espaços do projeto quanto aos espaços públicos quando um indivíduo está representando o projeto ou sua comunidade.
 
-### Onde se aplica:
+### Onde se aplica
 
 - **📁 Repositórios**: Issues, pull requests, discussões no GitHub
 - **💬 Comunicações**: E-mails, mensagens diretas relacionadas ao projeto
@@ -102,11 +102,13 @@ Os mantenedores da comunidade seguirão estas Diretrizes de Impacto da Comunidad
 ## 📞 Contato e Suporte
 
 ### 🇧🇷 Para a Comunidade Brasileira
+
 - **Issues**: [Reportar problema de conduta](https://github.com/bernardopg/AutoJoin-for-SteamGifts/issues/new/choose)
 - **Discussões**: [Participar das discussões](https://github.com/bernardopg/AutoJoin-for-SteamGifts/discussions)
 - **Email**: Para questões privadas e sensíveis
 
 ### 🇺🇸 For International Community
+
 - **Issues**: [Report conduct issue](https://github.com/bernardopg/AutoJoin-for-SteamGifts/issues/new/choose)
 - **Discussions**: [Join discussions](https://github.com/bernardopg/AutoJoin-for-SteamGifts/discussions)
 - **Email**: For private and sensitive matters
@@ -126,7 +128,7 @@ Valorizamos e celebramos a diversidade em nossa comunidade. Pessoas de todas as 
 
 ## 🤝 Como Contribuir Positivamente
 
-### Para Novos Contribuintes:
+### Para Novos Contribuintes
 
 1. **📚 Leia a documentação**: Familiarize-se com README, CONTRIBUTING e este CODE_OF_CONDUCT
 2. **👀 Observe primeiro**: Lurk um pouco para entender a dinâmica da comunidade
@@ -134,7 +136,7 @@ Valorizamos e celebramos a diversidade em nossa comunidade. Pessoas de todas as 
 4. **🙏 Seja paciente**: Mantenedores e contribuintes são voluntários
 5. **📝 Seja claro**: Comunique-se de forma clara e detalhada
 
-### Para Contribuintes Experientes:
+### Para Contribuintes Experientes
 
 1. **🤗 Seja acolhedor**: Ajude novos contribuintes a se sentirem bem-vindos
 2. **📖 Mentore**: Compartilhe conhecimento e experiências
@@ -161,11 +163,11 @@ Este Código de Conduta pode ser atualizado periodicamente para refletir o cresc
 
 ## 📜 Atribuição
 
-Este Código de Conduta é adaptado do [Contributor Covenant](https://www.contributor-covenant.org/), versão 2.1, disponível em https://www.contributor-covenant.org/version/2/1/code_of_conduct.html.
+Este Código de Conduta é adaptado do [Contributor Covenant](https://www.contributor-covenant.org/), versão 2.1, disponível em <https://www.contributor-covenant.org/version/2/1/code_of_conduct.html>.
 
 As Diretrizes de Impacto da Comunidade foram inspiradas pela [escada de aplicação do código de conduta da Mozilla](https://github.com/mozilla/diversity).
 
-Para respostas a perguntas comuns sobre este código de conduta, veja as FAQ em https://www.contributor-covenant.org/faq. Traduções estão disponíveis em https://www.contributor-covenant.org/translations.
+Para respostas a perguntas comuns sobre este código de conduta, veja as FAQ em <https://www.contributor-covenant.org/faq>. Traduções estão disponíveis em <https://www.contributor-covenant.org/translations>.
 
 ---
 

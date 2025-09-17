@@ -596,7 +596,7 @@
   border-top: 1px solid #e9ecef;
 }
 
-#settingsDiv #SaveCancelContainer>button {
+#settingsDiv #SaveCancelContainer > button {
   margin: 0 10px;
 }
 
@@ -985,11 +985,6 @@ body:not(.night-theme) .page__outer-wrap .footer_column_link,
   color: #000000;
   background: #fff;
 }
-
-
-
-
-
 
 /* Tab system: duplicates removed; earlier canonical block is authoritative. */
 

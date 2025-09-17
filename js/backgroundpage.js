@@ -224,7 +224,9 @@ const findAndRedeemKeys = async (wonPage) => {
             );
             const redeemedGames = itemsList.join(',');
 
-            console.debug(steamKeyRedeemResponses[data.purchase_result_details]);
+            console.debug(
+              steamKeyRedeemResponses[data.purchase_result_details],
+            );
 
             // Check response (success needs to be exactly 1, no more, no less)
             if (data.success === 1) {
@@ -750,7 +752,9 @@ const settingsloaded = async () => {
 /* Load settings, then call settingsloaded() */
 const loadsettings = async () => {
   if (!backgroundSettingsStore) {
-    console.error('AutoJoinSettingsStore is not available in background script.');
+    console.error(
+      'AutoJoinSettingsStore is not available in background script.',
+    );
     return;
   }
 
@@ -770,7 +774,7 @@ loadsettings().catch((error) => {
 
 /* It all begins with the loadsettings call */
 chrome.alarms.onAlarm.addListener((alarm) => {
-console.debug(`Alarm fired. ${new Date().toLocaleString()}`);
+  console.debug(`Alarm fired. ${new Date().toLocaleString()}`);
   if (alarm.name === 'routine') {
     loadsettings().catch((error) => {
       console.error('loadsettings failed:', error);
@@ -878,7 +882,9 @@ chrome.runtime.onInstalled.addListener((updateInfo) => {
         }),
       )
       .then(() => {
-        console.info('Migrated successfully minCost option from previous version');
+        console.info(
+          'Migrated successfully minCost option from previous version',
+        );
       })
       .catch((error) => {
         console.error('Failed to migrate minCost to minCostBG:', error);
@@ -962,7 +968,10 @@ const fetchHelper = async (url) => {
           HideDlc: false,
         })
         .catch((error) => {
-          console.error('Failed to update settings after permission denial:', error);
+          console.error(
+            'Failed to update settings after permission denial:',
+            error,
+          );
         });
 
       result.status = 403;

@@ -28,6 +28,7 @@ Liste outras possíveis soluções ou funcionalidades que poderiam resolver o me
 ## 📈 Impacto e Benefícios
 
 **Como isso beneficiaria os usuários?**
+
 - [ ] Melhoria na usabilidade
 - [ ] Maior eficiência
 - [ ] Redução de erros
@@ -36,6 +37,7 @@ Liste outras possíveis soluções ou funcionalidades que poderiam resolver o me
 - [ ] Outro: [especifique]
 
 **Quantos usuários se beneficiariam?**
+
 - [ ] Todos os usuários
 - [ ] Maioria dos usuários (>50%)
 - [ ] Alguns usuários específicos
@@ -49,6 +51,7 @@ Se você tiver ideias visuais, screenshots, mockups ou exemplos de outras extens
 ## 🔧 Detalhes Técnicos (Opcional)
 
 **Se você tem conhecimento técnico, adicione detalhes sobre implementação:**
+
 - Possíveis desafios técnicos
 - Sugestões de implementação
 - Recursos/APIs necessários
@@ -58,12 +61,14 @@ Se você tiver ideias visuais, screenshots, mockups ou exemplos de outras extens
 
 **Descreva cenários específicos de como esta feature seria usada:**
 
-### Cenário 1:
+### Cenário 1
+
 **Situação:** [Descreva quando seria usado]
 **Ação:** [O que o usuário faria]
 **Resultado:** [O que aconteceria]
 
-### Cenário 2 (se aplicável):
+### Cenário 2 (se aplicável)
+
 **Situação:** [Descreva quando seria usado]
 **Ação:** [O que o usuário faria]
 **Resultado:** [O que aconteceria]
@@ -71,6 +76,7 @@ Se você tiver ideias visuais, screenshots, mockups ou exemplos de outras extens
 ## ⚡ Prioridade
 
 **Quão importante é esta feature para você?**
+
 - [ ] 🔴 Crítica - Não consigo usar a extensão sem isso
 - [ ] 🟠 Alta - Melhoraria significativamente minha experiência
 - [ ] 🟡 Média - Seria útil ter, mas não é urgente

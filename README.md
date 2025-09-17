@@ -47,24 +47,28 @@
 ### ✨ Recursos Principais
 
 #### 🎮 Automação Inteligente
+
 - **Participação Automática**: Entra nos sorteios seguindo seus filtros personalizados
 - **Gestão de Pontos**: Controle inteligente de gastos com pontos
 - **Filtros Avançados**: Por nível, grupos, listas de desejos e muito mais
 - **Agenda Flexível**: Configure horários específicos para ativação
 
 #### 🎨 Interface Aprimorada
+
 - **Tema Escuro Premium**: Design moderno com alta legibilidade
 - **Indicadores Visuais**: Odds em tempo real, status de participação
 - **Navegação Intuitiva**: Atalhos e melhorias de usabilidade
 - **Acessibilidade**: Compatível com leitores de tela e navegação por teclado
 
 #### 🔧 Recursos Técnicos
+
 - **Manifest V3**: Tecnologia de ponta para máxima segurança
 - **Service Worker**: Execução em segundo plano otimizada
 - **Offscreen Documents**: Processamento HTML isolado e seguro
 - **Chrome Storage API**: Sincronização automática entre dispositivos
 
 #### 🛡️ Segurança e Privacidade
+
 - **Zero Telemetria**: Seus dados permanecem totalmente privados
 - **Permissões Mínimas**: Apenas o necessário para funcionamento
 - **Código Aberto**: Transparência total, auditável por qualquer pessoa
@@ -73,6 +77,7 @@
 ### 📦 Instalação Rápida
 
 #### 🌐 Instalação via Web Store (Recomendado)
+
 ```bash
 # Em breve nas lojas oficiais
 Chrome Web Store: [Em análise]
@@ -82,17 +87,20 @@ Firefox Add-ons: [Em análise]
 #### 🔧 Instalação Manual (Desenvolvedores)
 
 1. **Clone o repositório**:
+
 ```bash
 git clone https://github.com/bernardopg/AutoJoin-for-SteamGifts.git
 cd AutoJoin-for-SteamGifts
 ```
 
 2. **Instale as dependências**:
+
 ```bash
 npm install
 ```
 
 3. **Execute os testes**:
+
 ```bash
 npm run check
 ```
@@ -100,12 +108,14 @@ npm run check
 4. **Carregue no navegador**:
 
 **Chrome/Edge/Brave:**
+
 - Abra `chrome://extensions/`
 - Ative o "Modo do desenvolvedor"
 - Clique em "Carregar sem compactação"
 - Selecione a pasta do projeto
 
 **Firefox:**
+
 - Abra `about:debugging`
 - Clique em "Este Firefox"
 - Clique em "Carregar extensão temporária"
@@ -114,6 +124,7 @@ npm run check
 ### 🎮 Como Usar
 
 #### 🚀 Primeiros Passos
+
 1. **Instale a extensão** seguindo as instruções acima
 2. **Visite o SteamGifts.com** - a interface será automaticamente aprimorada
 3. **Configure suas preferências** clicando em "AutoJoin Settings" no menu
@@ -132,11 +143,13 @@ npm run check
 #### 🎯 Filtros Avançados
 
 **Listas de Prioridade**:
+
 - **Whitelist**: Jogos que você SEMPRE quer
 - **Blacklist**: Jogos que você NUNCA quer
 - **Lista de Desejos Steam**: Sincronização automática
 
 **Filtros de Grupo**:
+
 - Participe apenas de grupos específicos
 - Exclua grupos indesejados
 - Configuração flexível por regex
@@ -144,6 +157,7 @@ npm run check
 ### ⚙️ Configuração Avançada
 
 #### 🔧 Variáveis de Ambiente
+
 ```javascript
 // Configurações avançadas (chrome.storage.sync)
 const advancedConfig = {
@@ -159,6 +173,7 @@ const advancedConfig = {
 ```
 
 #### 🎨 Personalização de Tema
+
 ```css
 /* Variáveis CSS customizáveis */
 :root {
@@ -195,6 +210,7 @@ npm run release       # Build + Package + Tag
 ### 🏗️ Arquitetura
 
 #### 📁 Estrutura do Projeto
+
 ```
 AutoJoin-for-SteamGifts/
 ├── 📁 js/                    # Scripts JavaScript
@@ -240,12 +256,14 @@ graph TD
 ### 🔒 Segurança e Privacidade
 
 #### 🛡️ Compromisso com a Privacidade
+
 - **❌ Zero Tracking**: Nenhum analytics ou telemetria
 - **❌ Sem Terceiros**: Dados nunca saem do seu navegador
 - **✅ Código Aberto**: 100% transparente e auditável
 - **✅ Permissões Mínimas**: Apenas o essencial para funcionar
 
 #### 🔐 Práticas de Segurança
+
 - **Manifest V3**: Maior segurança e isolamento
 - **Content Security Policy**: Proteção contra XSS
 - **Validação Rigorosa**: Todos os inputs são validados
@@ -266,16 +284,19 @@ graph TD
 Adoramos contribuições da comunidade! Veja como participar:
 
 #### 🐛 Reportando Bugs
+
 1. Verifique se o bug já foi reportado
 2. Use nosso [template de issue](.github/ISSUE_TEMPLATE/bug_report.md)
 3. Inclua logs e screenshots quando possível
 
 #### 🚀 Sugerindo Recursos
+
 1. Use nosso [template de feature request](.github/ISSUE_TEMPLATE/feature_request.md)
 2. Explique o problema que resolve
 3. Proponha uma solução detalhada
 
 #### 🔧 Desenvolvendo
+
 1. Faça fork do repositório
 2. Crie uma branch: `git checkout -b minha-feature`
 3. Commit suas mudanças: `git commit -am 'Adiciona nova feature'`
@@ -283,6 +304,7 @@ Adoramos contribuições da comunidade! Veja como participar:
 5. Abra um Pull Request
 
 #### 📋 Checklist para PRs
+
 - [ ] Código segue o estilo do projeto (`npm run check`)
 - [ ] Testes passam (`npm test`)
 - [ ] Documentação atualizada se necessário
@@ -333,24 +355,28 @@ mantendo os avisos de copyright e esta licença.
 ### ✨ Key Features
 
 #### 🎮 Smart Automation
+
 - **Auto Participation**: Joins giveaways following your custom filters
 - **Point Management**: Intelligent spending control
 - **Advanced Filters**: By level, groups, wishlists and much more
 - **Flexible Schedule**: Configure specific activation times
 
 #### 🎨 Enhanced Interface
+
 - **Premium Dark Theme**: Modern design with high readability
 - **Visual Indicators**: Real-time odds, participation status
 - **Intuitive Navigation**: Shortcuts and usability improvements
 - **Accessibility**: Compatible with screen readers and keyboard navigation
 
 #### 🔧 Technical Features
+
 - **Manifest V3**: Cutting-edge technology for maximum security
 - **Service Worker**: Optimized background execution
 - **Offscreen Documents**: Isolated and secure HTML processing
 - **Chrome Storage API**: Automatic synchronization across devices
 
 #### 🛡️ Security & Privacy
+
 - **Zero Telemetry**: Your data remains completely private
 - **Minimal Permissions**: Only what's necessary for operation
 - **Open Source**: Total transparency, auditable by anyone
@@ -359,6 +385,7 @@ mantendo os avisos de copyright e esta licença.
 ### 📦 Quick Installation
 
 #### 🌐 Web Store Installation (Recommended)
+
 ```bash
 # Coming soon to official stores
 Chrome Web Store: [Under Review]
@@ -368,17 +395,20 @@ Firefox Add-ons: [Under Review]
 #### 🔧 Manual Installation (Developers)
 
 1. **Clone the repository**:
+
 ```bash
 git clone https://github.com/bernardopg/AutoJoin-for-SteamGifts.git
 cd AutoJoin-for-SteamGifts
 ```
 
 2. **Install dependencies**:
+
 ```bash
 npm install
 ```
 
 3. **Run tests**:
+
 ```bash
 npm run check
 ```
@@ -386,12 +416,14 @@ npm run check
 4. **Load in browser**:
 
 **Chrome/Edge/Brave:**
+
 - Open `chrome://extensions/`
 - Enable "Developer mode"
 - Click "Load unpacked"
 - Select the project folder
 
 **Firefox:**
+
 - Open `about:debugging`
 - Click "This Firefox"
 - Click "Load Temporary Add-on"
@@ -400,6 +432,7 @@ npm run check
 ### 🎮 How to Use
 
 #### 🚀 Getting Started
+
 1. **Install the extension** following the instructions above
 2. **Visit SteamGifts.com** - the interface will be automatically enhanced
 3. **Configure your preferences** by clicking "AutoJoin Settings" in the menu
@@ -418,12 +451,14 @@ npm run check
 ### 🔒 Security & Privacy
 
 #### 🛡️ Privacy Commitment
+
 - **❌ Zero Tracking**: No analytics or telemetry
 - **❌ No Third Parties**: Data never leaves your browser
 - **✅ Open Source**: 100% transparent and auditable
 - **✅ Minimal Permissions**: Only essential for operation
 
 #### 🔐 Security Practices
+
 - **Manifest V3**: Enhanced security and isolation
 - **Content Security Policy**: XSS protection
 - **Rigorous Validation**: All inputs are validated
@@ -434,11 +469,13 @@ npm run check
 We love community contributions! Here's how to participate:
 
 #### 🐛 Reporting Bugs
+
 1. Check if the bug has already been reported
 2. Use our [issue template](.github/ISSUE_TEMPLATE/bug_report.md)
 3. Include logs and screenshots when possible
 
 #### 🚀 Suggesting Features
+
 1. Use our [feature request template](.github/ISSUE_TEMPLATE/feature_request.md)
 2. Explain the problem it solves
 3. Propose a detailed solution

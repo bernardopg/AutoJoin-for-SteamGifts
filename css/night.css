@@ -13,7 +13,12 @@ body.night-theme {
   --warning-light: rgba(255, 152, 0, 0.1);
   --warning-border: rgba(255, 152, 0, 0.3);
   --warning-text: #ffcc80;
-  background: radial-gradient(circle at top, #161d2b 0%, #0d131d 45%, #070b12 100%);
+  background: radial-gradient(
+    circle at top,
+    #161d2b 0%,
+    #0d131d 45%,
+    #070b12 100%
+  );
   color: var(--text-primary);
 }
 
@@ -29,7 +34,6 @@ body.night-theme a:hover {
 body.night-theme .featured__inner-wrap,
 body.night-theme .featured__outer-wrap--home {
   background: rgba(19, 26, 39, 0.92);
-
 }
 
 body.night-theme header,
@@ -104,7 +108,9 @@ body.night-theme .featured__outer-wrap {
 }
 
 body.night-theme .pagination__navigation a.is-selected,
-body.night-theme .sidebar__navigation__item.is-selected .sidebar__navigation__item__link {
+body.night-theme
+  .sidebar__navigation__item.is-selected
+  .sidebar__navigation__item__link {
   background: rgba(82, 156, 255, 0.32);
   color: #bfe1ff;
   border-color: rgba(82, 156, 255, 0.5);
@@ -485,14 +491,19 @@ body.night-theme #suspensionNotice {
 
 /* Permission banner - Clean and modern */
 body.night-theme .aj-permission-banner {
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(99, 102, 241, 0.06) 100%) !important;
+  background: linear-gradient(
+    135deg,
+    rgba(59, 130, 246, 0.08) 0%,
+    rgba(99, 102, 241, 0.06) 100%
+  ) !important;
   border: 1px solid rgba(59, 130, 246, 0.2) !important;
   border-left: 3px solid #3b82f6 !important;
   border-radius: 8px !important;
   padding: 12px 16px !important;
   margin: 16px 0 !important;
   color: #e2e8f0 !important;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
   font-size: 14px !important;
   font-weight: 400 !important;
   line-height: 1.5 !important;
@@ -524,13 +535,16 @@ body.night-theme #btnAutoJoin {
   border: none !important;
   border-radius: 8px !important;
   color: #ffffff !important;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
   font-size: 14px !important;
   font-weight: 600 !important;
   padding: 12px 24px !important;
   cursor: pointer !important;
   transition: all 0.2s ease !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(5, 150, 105, 0.3) !important;
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.2),
+    0 0 0 1px rgba(5, 150, 105, 0.3) !important;
   min-width: 120px !important;
   height: auto !important;
   width: auto !important;
@@ -539,7 +553,9 @@ body.night-theme #btnAutoJoin {
 body.night-theme #btnAutoJoin:hover:not(:disabled) {
   background: linear-gradient(135deg, #047857 0%, #065f46 100%) !important;
   transform: translateY(-1px) !important;
-  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3), 0 0 0 1px rgba(5, 150, 105, 0.4) !important;
+  box-shadow:
+    0 4px 12px rgba(5, 150, 105, 0.3),
+    0 0 0 1px rgba(5, 150, 105, 0.4) !important;
 }
 
 body.night-theme #btnAutoJoin:active {
@@ -589,7 +605,11 @@ body.night-theme #btnSettings.AutoJoinButtonEnabled:hover i {
 
 /* Suspension notice - Clean dismissible design */
 body.night-theme #suspensionNotice {
-  background: linear-gradient(135deg, rgba(239, 68, 68, 0.08) 0%, rgba(220, 38, 38, 0.06) 100%) !important;
+  background: linear-gradient(
+    135deg,
+    rgba(239, 68, 68, 0.08) 0%,
+    rgba(220, 38, 38, 0.06) 100%
+  ) !important;
   border: 1px solid rgba(239, 68, 68, 0.2) !important;
   border-left: 3px solid #ef4444 !important;
   border-radius: 8px !important;
@@ -663,7 +683,8 @@ body.night-theme #suspensionNotice.aj-minimized::before {
   color: #94a3b8 !important;
   font-size: 12px !important;
   font-weight: 400 !important;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
 }
 
 body.night-theme #suspensionNotice.aj-minimized::after {
@@ -685,7 +706,8 @@ body.night-theme #suspensionNotice a:hover {
 
 body.night-theme #suspensionNotice p {
   margin: 0 !important;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
   font-size: 13px !important;
   font-weight: 400 !important;
   line-height: 1.4 !important;
@@ -719,13 +741,18 @@ body.night-theme #buttonsAJ {
 
 /* Info container - Professional styling */
 body.night-theme #info {
-  background: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(15, 23, 42, 0.95) 100%) !important;
+  background: linear-gradient(
+    135deg,
+    rgba(30, 41, 59, 0.95) 0%,
+    rgba(15, 23, 42, 0.95) 100%
+  ) !important;
   border: 1px solid rgba(71, 85, 105, 0.3) !important;
   border-radius: 8px !important;
   padding: 12px 16px !important;
   margin: 16px 0 !important;
   color: #e2e8f0 !important;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
   font-size: 14px !important;
   font-weight: 400 !important;
   line-height: 1.5 !important;
@@ -742,7 +769,8 @@ body.night-theme #buttonsAJ:hover #suspensionNotice {
 }
 
 @keyframes pulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1 !important;
   }
   50% {
@@ -777,20 +805,25 @@ body,
    ================================= */
 
 /* Fix featured giveaway background that has inline style */
-body.night-theme .featured__outer-wrap.featured__outer-wrap--home[style*="background-color"] {
+body.night-theme
+  .featured__outer-wrap.featured__outer-wrap--home[style*='background-color'] {
   background-color: rgba(19, 26, 39, 0.92) !important;
-  background-image: radial-gradient(circle at center, rgba(89, 86, 0, 0.1) 0%, transparent 60%) !important;
+  background-image: radial-gradient(
+    circle at center,
+    rgba(89, 86, 0, 0.1) 0%,
+    transparent 60%
+  ) !important;
 }
 
 /* Fix inline colored icons and text with better dark theme colors */
-body.night-theme .featured__column i[style*="color"],
-body.night-theme .featured__column a[style*="color"] {
+body.night-theme .featured__column i[style*='color'],
+body.night-theme .featured__column a[style*='color'] {
   color: #e4c96a !important;
   /* Warm gold that works on dark backgrounds */
 }
 
 /* Fix Steam store links with inline styles */
-body.night-theme a[style*="background-color: rgb(124, 116, 255)"] {
+body.night-theme a[style*='background-color: rgb(124, 116, 255)'] {
   background-color: rgba(100, 149, 237, 0.9) !important;
   color: #ffffff !important;
   border: 1px solid rgba(100, 149, 237, 0.3);
@@ -798,50 +831,51 @@ body.night-theme a[style*="background-color: rgb(124, 116, 255)"] {
   transition: all var(--transition-fast);
 }
 
-body.night-theme a[style*="background-color: rgb(124, 116, 255)"]:hover {
+body.night-theme a[style*='background-color: rgb(124, 116, 255)']:hover {
   background-color: rgba(100, 149, 237, 1) !important;
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(100, 149, 237, 0.3);
 }
 
 /* Fix fanatical and bundle containers with inline styles */
-body.night-theme .fanatical_container[style*="background-color"] {
+body.night-theme .fanatical_container[style*='background-color'] {
   background-color: rgba(100, 149, 237, 0.9) !important;
   border: 1px solid rgba(100, 149, 237, 0.3);
   border-radius: var(--radius-md);
 }
 
 /* Fix elements with light borders that conflict with dark theme */
-body.night-theme .lixhebt[style*="border-bottom: 1px solid rgb(210, 214, 224)"] {
+body.night-theme
+  .lixhebt[style*='border-bottom: 1px solid rgb(210, 214, 224)'] {
   border-bottom-color: var(--border-color) !important;
   box-shadow: none !important;
 }
 
 /* Fix elements with white box-shadow that don't belong in dark theme */
-body.night-theme [style*="box-shadow"][style*="255, 255, 255"] {
+body.night-theme [style*='box-shadow'][style*='255, 255, 255'] {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
 }
 
 /* Fix skip links with proper dark theme variables */
-body.night-theme .skip-links[style*="background: var(--bg-primary)"] {
+body.night-theme .skip-links[style*='background: var(--bg-primary)'] {
   background-color: var(--bg-primary) !important;
   border-color: var(--border-color) !important;
 }
 
-body.night-theme .skip-links a[style*="color: var(--primary-color)"] {
+body.night-theme .skip-links a[style*='color: var(--primary-color)'] {
   color: #7cc7ff !important;
 }
 
 /* Fix ad containers to be less intrusive in dark theme */
 body.night-theme .adsbygoogle,
-body.night-theme [id*="aswift"] {
+body.night-theme [id*='aswift'] {
   opacity: 0.8;
   filter: brightness(0.9) contrast(1.1);
   border-radius: var(--radius-md);
 }
 
 /* Fix footer Steam logo with inline styles */
-body.night-theme .footer_steam_logo[style*="background-color"] {
+body.night-theme .footer_steam_logo[style*='background-color'] {
   background-color: rgba(100, 149, 237, 0.9) !important;
   color: #ffffff !important;
   border: 1px solid rgba(100, 149, 237, 0.3);
@@ -849,7 +883,7 @@ body.night-theme .footer_steam_logo[style*="background-color"] {
   transition: all var(--transition-fast);
 }
 
-body.night-theme .footer_steam_logo[style*="background-color"]:hover {
+body.night-theme .footer_steam_logo[style*='background-color']:hover {
   background-color: rgba(100, 149, 237, 1) !important;
   transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(100, 149, 237, 0.4);
@@ -971,7 +1005,6 @@ body.night-theme .giveaway__row-outer-wrap:nth-child(5) {
 
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
-
   body.night-theme *,
   body.night-theme *::before,
   body.night-theme *::after {
@@ -987,7 +1020,9 @@ body.night-theme .giveaway__row-outer-wrap:nth-child(5) {
 
 /* Clean, professional typography for giveaway columns */
 body.night-theme .giveaway__columns {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+    Cantarell, sans-serif;
   letter-spacing: -0.01em;
   line-height: 1.4;
 }
@@ -1038,7 +1073,7 @@ body.night-theme span[data-timestamp] {
 }
 
 /* Minimal odds styling - clean and professional */
-body.night-theme .giveaway__columns div[title="approx. odds of winning"] {
+body.night-theme .giveaway__columns div[title='approx. odds of winning'] {
   color: #e5e7eb !important;
   font-weight: 400;
   background: none !important;
@@ -1065,7 +1100,9 @@ body.night-theme .featured__columns * {
 
 /* Professional featured columns styling */
 body.night-theme .featured__columns {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+    Cantarell, sans-serif;
 }
 
 body.night-theme .featured__columns,
@@ -1099,7 +1136,7 @@ body.night-theme [data-ui-tooltip] {
 }
 
 /* Override any problematic inline styles with minimal approach */
-body.night-theme .giveaway__columns [style*="color"] {
+body.night-theme .giveaway__columns [style*='color'] {
   color: #e5e7eb !important;
 }
 
