@@ -13,7 +13,11 @@ class Giveaway {
     this.level = data.level;
     this.numberOfCopies = data.numberOfCopies || 1;
     this.numberOfEntries = data.numberOfEntries;
-    this.status = data.status || { Entered: false, NoPoints: false, NoLevel: false };
+    this.status = data.status || {
+      Entered: false,
+      NoPoints: false,
+      NoLevel: false,
+    };
     this.timeStart = data.timeStart;
     this.timeEnd = data.timeEnd;
     this.isGroupGA = data.isGroupGA || false;
@@ -49,7 +53,11 @@ class Giveaway {
 
       if (json.type === 'success') {
         this.status.Entered = true;
-        return { success: true, points: json.points, message: 'Successfully joined giveaway' };
+        return {
+          success: true,
+          points: json.points,
+          message: 'Successfully joined giveaway',
+        };
       } else {
         this.status.Error = true;
         this.errorMsg = json.msg;
@@ -87,7 +95,11 @@ class Giveaway {
 
       if (json.type === 'success') {
         this.status.Entered = false;
-        return { success: true, points: json.points, message: 'Successfully left giveaway' };
+        return {
+          success: true,
+          points: json.points,
+          message: 'Successfully left giveaway',
+        };
       } else {
         this.status.Error = true;
         this.errorMsg = json.msg;
@@ -106,8 +118,12 @@ class Giveaway {
    */
   calculateWinChance(timeLoaded) {
     const timePassed = timeLoaded - this.timeStart;
-    const predictionOfEntries = (this.numberOfEntries / timePassed) * this.timeleft;
-    let chance = (1 / (this.numberOfEntries + 1 + predictionOfEntries)) * 100 * this.numberOfCopies;
+    const predictionOfEntries =
+      (this.numberOfEntries / timePassed) * this.timeleft;
+    let chance =
+      (1 / (this.numberOfEntries + 1 + predictionOfEntries)) *
+      100 *
+      this.numberOfCopies;
 
     if (chance > 100) chance = 100;
     return Math.max(0, parseFloat(chance.toFixed(3)));
@@ -156,12 +172,18 @@ class Giveaway {
    */
   shouldFilter(settings, ownedGames = [], wishlist = []) {
     // Level filtering
-    if (this.level < settings.HideLevelsBelow || this.level > settings.HideLevelsAbove) {
+    if (
+      this.level < settings.HideLevelsBelow ||
+      this.level > settings.HideLevelsAbove
+    ) {
       return true;
     }
 
     // Cost filtering
-    if (this.cost < settings.HideCostsBelow || this.cost > settings.HideCostsAbove) {
+    if (
+      this.cost < settings.HideCostsBelow ||
+      this.cost > settings.HideCostsAbove
+    ) {
       return true;
     }
 
@@ -294,7 +316,9 @@ class Giveaway {
       const html = await response.text();
       const parser = new DOMParser();
       const giveawayDOM = parser.parseFromString(html, 'text/html');
-      const description = giveawayDOM.querySelector('.page__description .markdown');
+      const description = giveawayDOM.querySelector(
+        '.page__description .markdown',
+      );
 
       return description ? description.innerHTML : 'No description available.';
     } catch (error) {
@@ -361,10 +385,9 @@ class GiveawayParser {
   /**
    * Parse giveaways from HTML page
    * @param {string} pageHTML - HTML content
-   * @param {number} timeLoaded - When page was loaded (timestamp)
    * @returns {Array<Giveaway>} Array of parsed giveaways
    */
-  static parsePage(pageHTML, timeLoaded = Date.now() / 1000) {
+  static parsePage(pageHTML) {
     const parser = new DOMParser();
     const pageDOM = parser.parseFromString(pageHTML, 'text/html');
     const giveawaysDOM = pageDOM.querySelectorAll('.giveaway__row-outer-wrap');
@@ -372,7 +395,7 @@ class GiveawayParser {
 
     giveawaysDOM.forEach((giveawayDOM) => {
       try {
-        const giveawayData = this.parseGiveawayElement(giveawayDOM, timeLoaded);
+        const giveawayData = this.parseGiveawayElement(giveawayDOM);
         if (giveawayData) {
           giveaways.push(new Giveaway(giveawayData));
         }
@@ -387,11 +410,12 @@ class GiveawayParser {
   /**
    * Parse single giveaway element
    * @param {HTMLElement} giveawayDOM - Giveaway DOM element
-   * @param {number} timeLoaded - When page was loaded
    * @returns {Object} Giveaway data object
    */
-  static parseGiveawayElement(giveawayDOM, timeLoaded) {
-    const giveawayHeadingName = giveawayDOM.querySelector('.giveaway__heading__name');
+  static parseGiveawayElement(giveawayDOM) {
+    const giveawayHeadingName = giveawayDOM.querySelector(
+      '.giveaway__heading__name',
+    );
     if (!giveawayHeadingName) return null;
 
     const code = giveawayHeadingName.href.match(/giveaway\/(.+)\//)?.[1];
@@ -400,56 +424,94 @@ class GiveawayParser {
     const name = giveawayHeadingName.textContent.trim();
 
     // Get Steam app ID
-    const steamLink = giveawayDOM.querySelector('.fa.fa-steam')?.parentNode?.href;
+    const steamLink =
+      giveawayDOM.querySelector('.fa.fa-steam')?.parentNode?.href;
     const appid = steamLink ? steamLink.match(/\/(\d+)\//)?.[1] : null;
 
     // Get cost and copies
-    const copiesAndCostElements = giveawayDOM.querySelectorAll('.giveaway__heading__thin');
+    const copiesAndCostElements = giveawayDOM.querySelectorAll(
+      '.giveaway__heading__thin',
+    );
     let cost, numberOfCopies;
 
     if (copiesAndCostElements.length > 1) {
-      numberOfCopies = parseInt(copiesAndCostElements[0].textContent.replace(',', '').match(/\d+/)?.[0], 10) || 1;
-      cost = parseInt(copiesAndCostElements[1].textContent.match(/\d+/)?.[0], 10) || 0;
+      numberOfCopies =
+        parseInt(
+          copiesAndCostElements[0].textContent
+            .replace(',', '')
+            .match(/\d+/)?.[0],
+          10,
+        ) || 1;
+      cost =
+        parseInt(copiesAndCostElements[1].textContent.match(/\d+/)?.[0], 10) ||
+        0;
     } else {
       numberOfCopies = 1;
-      cost = parseInt(copiesAndCostElements[0]?.textContent.match(/\d+/)?.[0], 10) || 0;
+      cost =
+        parseInt(copiesAndCostElements[0]?.textContent.match(/\d+/)?.[0], 10) ||
+        0;
     }
 
     // Get level requirement
-    const levelMatch = giveawayDOM.querySelector('.giveaway__column--contributor-level');
-    const level = levelMatch ? parseInt(levelMatch.textContent.match(/Level (\d)/)?.[1], 10) : 0;
+    const levelMatch = giveawayDOM.querySelector(
+      '.giveaway__column--contributor-level',
+    );
+    const level = levelMatch
+      ? parseInt(levelMatch.textContent.match(/Level (\d)/)?.[1], 10)
+      : 0;
 
     // Get number of entries
-    const numberOfEntries = parseInt(
-      giveawayDOM.querySelector('.giveaway__links a[href$="/entries"]')?.textContent.replace(',', ''),
-      10
-    ) || 0;
+    const numberOfEntries =
+      parseInt(
+        giveawayDOM
+          .querySelector('.giveaway__links a[href$="/entries"]')
+          ?.textContent.replace(',', ''),
+        10,
+      ) || 0;
 
     // Get time information
     const timeElement = giveawayDOM.querySelector('.fa-clock-o + span');
-    const timeEnd = timeElement ? parseInt(timeElement.dataset.timestamp, 10) : 0;
+    const timeEnd = timeElement
+      ? parseInt(timeElement.dataset.timestamp, 10)
+      : 0;
     const timeleft = timeEnd * 1000 - Date.now();
 
     // Get start time
-    const timeStartElement = giveawayDOM.querySelector('.giveaway__username')?.parentElement?.querySelector('span');
-    const timeStart = timeStartElement ? parseInt(timeStartElement.dataset.timestamp, 10) : 0;
+    const timeStartElement = giveawayDOM
+      .querySelector('.giveaway__username')
+      ?.parentElement?.querySelector('span');
+    const timeStart = timeStartElement
+      ? parseInt(timeStartElement.dataset.timestamp, 10)
+      : 0;
 
     // Check status
     const status = { NoPoints: false, NoLevel: false, Entered: false };
-    const giveawayInnerWrap = giveawayDOM.querySelector('.giveaway__row-inner-wrap');
+    const giveawayInnerWrap = giveawayDOM.querySelector(
+      '.giveaway__row-inner-wrap',
+    );
 
     if (giveawayInnerWrap?.classList.contains('is-faded')) {
       status.Entered = true;
     }
 
-    if (levelMatch?.classList.contains('giveaway__column--contributor-level--negative')) {
+    if (
+      levelMatch?.classList.contains(
+        'giveaway__column--contributor-level--negative',
+      )
+    ) {
       status.NoLevel = true;
     }
 
     // Check for special giveaway types
-    const isGroupGA = Boolean(giveawayDOM.querySelector('.giveaway__column--group'));
-    const isWhitelistGA = Boolean(giveawayDOM.querySelector('.giveaway__column--whitelist'));
-    const isRegionLocked = Boolean(giveawayDOM.querySelector('.giveaway__column--region-restricted'));
+    const isGroupGA = Boolean(
+      giveawayDOM.querySelector('.giveaway__column--group'),
+    );
+    const isWhitelistGA = Boolean(
+      giveawayDOM.querySelector('.giveaway__column--whitelist'),
+    );
+    const isRegionLocked = Boolean(
+      giveawayDOM.querySelector('.giveaway__column--region-restricted'),
+    );
 
     return {
       code,
@@ -474,24 +536,27 @@ class GiveawayParser {
   /**
    * Parse giveaways without pinned ones
    * @param {string} pageHTML - HTML content
-   * @param {number} timeLoaded - When page was loaded
    * @returns {Array<Giveaway>} Array of non-pinned giveaways
    */
-  static parsePageWithoutPinned(pageHTML, timeLoaded = Date.now() / 1000) {
+  static parsePageWithoutPinned(pageHTML) {
     const parser = new DOMParser();
     const pageDOM = parser.parseFromString(pageHTML, 'text/html');
-    const nonPinnedContainer = pageDOM.querySelector(':not(.pinned-giveaways__inner-wrap) > .giveaway__row-outer-wrap')?.parentElement;
+    const nonPinnedContainer = pageDOM.querySelector(
+      ':not(.pinned-giveaways__inner-wrap) > .giveaway__row-outer-wrap',
+    )?.parentElement;
 
     if (!nonPinnedContainer) {
       return [];
     }
 
-    const giveawaysDOM = nonPinnedContainer.querySelectorAll('.giveaway__row-outer-wrap');
+    const giveawaysDOM = nonPinnedContainer.querySelectorAll(
+      '.giveaway__row-outer-wrap',
+    );
     const giveaways = [];
 
     giveawaysDOM.forEach((giveawayDOM) => {
       try {
-        const giveawayData = this.parseGiveawayElement(giveawayDOM, timeLoaded);
+        const giveawayData = this.parseGiveawayElement(giveawayDOM);
         if (giveawayData) {
           giveaways.push(new Giveaway(giveawayData));
         }
@@ -513,9 +578,13 @@ class GiveawayParser {
     const pageDOM = parser.parseFromString(pageHTML, 'text/html');
 
     const pointsElement = pageDOM.querySelector('.nav__points');
-    const points = pointsElement ? parseInt(pointsElement.textContent.replace(',', ''), 10) : 0;
+    const points = pointsElement
+      ? parseInt(pointsElement.textContent.replace(',', ''), 10)
+      : 0;
 
-    const levelElement = pageDOM.querySelector('a[href="/account"] span:last-child');
+    const levelElement = pageDOM.querySelector(
+      'a[href="/account"] span:last-child',
+    );
     const level = levelElement ? parseInt(levelElement.title, 10) : 0;
 
     const tokenElement = pageDOM.querySelector('input[name="xsrf_token"]');
@@ -562,8 +631,8 @@ class GiveawayManager {
    * @returns {Array<Giveaway>} Filtered giveaways
    */
   filterGiveaways(settings, ownedGames = [], wishlist = []) {
-    return this.giveaways.filter(giveaway =>
-      !giveaway.shouldFilter(settings, ownedGames, wishlist)
+    return this.giveaways.filter(
+      (giveaway) => !giveaway.shouldFilter(settings, ownedGames, wishlist),
     );
   }
 
@@ -588,8 +657,8 @@ class GiveawayManager {
    * @returns {Array<Giveaway>} Joinable giveaways
    */
   getJoinableGiveaways(userPoints, userLevel) {
-    return this.giveaways.filter(giveaway =>
-      giveaway.canJoin(userPoints, userLevel).canJoin
+    return this.giveaways.filter(
+      (giveaway) => giveaway.canJoin(userPoints, userLevel).canJoin,
     );
   }
 
@@ -601,7 +670,7 @@ class GiveawayManager {
     this.userPoints = parseInt(points, 10);
 
     // Update UI
-    document.querySelectorAll('.nav__points').forEach(el => {
+    document.querySelectorAll('.nav__points').forEach((el) => {
       el.textContent = this.userPoints.toLocaleString();
     });
   }
@@ -628,8 +697,10 @@ class GiveawayManager {
    */
   getStats() {
     const total = this.giveaways.length;
-    const entered = this.giveaways.filter(g => g.status.Entered).length;
-    const joinable = this.giveaways.filter(g => g.canJoin(this.userPoints, this.userLevel).canJoin).length;
+    const entered = this.giveaways.filter((g) => g.status.Entered).length;
+    const joinable = this.giveaways.filter(
+      (g) => g.canJoin(this.userPoints, this.userLevel).canJoin,
+    ).length;
     const totalCost = this.giveaways.reduce((sum, g) => sum + g.cost, 0);
     const averageCost = total > 0 ? Math.round(totalCost / total) : 0;
 
@@ -639,8 +710,9 @@ class GiveawayManager {
       joinable,
       totalCost,
       averageCost,
-      pointsNeeded: this.giveaways.filter(g => g.canJoin(this.userPoints, this.userLevel).canJoin)
-        .reduce((sum, g) => sum + g.cost, 0)
+      pointsNeeded: this.giveaways
+        .filter((g) => g.canJoin(this.userPoints, this.userLevel).canJoin)
+        .reduce((sum, g) => sum + g.cost, 0),
     };
   }
 }

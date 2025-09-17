@@ -315,8 +315,15 @@ class AutoJoinUtils {
 
     const vertInView = rect.top <= windowHeight && rect.top + rect.height >= 0;
     const horInView = rect.left <= windowWidth && rect.left + rect.width >= 0;
+    if (!vertInView || !horInView) {
+      return false;
+    }
 
-    return vertInView && horInView;
+    const visibleHeight =
+      Math.min(rect.bottom, windowHeight) - Math.max(rect.top, 0);
+    const thresholdPixels = Math.max(0, Math.min(1, threshold)) * rect.height;
+
+    return visibleHeight >= thresholdPixels;
   }
 
   /**
@@ -517,7 +524,7 @@ class AutoJoinUtils {
       performance.mark(`${label}-end`);
       performance.measure(label, `${label}-start`, `${label}-end`);
       const measure = performance.getEntriesByName(label)[0];
-      console.log(`${label}: ${measure.duration.toFixed(2)}ms`);
+      console.debug(`${label}: ${measure.duration.toFixed(2)}ms`);
       return measure.duration;
     },
   };

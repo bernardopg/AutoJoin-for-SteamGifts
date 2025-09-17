@@ -8,6 +8,7 @@
       "css": ["css/general.css", "css/night.css"],
       "js": [
         "js/utils-enhanced.js",
+        "js/core/settings-store.js",
         "js/core/giveaway.js",
         "js/core/page-enhancements.js",
         "js/autoentry.js",

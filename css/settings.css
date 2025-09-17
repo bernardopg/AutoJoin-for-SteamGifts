@@ -14,7 +14,9 @@
   left: 50%;
   transform: translate(-50%, -50%);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  box-shadow: var(--shadow-xl), 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow:
+    var(--shadow-xl),
+    0 4px 12px rgba(0, 0, 0, 0.15);
   z-index: var(--z-modal);
   border-radius: var(--radius-xl);
   will-change: transform, visibility;
@@ -65,7 +67,9 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: background var(--transition-base), transform var(--transition-fast);
+  transition:
+    background var(--transition-base),
+    transform var(--transition-fast);
   font-size: 18px;
   will-change: background, transform;
 }
@@ -218,8 +222,8 @@
 }
 
 /* Form Elements in Settings */
-input[type="text"],
-input[type="number"],
+input[type='text'],
+input[type='number'],
 select,
 textarea {
   padding: var(--spacing-sm) var(--spacing-md);
@@ -228,12 +232,14 @@ textarea {
   background: var(--bg-primary);
   color: var(--text-primary);
   font-size: 14px;
-  transition: border-color var(--transition-base), box-shadow var(--transition-base);
+  transition:
+    border-color var(--transition-base),
+    box-shadow var(--transition-base);
   will-change: border-color, box-shadow;
 }
 
-input[type="text"]:focus,
-input[type="number"]:focus,
+input[type='text']:focus,
+input[type='number']:focus,
 select:focus,
 textarea:focus {
   border-color: var(--primary-color);
@@ -241,7 +247,7 @@ textarea:focus {
   outline: none;
 }
 
-input[type="range"] {
+input[type='range'] {
   -webkit-appearance: none;
   appearance: none;
   width: 100%;
@@ -251,7 +257,7 @@ input[type="range"] {
   outline: none;
 }
 
-input[type="range"]::-webkit-slider-thumb {
+input[type='range']::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
   width: 16px;
@@ -261,7 +267,7 @@ input[type="range"]::-webkit-slider-thumb {
   cursor: pointer;
 }
 
-input[type="range"]::-moz-range-thumb {
+input[type='range']::-moz-range-thumb {
   width: 16px;
   height: 16px;
   border-radius: 50%;
@@ -303,7 +309,9 @@ input[type="range"]::-moz-range-thumb {
   color: var(--text-secondary);
   text-decoration: none;
   border-radius: var(--radius-md);
-  transition: background var(--transition-base), color var(--transition-base);
+  transition:
+    background var(--transition-base),
+    color var(--transition-base);
   will-change: background, color;
 }
 
@@ -382,7 +390,9 @@ input[type="range"]::-moz-range-thumb {
   z-index: var(--z-modal-backdrop);
   opacity: 0;
   visibility: hidden;
-  transition: opacity var(--transition-base), visibility var(--transition-base);
+  transition:
+    opacity var(--transition-base),
+    visibility var(--transition-base);
   will-change: opacity, visibility;
 }
 

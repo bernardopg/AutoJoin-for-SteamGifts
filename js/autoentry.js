@@ -1,8 +1,10 @@
-let giveaways = [];
-let settingsInjected = false;
-let settings;
-let token;
+const autoJoinSettingsStore = globalThis.AutoJoinSettingsStore;
 const thisVersion = 20230517;
+
+let settings = autoJoinSettingsStore
+  ? autoJoinSettingsStore.getDefaults({ lastLaunchedVersion: thisVersion })
+  : {};
+let token;
 const currentState = {
   amountOfPoints: 0,
   set points(n) {
@@ -27,149 +29,14 @@ let loadingNextPage;
 let pageLink;
 let thirdPart;
 
-function parsePage(pageHTML) {
-  const timePageLoaded = Date.now();
-  const parser = new DOMParser();
-  const pageDOM = parser.parseFromString(pageHTML, 'text/html'); // contains DOM of a whole page
-  const pageGiveawaysDiv = pageDOM.querySelector('.page__heading + div');
-
-  if (!pageGiveawaysDiv) {
-    console.warn('Could not find giveaways container in page HTML');
-    return [];
-  }
-
-  const giveawaysDOM = pageGiveawaysDiv.querySelectorAll(
-    '.giveaway__row-outer-wrap'
-  );
-  const pageGiveaways = [];
-
-  giveawaysDOM.forEach((giveawayDOM) => {
-    try {
-      const giveawayHeadingName = giveawayDOM.querySelector(
-        '.giveaway__heading__name'
-      );
-
-      if (!giveawayHeadingName) {
-        console.warn('Giveaway missing heading name, skipping');
-        return;
-      }
-
-      const hrefMatch = giveawayHeadingName.href.match(/giveaway\/(.+)\//);
-      if (!hrefMatch) {
-        console.warn('Could not extract giveaway code from URL');
-        return;
-      }
-
-      const code = hrefMatch[1];
-      const name = giveawayHeadingName.textContent;
-
-      const steamLink = giveawayDOM.querySelector('.fa.fa-steam')?.parentNode;
-      if (!steamLink) {
-        console.warn('Giveaway missing Steam link, skipping');
-        return;
-      }
-
-      const appidMatch = steamLink.href.match(/\/(\d+)\//);
-      if (!appidMatch) {
-        console.warn('Could not extract Steam app ID');
-        return;
-      }
-
-      const appid = appidMatch[1];
-      const copiesAndCostElements = giveawayDOM.querySelectorAll(
-        '.giveaway__heading__thin'
-      );
-      let cost;
-      let numberOfCopies;
-      if (copiesAndCostElements.length > 1) {
-        numberOfCopies = Number.parseInt(
-          copiesAndCostElements[0].textContent
-            .replace(',', '')
-            .match(/\d+/)?.[0] || '1',
-          10
-        );
-        cost = Number.parseInt(
-          copiesAndCostElements[1].textContent.match(/\d+/)?.[0] || '0',
-          10
-        );
-      } else {
-        numberOfCopies = 1;
-        cost = Number.parseInt(
-          copiesAndCostElements[0]?.textContent.match(/\d+/)?.[0] || '0',
-          10
-        );
-      }
-
-      const levelMatch = giveawayDOM.querySelector(
-        '.giveaway__column--contributor-level'
-      );
-      const level = levelMatch
-        ? Number.parseInt(
-            levelMatch.textContent.match(/Level (\d)/)?.[1] || '0',
-            10
-          )
-        : 0;
-
-      const entriesElement = giveawayDOM.querySelector(
-        '.giveaway__links a[href$="/entries"]'
-      );
-      const numberOfEntries = Number.parseInt(
-        entriesElement?.textContent.replace(',', '') || '0',
-        10
-      );
-
-      const timeElement = giveawayDOM.querySelector('.fa-clock-o + span');
-      const timeleft = timeElement
-        ? timeElement.dataset.timestamp * 1000 - timePageLoaded
-        : 0;
-
-      const status = { NoPoints: false, NoLevel: false, Entered: false };
-      if (currentState.points < cost) {
-        status.NoPoints = true;
-      }
-      if (
-        levelMatch &&
-        levelMatch.classList.contains(
-          'giveaway__column--contributor-level--negative'
-        )
-      ) {
-        status.NoLevel = true;
-      }
-      if (
-        giveawayDOM
-          .querySelector('.giveaway__row-inner-wrap')
-          ?.classList.contains('is-faded')
-      ) {
-        status.Entered = true; // doesn't work for some reason
-      }
-
-      const giveaway = new Giveaway({
-        code,
-        appid,
-        name,
-        cost,
-        timeleft,
-        level,
-        numberOfCopies,
-        numberOfEntries,
-        status,
-      });
-      pageGiveaways.push(giveaway);
-    } catch (error) {
-      console.warn('Error parsing giveaway:', error);
-    }
-  });
-  return pageGiveaways;
-}
-
 function modifyPageDOM(pageDOM, timeLoaded) {
   pageDOM.querySelectorAll('.giveaway__row-outer-wrap').forEach((giveaway) => {
     const giveawayInnerWrap = giveaway.querySelector(
-      '.giveaway__row-inner-wrap'
+      '.giveaway__row-inner-wrap',
     );
 
     const levelEl = giveaway.querySelector(
-      '.giveaway__column--contributor-level'
+      '.giveaway__column--contributor-level',
     );
     let level;
     if (levelEl === null) {
@@ -182,7 +49,7 @@ function modifyPageDOM(pageDOM, timeLoaded) {
 
     if (settings.HideCostsBelow > 0) {
       const copiesAndCostElements = giveaway.querySelectorAll(
-        '.giveaway__heading__thin'
+        '.giveaway__heading__thin',
       );
       let costElement;
       if (copiesAndCostElements.length > 1) {
@@ -195,7 +62,7 @@ function modifyPageDOM(pageDOM, timeLoaded) {
     }
     if (settings.HideCostsAbove < 50) {
       const copiesAndCostElements = giveaway.querySelectorAll(
-        '.giveaway__heading__thin'
+        '.giveaway__heading__thin',
       );
       let costElement;
       if (copiesAndCostElements.length > 1) {
@@ -225,7 +92,7 @@ function modifyPageDOM(pageDOM, timeLoaded) {
       joinBtn.className = 'btnSingle';
       if (
         giveawayInnerWrap.querySelector(
-          '.giveaway__column--contributor-level--negative'
+          '.giveaway__column--contributor-level--negative',
         )
       ) {
         joinBtn.value = 'Need a higher level';
@@ -233,7 +100,7 @@ function modifyPageDOM(pageDOM, timeLoaded) {
         joinBtn.disabled = true;
       } else {
         const pointsAndNumberOfCopies = giveaway.querySelectorAll(
-          '.giveaway__heading__thin'
+          '.giveaway__heading__thin',
         );
         const pointsNeededRaw =
           pointsAndNumberOfCopies[
@@ -268,7 +135,7 @@ function modifyPageDOM(pageDOM, timeLoaded) {
       const oddsIcon = document.createElement('i');
       oddsIcon.className = 'fa fa-trophy';
       const oddsText = document.createTextNode(
-        ` ${calculateWinChance(giveaway, timeLoaded)}%`
+        ` ${calculateWinChance(giveaway, timeLoaded)}%`,
       );
       oddsDiv.appendChild(oddsIcon);
       oddsDiv.appendChild(oddsText);
@@ -276,7 +143,7 @@ function modifyPageDOM(pageDOM, timeLoaded) {
         .querySelector('.giveaway__columns')
         .insertBefore(
           oddsDiv,
-          giveaway.querySelector('.giveaway__columns').firstChild
+          giveaway.querySelector('.giveaway__columns').firstChild,
         );
     }
     const descriptionDiv = document.createElement('div');
@@ -298,7 +165,7 @@ function modifyPageDOM(pageDOM, timeLoaded) {
     ) {
       document.querySelector('.pinned-giveaways__inner-wrap').remove();
     }
-    let timeRemaining =
+    const timeRemaining =
       giveaway.querySelector('.fa-clock-o + span').dataset.timestamp -
       timeLoaded;
     if (settings.PreciseTime) {
@@ -314,71 +181,26 @@ if (document.readyState === 'loading') {
   getSettings();
 }
 
-function getSettings() {
-  chrome.storage.sync.get(
-    {
+async function getSettings() {
+  if (!autoJoinSettingsStore) {
+    console.error('AutoJoinSettingsStore is not available.');
+    return;
+  }
+
+  try {
+    settings = await autoJoinSettingsStore.load({
       lastLaunchedVersion: thisVersion,
-    },
-    () => {
-      chrome.storage.sync.get(
-        {
-          AutoJoinButton: false,
-          AutoDescription: true,
-          AutoComment: false,
-          Comment: '',
-          IgnoreGroups: false,
-          IgnorePinned: true,
-          IgnoreWhitelist: false,
-          IgnoreGroupsBG: false,
-          IgnorePinnedBG: true,
-          PageForBG: 'wishlist',
-          RepeatHoursBG: 5,
-          PagesToLoad: 3,
-          PagesToLoadBG: 2,
-          BackgroundAJ: false,
-          LevelPriorityBG: true,
-          OddsPriorityBG: false,
-          lastLaunchedVersion: thisVersion,
-          InfiniteScrolling: true,
-          ShowPoints: true,
-          ShowButtons: true,
-          LoadFive: false,
-          HideDlc: false,
-          HideEntered: false,
-          HideGroups: false,
-          HideNonTradingCards: false,
-          HideWhitelist: false,
-          HideLevelsBelow: 0,
-          HideCostsBelow: 0,
-          HideLevelsAbove: 10,
-          HideCostsAbove: 50,
-          PriorityGroup: false,
-          PriorityRegion: false,
-          PriorityWhitelist: false,
-          PriorityWishlist: true,
-          RepeatIfOnPage: false,
-          RepeatHours: 5,
-          NightTheme: false,
-          LevelPriority: false,
-          PlayAudio: true,
-          AudioVolume: 1,
-          DelayBG: 10,
-          Delay: 10,
-          MinLevelBG: 0,
-          MinCost: 0,
-          MinCostBG: 0,
-          MaxCost: -1,
-          MaxCostBG: -1,
-          ShowChance: true,
-          PreciseTime: false,
-        },
-        (data) => {
-          settings = data;
-          loadCache();
-        }
+    });
+    loadCache();
+  } catch (error) {
+    console.error('Failed to load settings:', error);
+    if (window.AutoJoinUtils) {
+      AutoJoinUtils.showNotification(
+        'Unable to load AutoJoin settings. Please refresh the page.',
+        'error',
       );
     }
-  );
+  }
 }
 
 function loadCache() {
@@ -395,40 +217,40 @@ function loadCache() {
   chrome.storage.local.get(async (data) => {
     if (typeof data.Packages != 'undefined') {
       steamPackageData = data.Packages;
-      console.log('Steam packages that are already cached: ', steamPackageData);
+      console.debug('Steam packages cached: ', steamPackageData);
     }
     if (typeof data.Apps != 'undefined') {
       steamAppData = data.Apps;
-      console.log('Steam apps that are already cached: ', steamAppData);
+      console.debug('Steam apps cached: ', steamAppData);
     }
 
     const avatarLink = document.querySelector(
-      '.nav__button-container--notification a.nav__avatar-outer-wrap'
+      '.nav__button-container--notification a.nav__avatar-outer-wrap',
     );
     if (!avatarLink || !avatarLink.href) {
       // Not logged in or structure changed; continue without Steam data
       onPageLoad();
       return;
     }
-    let userProfile = avatarLink.href;
+    const userProfile = avatarLink.href;
     let steamProfileID;
 
-    let url = userProfile;
-    let response = await chrome.runtime.sendMessage({
+    const url = userProfile;
+    const response = await chrome.runtime.sendMessage({
       task: 'fetch',
       url,
     });
     if (response.status === 200) {
-      let regex = /steamcommunity\.com\/profiles\/(\d+)/g;
+      const regex = /steamcommunity\.com\/profiles\/(\d+)/g;
       let matches;
       while ((matches = regex.exec(response.text)) != null) {
         steamProfileID = matches[1];
       }
       if (typeof data[steamProfileID] != 'undefined') {
         ownedSteamApps = data[steamProfileID].ownedGames;
-        console.log('Owned games: ', ownedSteamApps);
+        console.debug('Owned games: ', ownedSteamApps);
         wishList = data[steamProfileID].wishlist;
-        console.log('Wishlist: ', wishList);
+        console.debug('Wishlist: ', wishList);
       }
 
       onPageLoad(); // should be after updating cache, but it takes a lot of time
@@ -449,7 +271,7 @@ function requestSteamCommunityPermissionAndUpdate(steamProfileID) {
         await fetchAndStoreSteamData(steamProfileID);
       } else {
         console.warn(
-          'Steam Community permission not granted. Owned games and wishlist will remain unavailable.'
+          'Steam Community permission not granted. Owned games and wishlist will remain unavailable.',
         );
       }
     }
@@ -489,12 +311,12 @@ async function fetchAndStoreSteamData(steamProfileID) {
         }
       } else {
         console.info(
-          'Could not parse owned games. Is your Steam profile public?'
+          'Could not parse owned games. Is your Steam profile public?',
         );
       }
     } else if (response.status === 403) {
       console.warn(
-        'Missing permission for Steam Community. Skipping owned games fetch.'
+        'Missing permission for Steam Community. Skipping owned games fetch.',
       );
     }
 
@@ -509,7 +331,7 @@ async function fetchAndStoreSteamData(steamProfileID) {
       }
     } else if (response.status === 403) {
       console.warn(
-        'Missing permission for Steam Community. Skipping wishlist fetch.'
+        'Missing permission for Steam Community. Skipping wishlist fetch.',
       );
     }
 
@@ -520,7 +342,7 @@ async function fetchAndStoreSteamData(steamProfileID) {
     };
     chrome.storage.local.set(ownedSteamAppsObj);
 
-    console.log('Steam data updated:', {
+    console.debug('Steam data updated:', {
       ownedGames: ownedSteamApps.length,
       wishlist: wishList.length,
     });
@@ -548,7 +370,7 @@ async function fetchAndStoreSteamData(steamProfileID) {
           // Re-trigger permission request flow
           const profileId = (function () {
             const link = document.querySelector(
-              '.nav__button-container--notification a.nav__avatar-outer-wrap'
+              '.nav__button-container--notification a.nav__avatar-outer-wrap',
             );
             const href = link?.href || '';
             const m = /steamcommunity\.com\/profiles\/(\d+)/.exec(href);
@@ -582,7 +404,7 @@ function onPageLoad() {
     if (window.AutoJoinUtils) {
       AutoJoinUtils.showNotification(
         'Security token not found. Please refresh the page.',
-        'error'
+        'error',
       );
     }
     return;
@@ -639,7 +461,7 @@ function onPageLoad() {
         if (window.AutoJoinUtils) {
           AutoJoinUtils.showNotification(
             'AutoJoin failed: ' + error.message,
-            'error'
+            'error',
           );
         }
       }
@@ -734,7 +556,6 @@ function onPageLoad() {
 
       // Inject once
       htmlEl.dataset.ajSettingsInjecting = 'true';
-      settingsInjected = true;
       fetch(chrome.runtime.getURL('/html/settings.html'))
         .then((resp) => resp.text())
         .then((settingsHTML) => {
@@ -747,7 +568,7 @@ function onPageLoad() {
           // Make sure Font Awesome is loaded when injecting inline
           if (
             !document.querySelector(
-              'link[href*="font-awesome"], link[href*="fontawesome"]'
+              'link[href*="font-awesome"], link[href*="fontawesome"]',
             )
           ) {
             const fa = document.createElement('link');
@@ -763,7 +584,7 @@ function onPageLoad() {
           setTimeout(() => {
             document
               .querySelector(
-                '#settingsDiv button, #settingsDiv input, #settingsDiv select, #settingsDiv textarea, #settingsDiv a'
+                '#settingsDiv button, #settingsDiv input, #settingsDiv select, #settingsDiv textarea, #settingsDiv a',
               )
               ?.focus();
           }, 0);
@@ -778,7 +599,7 @@ function onPageLoad() {
   bindSettingsOpener(document.getElementById('ajSettingsNavBtn'));
 
   const postsElement = document.querySelector(
-    ':not(.pinned-giveaways__inner-wrap) > .giveaway__row-outer-wrap'
+    ':not(.pinned-giveaways__inner-wrap) > .giveaway__row-outer-wrap',
   )?.parentNode;
   if (postsElement) {
     postsElement.id = 'posts'; // give div with giveaways id "posts"
@@ -832,7 +653,7 @@ function onPageLoad() {
       const dom = domParser.parseFromString(html, 'text/html');
 
       const gaElements = dom.querySelectorAll(
-        ':not(.pinned-giveaways__inner-wrap) > .giveaway__row-outer-wrap'
+        ':not(.pinned-giveaways__inner-wrap) > .giveaway__row-outer-wrap',
       );
       const containerEl = document.createElement('div');
       containerEl.append(`Page ${pageNumber}`);
@@ -876,27 +697,27 @@ function onPageLoad() {
       document
         .querySelector('a[href="/account"] span:nth-child(2)')
         .textContent.match(/(\d+)/)[1],
-      10
+      10,
     );
     for (let level = myLevel; level >= 0; level--) {
       document.querySelectorAll(selectItems).forEach((el) => {
         const current = el.closest('.giveaway__row-inner-wrap');
-        let whiteListGiveaway = Boolean(
-          current.querySelector('.giveaway__column--whitelist')
+        const whiteListGiveaway = Boolean(
+          current.querySelector('.giveaway__column--whitelist'),
         );
-        let regionLockedGiveaway = Boolean(
-          current.querySelector('.giveaway__column--region-restricted')
+        const regionLockedGiveaway = Boolean(
+          current.querySelector('.giveaway__column--region-restricted'),
         );
-        let steamGroupGiveaway = Boolean(
-          current.querySelector('.giveaway__column--group')
+        const steamGroupGiveaway = Boolean(
+          current.querySelector('.giveaway__column--group'),
         );
-        let giveawayLevel = Boolean(
-          current.querySelector('.giveaway__column--contributor-level')
+        const giveawayLevel = Boolean(
+          current.querySelector('.giveaway__column--contributor-level'),
         )
           ? parseInt(
               current
                 .querySelector('.giveaway__column--contributor-level')
-                .textContent.match(/Level (\d)/)[1]
+                .textContent.match(/Level (\d)/)[1],
             )
           : 0;
         if (
@@ -905,7 +726,7 @@ function onPageLoad() {
             current,
             steamGroupGiveaway,
             regionLockedGiveaway,
-            whiteListGiveaway
+            whiteListGiveaway,
           ) &&
             !ignoreGiveaway(steamGroupGiveaway, whiteListGiveaway))
         ) {
@@ -913,70 +734,73 @@ function onPageLoad() {
             [...current.querySelectorAll('.giveaway__heading__thin')]
               .at(-1)
               .textContent.match(/\d+/)[0],
-            10
+            10,
           );
           if (
             cost >= settings.MinCost &&
             (settings.MaxCost == -1 || cost <= settings.MaxCost)
           ) {
             timeouts.push(
-              setTimeout(function () {
-                const code = current
-                  .querySelector('a.giveaway__heading__name')
-                  .href.match(/.+giveaway\/(.+)\//)[1];
-                const formData = new FormData();
-                formData.append('xsrf_token', token);
-                formData.append('do', 'entry_insert');
-                formData.append('code', code);
-                fetch(`${window.location.origin}/ajax.php`, {
-                  method: 'post',
-                  credentials: 'include',
-                  body: formData,
-                })
-                  .then((resp) => resp.json())
-                  .then((jsonResponse) => {
-                    if (jsonResponse.type === 'success') {
-                      current.classList.toggle('is-faded');
-                      currentState.points = jsonResponse.points.replace(
-                        ',',
-                        ''
-                      );
-                      entered++;
-                      const btnEl = current.querySelector('.btnSingle');
-                      btnEl.setAttribute('walkState', 'leave');
-                      btnEl.disabled = false;
-                      btnEl.textContent = 'Leave';
-                      updateButtons();
-                    }
-                    if (jsonResponse.points < 5) {
-                      for (const timeout of timeouts) {
-                        clearTimeout(timeout);
+              setTimeout(
+                function () {
+                  const code = current
+                    .querySelector('a.giveaway__heading__name')
+                    .href.match(/.+giveaway\/(.+)\//)[1];
+                  const formData = new FormData();
+                  formData.append('xsrf_token', token);
+                  formData.append('do', 'entry_insert');
+                  formData.append('code', code);
+                  fetch(`${window.location.origin}/ajax.php`, {
+                    method: 'post',
+                    credentials: 'include',
+                    body: formData,
+                  })
+                    .then((resp) => resp.json())
+                    .then((jsonResponse) => {
+                      if (jsonResponse.type === 'success') {
+                        current.classList.toggle('is-faded');
+                        currentState.points = jsonResponse.points.replace(
+                          ',',
+                          '',
+                        );
+                        entered++;
+                        const btnEl = current.querySelector('.btnSingle');
+                        btnEl.setAttribute('walkState', 'leave');
+                        btnEl.disabled = false;
+                        btnEl.textContent = 'Leave';
+                        updateButtons();
                       }
-                      timeouts = [];
-                    }
-                    const infoEl = document.querySelector('#info');
-                    if (infoEl) {
-                      if (entered < 1) {
-                        infoEl.textContent = 'No giveaways entered.';
-                      } else {
-                        infoEl.textContent = `Entered ${entered} giveaway${
-                          entered !== 1 ? 's' : ''
-                        }.`;
+                      if (jsonResponse.points < 5) {
+                        for (const timeout of timeouts) {
+                          clearTimeout(timeout);
+                        }
+                        timeouts = [];
                       }
-                      infoEl.style.display = 'block';
-                    }
-                  });
-              }, timeouts.length * settings.Delay * 1000 +
-                Math.floor(Math.random() * 1000))
+                      const infoEl = document.querySelector('#info');
+                      if (infoEl) {
+                        if (entered < 1) {
+                          infoEl.textContent = 'No giveaways entered.';
+                        } else {
+                          infoEl.textContent = `Entered ${entered} giveaway${
+                            entered !== 1 ? 's' : ''
+                          }.`;
+                        }
+                        infoEl.style.display = 'block';
+                      }
+                    });
+                },
+                timeouts.length * settings.Delay * 1000 +
+                  Math.floor(Math.random() * 1000),
+              ),
             );
           } else {
             if (cost < settings.MinCost) {
-              console.log(
-                `^Skipped, cost: ${cost}, your settings.MinCost is ${settings.MinCost}`
+              console.debug(
+                `^Skipped, cost: ${cost}, your settings.MinCost is ${settings.MinCost}`,
               );
             } else {
-              console.log(
-                `^Skipped, cost: ${cost}, your settings.MaxCost is ${settings.MaxCost}`
+              console.debug(
+                `^Skipped, cost: ${cost}, your settings.MaxCost is ${settings.MaxCost}`,
               );
             }
           }
@@ -985,43 +809,46 @@ function onPageLoad() {
     }
 
     // Enhanced completion feedback
-    const completionTimeout = setTimeout(() => {
-      const btnAutoJoin = document.querySelector('#btnAutoJoin');
-      if (btnAutoJoin) {
-        btnAutoJoin.disabled = false;
-        btnAutoJoin.classList.remove('loading');
-        btnAutoJoin.classList.add('success');
-        btnAutoJoin.value = entered > 0 ? `Joined ${entered}!` : 'No entries';
+    setTimeout(
+      () => {
+        const btnAutoJoin = document.querySelector('#btnAutoJoin');
+        if (btnAutoJoin) {
+          btnAutoJoin.disabled = false;
+          btnAutoJoin.classList.remove('loading');
+          btnAutoJoin.classList.add('success');
+          btnAutoJoin.value = entered > 0 ? `Joined ${entered}!` : 'No entries';
 
-        // Show notification
-        if (window.AutoJoinUtils) {
-          if (entered > 0) {
-            AutoJoinUtils.showNotification(
-              `Successfully joined ${entered} giveaway${
-                entered !== 1 ? 's' : ''
-              }!`,
-              'success'
-            );
-          } else {
-            AutoJoinUtils.showNotification(
-              'No giveaways were joined based on your criteria',
-              'info'
-            );
+          // Show notification
+          if (window.AutoJoinUtils) {
+            if (entered > 0) {
+              AutoJoinUtils.showNotification(
+                `Successfully joined ${entered} giveaway${
+                  entered !== 1 ? 's' : ''
+                }!`,
+                'success',
+              );
+            } else {
+              AutoJoinUtils.showNotification(
+                'No giveaways were joined based on your criteria',
+                'info',
+              );
+            }
           }
+
+          // Reset button after delay and hide info banner for a clean layout
+          setTimeout(() => {
+            btnAutoJoin.classList.remove('success');
+            btnAutoJoin.value = 'AutoJoin';
+            const infoEl = document.querySelector('#info');
+            if (infoEl) {
+              infoEl.style.display = 'none';
+              infoEl.textContent = '';
+            }
+          }, 3000);
         }
-
-        // Reset button after delay and hide info banner for a clean layout
-        setTimeout(() => {
-          btnAutoJoin.classList.remove('success');
-          btnAutoJoin.value = 'AutoJoin';
-          const infoEl = document.querySelector('#info');
-          if (infoEl) {
-            infoEl.style.display = 'none';
-            infoEl.textContent = '';
-          }
-        }, 3000);
-      }
-    }, timeouts.length * settings.Delay * 1000 + 2000);
+      },
+      timeouts.length * settings.Delay * 1000 + 2000,
+    );
 
     document.querySelector('#btnAutoJoin').textContent = 'Good luck!';
   }
@@ -1104,7 +931,7 @@ function onPageLoad() {
               .textContent.match(/(\d+)P/);
             const pointsNeeded = parseInt(
               pointsNeededRaw[pointsNeededRaw.length - 1],
-              10
+              10,
             );
             if (pointsNeeded > currentState.points) {
               el.disabled = true;
@@ -1132,7 +959,7 @@ function onPageLoad() {
       if (clickedEl) {
         const thisPost = clickedEl.closest('.giveaway__row-outer-wrap');
         const gameid = thisPost.dataset.gameId;
-        console.log(`hiding ${gameid}`);
+        console.debug(`hiding ${gameid}`);
         clickedEl.classList.remove('fa-eye-slash');
         clickedEl.classList.add('fa-refresh', 'fa-spin');
 
@@ -1162,7 +989,7 @@ function onPageLoad() {
           loadDescription(thisPost);
         } else {
           const descriptionContent = thisPost.querySelector(
-            '.descriptionContent'
+            '.descriptionContent',
           );
           if (descriptionContent.classList.toggle('visible')) {
             clickedEl.querySelector('span').textContent = 'Hide description';
@@ -1194,7 +1021,7 @@ function onPageLoad() {
       thisButton.textContent = 'Processing...';
 
       const giveawayUrlPath = thisWrap.querySelector(
-        '.giveaway__heading__name'
+        '.giveaway__heading__name',
       ).href;
       const uniqueCode = giveawayUrlPath.match(/.+giveaway\/(.+)\//)[1];
 
@@ -1250,10 +1077,10 @@ function onPageLoad() {
             /* Post Comment */
             if (settings.AutoComment && settings.Comment) {
               /* parse comment settings */
-              let comments = settings.Comment.split('#').map((comment) =>
-                comment.trim()
+              const comments = settings.Comment.split('#').map((comment) =>
+                comment.trim(),
               );
-              let chosenComment =
+              const chosenComment =
                 comments[Math.floor(Math.random() * comments.length)];
               if (chosenComment) {
                 // checks if an empty comment has been selected
@@ -1366,7 +1193,7 @@ function calculateWinChance(giveaway, timeLoaded) {
   const timeLeft =
     parseInt(
       giveaway.querySelector('.fa.fa-clock-o + span').dataset.timestamp,
-      10
+      10,
     ) - timeLoaded; // time left in seconds
   const timePassed =
     timeLoaded -
@@ -1374,13 +1201,13 @@ function calculateWinChance(giveaway, timeLoaded) {
       giveaway
         .querySelector('.giveaway__username')
         .parentElement.querySelector('span').dataset.timestamp,
-      10
+      10,
     ); // time passed in seconds
   const numberOfEntries = parseInt(
     giveaway
       .querySelector('.giveaway__links a[href$="/entries"]')
       ?.textContent.replace(',', ''),
-    10
+    10,
   );
   let numberOfCopies = 1;
   if (
@@ -1395,7 +1222,7 @@ function calculateWinChance(giveaway, timeLoaded) {
         .querySelector('.giveaway__heading__thin')
         .textContent.replace(',', '')
         .match(/\d+/)[0],
-      10
+      10,
     );
   }
   const predictionOfEntries = (numberOfEntries / timePassed) * timeLeft; // calculate rate of entries and multiply on time left, probably not very accurate as we assume linear rate
@@ -1423,7 +1250,7 @@ function loadDescription(giveaway) {
       const parser = new DOMParser();
       const giveawayDOM = parser.parseFromString(giveawayContent, 'text/html');
       let giveawayDescription = giveawayDOM.querySelector(
-        '.page__description .markdown'
+        '.page__description .markdown',
       );
       if (giveawayDescription == null) {
         giveawayDescription = document.createTextNode('No description.');
@@ -1435,12 +1262,12 @@ function loadDescription(giveaway) {
 
 async function checkAppData(giveaway, timeLoaded) {
   // USING STEAMAPI
-  let appId = getSteamAppId(giveaway);
+  const appId = getSteamAppId(giveaway);
 
   if (appId != false) {
-    let cacheData =
+    const cacheData =
       steamAppData[appId] != undefined ? steamAppData[appId] : undefined;
-    let lastUpdated = cacheData != undefined ? cacheData.lastUpdated : 0;
+    const lastUpdated = cacheData != undefined ? cacheData.lastUpdated : 0;
 
     if (
       cacheData != undefined &&
@@ -1454,14 +1281,14 @@ async function checkAppData(giveaway, timeLoaded) {
       cacheData.version != thisVersion
     ) {
       const url = `https://store.steampowered.com/api/appdetails?appids=${appId}&filters=basic,categories`;
-      let response = await chrome.runtime.sendMessage({
+      const response = await chrome.runtime.sendMessage({
         task: 'fetch',
         url,
       });
       if (response.status === 200) {
-        let jsonResponse = JSON.parse(response.text);
+        const jsonResponse = JSON.parse(response.text);
         if (jsonResponse[appId].success == true) {
-          let tradingCards =
+          const tradingCards =
             jsonResponse[appId].data.categories != undefined
               ? jsonResponse[appId].data.categories.some(function (data) {
                   return data.id == 29;
@@ -1472,14 +1299,14 @@ async function checkAppData(giveaway, timeLoaded) {
             jsonResponse[appId].data.type,
             tradingCards,
             lastUpdated,
-            timeLoaded
+            timeLoaded,
           );
           if (
             filterGiveaway(
               giveaway,
               appId,
               jsonResponse[appId].data.type,
-              tradingCards
+              tradingCards,
             )
           ) {
             removeGiveaway('app', appId, giveaway);
@@ -1493,16 +1320,16 @@ async function checkAppData(giveaway, timeLoaded) {
 }
 
 async function checkSteamPackageData(giveaway, timeLoaded) {
-  let packageId = getSteamPackageId(giveaway);
+  const packageId = getSteamPackageId(giveaway);
   if (packageId == false) {
     return;
   }
   let appIds = [];
-  let cacheData =
+  const cacheData =
     steamPackageData[packageId] != undefined
       ? steamPackageData[packageId]
       : undefined;
-  let lastUpdated = cacheData != undefined ? cacheData.lastUpdated : 0;
+  const lastUpdated = cacheData != undefined ? cacheData.lastUpdated : 0;
 
   if (cacheData != undefined) {
     appIds = steamPackageData[packageId].appIds;
@@ -1514,15 +1341,15 @@ async function checkSteamPackageData(giveaway, timeLoaded) {
     timeLoaded - lastUpdated >= 604800 ||
     cacheData.version != thisVersion
   ) {
-    let url = `https://store.steampowered.com/api/packagedetails?packageids=${packageId}`;
-    let response = await chrome.runtime.sendMessage({
+    const url = `https://store.steampowered.com/api/packagedetails?packageids=${packageId}`;
+    const response = await chrome.runtime.sendMessage({
       task: 'fetch',
       url,
     });
     if (response.status === 200) {
-      let jsonResponse = JSON.parse(response.text);
+      const jsonResponse = JSON.parse(response.text);
       if (jsonResponse[packageId].success == true) {
-        let jsonIds = jsonResponse[packageId].data.apps;
+        const jsonIds = jsonResponse[packageId].data.apps;
         for (
           let i = 0, numIds = jsonIds != null ? jsonIds.length : 0;
           i < numIds;
@@ -1540,9 +1367,9 @@ async function checkSteamPackageData(giveaway, timeLoaded) {
 async function checkSteamPackageApps(appIds, packageId, giveaway, timeLoaded) {
   let removePackage = true;
   for (const appId of appIds) {
-    let cacheData =
+    const cacheData =
       steamAppData[appId] != undefined ? steamAppData[appId] : undefined;
-    let lastUpdated = cacheData != undefined ? cacheData.lastUpdated : 0;
+    const lastUpdated = cacheData != undefined ? cacheData.lastUpdated : 0;
 
     if (cacheData != undefined) {
       if (
@@ -1551,7 +1378,7 @@ async function checkSteamPackageApps(appIds, packageId, giveaway, timeLoaded) {
           giveaway,
           appId,
           cacheData.appType,
-          cacheData.hasTradingCards
+          cacheData.hasTradingCards,
         )
       ) {
         removePackage = false;
@@ -1562,8 +1389,8 @@ async function checkSteamPackageApps(appIds, packageId, giveaway, timeLoaded) {
       timeLoaded - lastUpdated >= 604800 ||
       cacheData.version != thisVersion
     ) {
-      let url = `https://store.steampowered.com/api/packagedetails?packageids=${packageId}`;
-      let response = await chrome.runtime.sendMessage({
+      const url = `https://store.steampowered.com/api/packagedetails?packageids=${packageId}`;
+      const response = await chrome.runtime.sendMessage({
         task: 'fetch',
         url,
       });
@@ -1579,7 +1406,7 @@ async function checkSteamPackageApps(appIds, packageId, giveaway, timeLoaded) {
           if (appJson[appId]?.success === true) {
             const data = appJson[appId].data;
             const hasCats = Array.isArray(data.categories);
-            let tradingCards = hasCats
+            const tradingCards = hasCats
               ? data.categories.some((c) => c && c.id == 29)
               : false;
             cacheSteamAppData(
@@ -1587,7 +1414,7 @@ async function checkSteamPackageApps(appIds, packageId, giveaway, timeLoaded) {
               data.type,
               tradingCards,
               lastUpdated,
-              timeLoaded
+              timeLoaded,
             );
             if (!filterGiveaway(giveaway, appId, data.type, tradingCards)) {
               removePackage = false;
@@ -1610,7 +1437,7 @@ function cacheSteamAppData(
   appType,
   tradingCards,
   lastUpdated,
-  timeLoaded
+  timeLoaded,
 ) {
   if (
     steamAppData[appId] === undefined ||
@@ -1625,13 +1452,13 @@ function cacheSteamAppData(
       version: thisVersion,
     };
 
-    let cacheAppData = {};
+  const cacheAppData = {};
     cacheAppData.Apps = steamAppData;
     chrome.storage.local.set(cacheAppData, () => {
       if (chrome.runtime.lastError) {
-        console.log(chrome.runtime.lastError.message);
+        console.warn(chrome.runtime.lastError.message);
       } else {
-        console.log('Cached', steamAppData[appId]);
+        console.debug('Cached', steamAppData[appId]);
       }
     });
   }
@@ -1650,22 +1477,22 @@ function cacheSteamPackageData(packageId, appIds, lastUpdated, timeLoaded) {
       version: thisVersion,
     };
 
-    let cachePackageData = {};
+    const cachePackageData = {};
     cachePackageData.Packages = steamPackageData;
     chrome.storage.local.set(cachePackageData, () => {
       if (chrome.runtime.lastError) {
-        console.log(chrome.runtime.lastError.message);
+        console.warn(chrome.runtime.lastError.message);
       } else {
-        console.log('Cached', steamPackageData[packageId]);
+        console.debug('Cached', steamPackageData[packageId]);
       }
     });
   }
 }
 
 function getSteamAppId(giveaway) {
-  let steamLink = giveaway.querySelector('.fa-steam')?.parentElement?.href;
+  const steamLink = giveaway.querySelector('.fa-steam')?.parentElement?.href;
   if (!steamLink) {
-    console.log('error retrieving app id');
+    console.debug('error retrieving app id');
     return false;
   }
   const appmatch = steamLink.match(/.+app\/(\d+)\//);
@@ -1677,14 +1504,14 @@ function getSteamAppId(giveaway) {
 
 function getSteamPackageId(giveaway) {
   const iconEl = giveaway.querySelector(
-    '.giveaway__summary .giveaway__heading .giveaway__icon'
+    '.giveaway__summary .giveaway__heading .giveaway__icon',
   );
   const steamLink = iconEl?.href || null;
   if (!steamLink) {
-    console.log('error retrieving package id');
+    console.debug('error retrieving package id');
     return false;
   }
-  let packagematch = steamLink.match(/.+sub\/(\d+)\//);
+  const packagematch = steamLink.match(/.+sub\/(\d+)\//);
   if (packagematch == null) {
     return false;
   }
@@ -1695,7 +1522,7 @@ function removeGiveaway(type, id, giveaway) {
   if (
     !giveaway.parentElement?.classList.contains('pinned-giveaways__inner-wrap')
   ) {
-    console.log(`hidden ${type}: ${id}`);
+    console.debug(`hidden ${type}: ${id}`);
     giveaway.remove();
   }
 }
@@ -1723,11 +1550,11 @@ function ignoreGiveaway(steamGroup, whitelist) {
 }
 
 function filterGiveaway(giveaway, appID, appType, hasTradingCards) {
-  let steamGroupGiveaway = Boolean(
-    giveaway.querySelector('.giveaway__column--group')
+  const steamGroupGiveaway = Boolean(
+    giveaway.querySelector('.giveaway__column--group'),
   );
-  let whiteListGiveaway = Boolean(
-    giveaway.querySelector('.giveaway__column--whitelist')
+  const whiteListGiveaway = Boolean(
+    giveaway.querySelector('.giveaway__column--whitelist'),
   );
 
   if (hasGame(appID)) {

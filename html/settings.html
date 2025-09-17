@@ -1,494 +1,849 @@
 <!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AutoJoin for SteamGifts - Settings</title>
+    <link rel="stylesheet" href="../css/main.css" />
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AutoJoin for SteamGifts - Settings</title>
-  <link rel="stylesheet" href="../css/main.css" />
+    <link rel="stylesheet" href="../css/fontawesome/fontawesome.min.css" />
+    <script type="text/javascript" src="../js/core/settings-store.js" defer></script>
+    <script type="text/javascript" src="../js/settings.js" defer></script>
+  </head>
 
-  <link rel="stylesheet" href="../css/fontawesome/fontawesome.min.css" />
-  <script type="text/javascript" src="../js/settings.js" defer></script>
-</head>
+  <body>
+    <!-- Notification container -->
+    <div id="notification-container" class="notification-container"></div>
 
-<body>
-  <!-- Notification container -->
-  <div id="notification-container" class="notification-container"></div>
+    <div id="bodyWrapper">
+      <div
+        id="settingsDiv"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="settings-title"
+      >
+        <div class="settings-header">
+          <h1 id="settings-title">
+            <i class="fas fa-cog" aria-hidden="true"></i> AutoJoin Settings
+          </h1>
+          <p>Configure the AutoJoin extension to match your preferences</p>
+          <button
+            type="button"
+            class="settingsCancel settings-close"
+            aria-label="Close settings"
+          >
+            &times;
+          </button>
+        </div>
 
-  <div id="bodyWrapper">
-    <div id="settingsDiv" role="dialog" aria-modal="true" aria-labelledby="settings-title">
-      <div class="settings-header">
-        <h1 id="settings-title"><i class="fas fa-cog" aria-hidden="true"></i> AutoJoin Settings</h1>
-        <p>Configure the AutoJoin extension to match your preferences</p>
-        <button type="button" class="settingsCancel settings-close" aria-label="Close settings">&times;</button>
+        <div
+          class="settings-tabs"
+          role="tablist"
+          aria-label="Settings Categories"
+        >
+          <button
+            class="tab-button active"
+            data-tab="general"
+            role="tab"
+            aria-controls="general"
+            aria-selected="true"
+            tabindex="0"
+          >
+            <i class="fas fa-sliders-h" aria-hidden="true"></i> General
+          </button>
+          <button
+            class="tab-button"
+            data-tab="background"
+            role="tab"
+            aria-controls="background"
+            aria-selected="false"
+            tabindex="-1"
+          >
+            <i class="fas fa-robot" aria-hidden="true"></i> Background
+          </button>
+          <button
+            class="tab-button"
+            data-tab="filters"
+            role="tab"
+            aria-controls="filters"
+            aria-selected="false"
+            tabindex="-1"
+          >
+            <i class="fas fa-filter" aria-hidden="true"></i> Filters
+          </button>
+        </div>
+
+        <div
+          class="tab-content active"
+          id="general"
+          role="tabpanel"
+          aria-labelledby="general-tab"
+          aria-hidden="false"
+        >
+          <div class="settings-section">
+            <h3><i class="fas fa-desktop"></i> Display Options</h3>
+            <div class="settings-grid">
+              <div class="setting-item">
+                <label for="chkInfiniteScroll">
+                  <input id="chkInfiniteScroll" type="checkbox" />
+                  <span class="setting-text">Enable Infinite Scrolling</span>
+                </label>
+              </div>
+              <div class="setting-item">
+                <label for="chkShowPoints">
+                  <input id="chkShowPoints" type="checkbox" />
+                  <span class="setting-text"
+                    >Show points and level in top-left corner</span
+                  >
+                </label>
+              </div>
+              <div class="setting-item">
+                <label for="chkShowButtons">
+                  <input id="chkShowButtons" type="checkbox" />
+                  <span class="setting-text"
+                    >Show buttons beside each giveaway</span
+                  >
+                </label>
+              </div>
+              <div class="setting-item">
+                <label for="chkAutoDescription">
+                  <input id="chkAutoDescription" type="checkbox" />
+                  <span class="setting-text"
+                    >Auto-load descriptions of joined giveaways</span
+                  >
+                </label>
+              </div>
+              <div class="setting-item">
+                <label for="chkShowChance">
+                  <input id="chkShowChance" type="checkbox" />
+                  <span class="setting-text"
+                    >Show approximate odds of winning</span
+                  >
+                </label>
+              </div>
+              <div class="setting-item">
+                <label for="chkPreciseTime">
+                  <input id="chkPreciseTime" type="checkbox" />
+                  <span class="setting-text">Show precise remaining time</span>
+                </label>
+              </div>
+              <div class="setting-item">
+                <label for="chkNightTheme">
+                  <input id="chkNightTheme" type="checkbox" />
+                  <span class="setting-text">Enable Night theme</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="settings-section">
+            <h3><i class="fas fa-comment"></i> Comments</h3>
+            <div class="settings-grid">
+              <div class="setting-item full-width">
+                <label for="chkAutoComment">
+                  <input id="chkAutoComment" type="checkbox" />
+                  <span class="setting-text"
+                    >Automatically post comment on joined giveaways:</span
+                  >
+                </label>
+                <input
+                  id="txtAutoComment"
+                  data-setting="Comment"
+                  type="text"
+                  placeholder="Separate different comments with #"
+                  class="text-input"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="settings-section warning-section">
+            <h3>
+              <i class="fas fa-exclamation-triangle warning-icon"></i> AutoJoin
+              Features
+            </h3>
+            <div class="warning-message">
+              <i class="fas fa-exclamation-triangle"></i>
+              <span
+                >Warning: AutoJoin features are against SteamGifts rules and may
+                result in account suspension</span
+              >
+            </div>
+            <div class="settings-grid">
+              <div class="setting-item">
+                <label for="chkAutoJoinButton">
+                  <input id="chkAutoJoinButton" type="checkbox" />
+                  <span class="setting-text">Show AutoJoin button</span>
+                </label>
+              </div>
+              <div class="setting-item dependsOnAutoJoinButton">
+                <label for="chkLoadFive">
+                  <input id="chkLoadFive" type="checkbox" />
+                  <span class="setting-text"
+                    >Load
+                    <input
+                      type="number"
+                      size="2"
+                      id="pagestoload"
+                      min="1"
+                      max="5"
+                      value="3"
+                      class="number-input"
+                    />
+                    pages before Auto-join</span
+                  >
+                </label>
+              </div>
+              <div class="setting-item dependsOnAutoJoinButton">
+                <label for="chkRepeatIfOnPage">
+                  <input id="chkRepeatIfOnPage" type="checkbox" />
+                  <span class="setting-text"
+                    >AutoJoin every
+                    <input
+                      type="number"
+                      size="2"
+                      id="hoursField"
+                      min="1"
+                      max="24"
+                      value="2"
+                      class="number-input"
+                    />
+                    hours if page is open</span
+                  >
+                </label>
+              </div>
+            </div>
+
+            <div class="subsection dependsOnAutoJoinButton">
+              <h4><i class="fas fa-star"></i> Prioritize giveaways by:</h4>
+              <div class="settings-grid">
+                <div class="setting-item">
+                  <label for="chkWishlistPriority">
+                    <input
+                      id="chkWishlistPriority"
+                      data-setting="PriorityWishlist"
+                      type="checkbox"
+                    />
+                    <span class="setting-text">Steam wishlist giveaways</span>
+                  </label>
+                </div>
+                <div class="setting-item">
+                  <label for="chkGroupPriority">
+                    <input
+                      id="chkGroupPriority"
+                      data-setting="PriorityGroup"
+                      type="checkbox"
+                    />
+                    <span class="setting-text">Steam group giveaways</span>
+                  </label>
+                </div>
+                <div class="setting-item">
+                  <label for="chkRegionPriority">
+                    <input
+                      id="chkRegionPriority"
+                      data-setting="PriorityRegion"
+                      type="checkbox"
+                    />
+                    <span class="setting-text">Region locked giveaways</span>
+                  </label>
+                </div>
+                <div class="setting-item">
+                  <label for="chkWhitelistPriority">
+                    <input
+                      id="chkWhitelistPriority"
+                      data-setting="PriorityWhitelist"
+                      type="checkbox"
+                    />
+                    <span class="setting-text"
+                      >SteamGifts whitelist giveaways</span
+                    >
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="subsection dependsOnAutoJoinButton">
+              <h4><i class="fas fa-ban"></i> Ignore giveaways by:</h4>
+              <div class="settings-grid">
+                <div class="setting-item">
+                  <label for="chkIgnorePinned">
+                    <input
+                      id="chkIgnorePinned"
+                      data-setting="IgnorePinned"
+                      type="checkbox"
+                    />
+                    <span class="setting-text">Featured giveaways</span>
+                  </label>
+                </div>
+                <div class="setting-item">
+                  <label for="chkIgnoreGroups">
+                    <input
+                      id="chkIgnoreGroups"
+                      data-setting="IgnoreGroups"
+                      type="checkbox"
+                    />
+                    <span class="setting-text">Steam group giveaways</span>
+                  </label>
+                </div>
+                <div class="setting-item">
+                  <label for="chkIgnoreWhitelist">
+                    <input
+                      id="chkIgnoreWhitelist"
+                      data-setting="IgnoreWhitelist"
+                      type="checkbox"
+                    />
+                    <span class="setting-text"
+                      >SteamGifts whitelist giveaways</span
+                    >
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="subsection dependsOnAutoJoinButton">
+              <h4><i class="fas fa-cog"></i> AutoJoin Settings</h4>
+              <div class="settings-grid">
+                <div class="setting-item">
+                  <label>
+                    <span class="setting-text"
+                      >Min cost to enter:
+                      <input
+                        type="number"
+                        size="3"
+                        id="minCost"
+                        min="0"
+                        max="200"
+                        value="0"
+                        class="number-input"
+                      />
+                      points</span
+                    >
+                  </label>
+                </div>
+                <div class="setting-item">
+                  <label>
+                    <span class="setting-text"
+                      >Max cost to enter:
+                      <input
+                        type="number"
+                        size="3"
+                        id="maxCost"
+                        min="-1"
+                        max="200"
+                        value="-1"
+                        class="number-input"
+                      />
+                      points</span
+                    >
+                  </label>
+                </div>
+                <div class="setting-item">
+                  <label>
+                    <span class="setting-text"
+                      >Delay between requests:
+                      <input
+                        type="number"
+                        size="2"
+                        id="delay"
+                        min="5"
+                        max="60"
+                        value="10"
+                        class="number-input"
+                      />
+                      seconds</span
+                    >
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-content" id="background">
+          <div class="settings-section">
+            <h3><i class="fas fa-volume-up"></i> Notifications & Audio</h3>
+            <div class="settings-grid">
+              <div class="setting-item">
+                <label for="chkPlayAudio">
+                  <input
+                    id="chkPlayAudio"
+                    data-setting="PlayAudio"
+                    type="checkbox"
+                  />
+                  <span class="setting-text">Play sound when won</span>
+                </label>
+              </div>
+              <div class="setting-item">
+                <label for="audioVolume">
+                  <span class="setting-text"
+                    >Volume:
+                    <input
+                      type="range"
+                      id="audioVolume"
+                      data-setting="AudioVolume"
+                      min="0"
+                      max="1"
+                      step="0.01"
+                      value="1"
+                      class="volume-slider"
+                  /></span>
+                </label>
+              </div>
+              <div class="setting-item">
+                <label for="chkNotifyLimit">
+                  <input
+                    id="chkNotifyLimit"
+                    data-setting="NotifyLimit"
+                    type="checkbox"
+                  />
+                  <span class="setting-text"
+                    >Notify when I have
+                    <input
+                      id="notifyLimitAmount"
+                      data-setting="NotifyLimitAmount"
+                      type="number"
+                      size="3"
+                      min="0"
+                      max="400"
+                      value="300"
+                      class="number-input"
+                    />+ points</span
+                  >
+                </label>
+              </div>
+              <div class="setting-item">
+                <label for="chkAutoRedeemKey">
+                  <input
+                    id="chkAutoRedeemKey"
+                    data-setting="AutoRedeemKey"
+                    type="checkbox"
+                  />
+                  <span class="setting-text">Auto-redeem Steam keys</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="settings-section warning-section">
+            <h3>
+              <i class="fas fa-robot warning-icon"></i> Background AutoJoin
+            </h3>
+            <div class="warning-message">
+              <i class="fas fa-exclamation-triangle"></i>
+              <span
+                >Warning: Background AutoJoin is against SteamGifts rules and
+                may result in account suspension</span
+              >
+            </div>
+            <div class="settings-grid">
+              <div class="setting-item full-width">
+                <label for="chkEnableBG">
+                  <input
+                    id="chkEnableBG"
+                    data-setting="BackgroundAJ"
+                    type="checkbox"
+                  />
+                  <span class="setting-text"
+                    >Enable AutoJoin in background on:</span
+                  >
+                </label>
+                <select id="pageforBG" class="select-input">
+                  <option value="all">Main page (All)</option>
+                  <option value="wishlist">Wishlist</option>
+                  <option value="group">Group</option>
+                  <option value="new">New</option>
+                  <option value="recommended">Recommended</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="subsection dependsOnBackgroundAutoJoin">
+              <h4><i class="fas fa-trophy"></i> Priority Settings</h4>
+              <div class="settings-grid">
+                <div class="setting-item">
+                  <label for="chkNoPriorityBG">
+                    <input
+                      id="chkNoPriorityBG"
+                      name="BGpriority"
+                      type="radio"
+                      checked="checked"
+                    />
+                    <span class="setting-text">No priority</span>
+                  </label>
+                </div>
+                <div class="setting-item">
+                  <label for="chkLevelPriorityBG">
+                    <input
+                      id="chkLevelPriorityBG"
+                      name="BGpriority"
+                      type="radio"
+                    />
+                    <span class="setting-text">Higher level giveaways</span>
+                  </label>
+                </div>
+                <div class="setting-item">
+                  <label for="chkOddsPriorityBG">
+                    <input
+                      id="chkOddsPriorityBG"
+                      name="BGpriority"
+                      type="radio"
+                    />
+                    <span class="setting-text">Higher odds of winning</span>
+                  </label>
+                </div>
+              </div>
+              <div class="settings-grid">
+                <div class="setting-item">
+                  <label for="chkWishlistPriorityForMainBG">
+                    <input
+                      id="chkWishlistPriorityForMainBG"
+                      data-setting="WishlistPriorityForMainBG"
+                      type="checkbox"
+                    />
+                    <span class="setting-text"
+                      >Enter wishlist giveaways first for Main page</span
+                    >
+                  </label>
+                </div>
+                <div class="setting-item">
+                  <label for="chkIgnorePreserveWishlistOnMainBG">
+                    <input
+                      id="chkIgnorePreserveWishlistOnMainBG"
+                      data-setting="IgnorePreserveWishlistOnMainBG"
+                      type="checkbox"
+                    />
+                    <span class="setting-text"
+                      >Ignore preserve points for wishlist on Main page</span
+                    >
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="subsection dependsOnBackgroundAutoJoin">
+              <h4><i class="fas fa-filter"></i> Ignore Settings</h4>
+              <div class="settings-grid">
+                <div class="setting-item">
+                  <label for="chkIgnoreGroupsBG">
+                    <input
+                      id="chkIgnoreGroupsBG"
+                      data-setting="IgnoreGroupsBG"
+                      type="checkbox"
+                    />
+                    <span class="setting-text"
+                      >Ignore groups giveaways for Main page</span
+                    >
+                  </label>
+                </div>
+                <div class="setting-item">
+                  <label for="chkIgnorePinnedBG">
+                    <input
+                      id="chkIgnorePinnedBG"
+                      data-setting="IgnorePinnedBG"
+                      type="checkbox"
+                    />
+                    <span class="setting-text">Ignore featured giveaways</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="subsection dependsOnBackgroundAutoJoin">
+              <h4><i class="fas fa-clock"></i> Timing Settings</h4>
+              <div class="settings-grid">
+                <div class="setting-item">
+                  <label>
+                    <span class="setting-text"
+                      >AutoJoin every
+                      <input
+                        type="number"
+                        size="2"
+                        id="hoursFieldBG"
+                        data-setting="RepeatHoursBG"
+                        min="0"
+                        max="24"
+                        value="2"
+                        class="number-input"
+                      />
+                      hours</span
+                    >
+                  </label>
+                </div>
+                <div class="setting-item">
+                  <label>
+                    <span class="setting-text"
+                      >Load
+                      <input
+                        type="number"
+                        size="2"
+                        id="pagestoloadBG"
+                        min="1"
+                        max="3"
+                        value="2"
+                        class="number-input"
+                      />
+                      pages before joining</span
+                    >
+                  </label>
+                </div>
+                <div class="setting-item">
+                  <label>
+                    <span class="setting-text"
+                      >Delay:
+                      <input
+                        type="number"
+                        size="2"
+                        id="delayBG"
+                        min="5"
+                        max="60"
+                        value="10"
+                        class="number-input"
+                      />
+                      seconds</span
+                    >
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="subsection dependsOnBackgroundAutoJoin">
+              <h4><i class="fas fa-coins"></i> Cost & Level Settings</h4>
+              <div class="settings-grid">
+                <div class="setting-item">
+                  <label>
+                    <span class="setting-text"
+                      >Min level:
+                      <input
+                        type="number"
+                        size="2"
+                        id="minLevelBG"
+                        min="0"
+                        max="10"
+                        value="0"
+                        class="number-input"
+                    /></span>
+                  </label>
+                </div>
+                <div class="setting-item">
+                  <label>
+                    <span class="setting-text"
+                      >Min cost:
+                      <input
+                        type="number"
+                        size="3"
+                        id="minCostBG"
+                        min="0"
+                        max="200"
+                        value="0"
+                        class="number-input"
+                      />
+                      points</span
+                    >
+                  </label>
+                </div>
+                <div class="setting-item">
+                  <label>
+                    <span class="setting-text"
+                      >Max cost:
+                      <input
+                        type="number"
+                        size="3"
+                        id="maxCostBG"
+                        min="-1"
+                        max="200"
+                        value="-1"
+                        class="number-input"
+                      />
+                      points</span
+                    >
+                  </label>
+                </div>
+                <div class="setting-item">
+                  <label>
+                    <span class="setting-text"
+                      >Preserve
+                      <input
+                        type="number"
+                        size="3"
+                        id="pointsToPreserve"
+                        min="0"
+                        max="300"
+                        value="0"
+                        class="number-input"
+                      />
+                      points</span
+                    >
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-content" id="filters">
+          <div class="settings-section">
+            <h3><i class="fas fa-eye-slash"></i> Filter Giveaways</h3>
+            <div class="settings-grid">
+              <div class="setting-item">
+                <label for="chkHideDlc">
+                  <input id="chkHideDlc" type="checkbox" />
+                  <span class="setting-text">Hide DLC giveaways</span>
+                </label>
+              </div>
+              <div class="setting-item">
+                <label for="chkHideNonTradingCards">
+                  <input id="chkHideNonTradingCards" type="checkbox" />
+                  <span class="setting-text"
+                    >Hide non-trading card giveaways</span
+                  >
+                </label>
+              </div>
+              <div class="setting-item">
+                <label for="chkHideGroups">
+                  <input id="chkHideGroups" type="checkbox" />
+                  <span class="setting-text">Hide Steam group giveaways</span>
+                </label>
+              </div>
+              <div class="setting-item">
+                <label for="chkHideWhitelist">
+                  <input id="chkHideWhitelist" type="checkbox" />
+                  <span class="setting-text"
+                    >Hide SteamGifts whitelist giveaways</span
+                  >
+                </label>
+              </div>
+              <div class="setting-item">
+                <label for="chkHideEntered">
+                  <input id="chkHideEntered" type="checkbox" />
+                  <span class="setting-text">Hide joined giveaways</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="settings-section">
+            <h3><i class="fas fa-level-up-alt"></i> Level Filters</h3>
+            <div class="settings-grid">
+              <div class="setting-item">
+                <label>
+                  <span class="setting-text"
+                    >Hide giveaways below level
+                    <input
+                      id="hideLevelsBelow"
+                      type="number"
+                      min="0"
+                      max="10"
+                      value="0"
+                      class="number-input"
+                  /></span>
+                </label>
+              </div>
+              <div class="setting-item">
+                <label>
+                  <span class="setting-text"
+                    >Hide giveaways above level
+                    <input
+                      id="hideLevelsAbove"
+                      type="number"
+                      min="0"
+                      max="10"
+                      value="10"
+                      class="number-input"
+                  /></span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="settings-section">
+            <h3><i class="fas fa-coins"></i> Cost Filters</h3>
+            <div class="settings-grid">
+              <div class="setting-item">
+                <label>
+                  <span class="setting-text"
+                    >Hide giveaways with cost below
+                    <input
+                      id="hideCostsBelow"
+                      type="number"
+                      min="0"
+                      max="50"
+                      value="0"
+                      class="number-input"
+                    />
+                    points</span
+                  >
+                </label>
+              </div>
+              <div class="setting-item">
+                <label>
+                  <span class="setting-text"
+                    >Hide giveaways with cost above
+                    <input
+                      id="hideCostsAbove"
+                      type="number"
+                      min="0"
+                      max="50"
+                      value="50"
+                      class="number-input"
+                    />
+                    points</span
+                  >
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="linksContainer">
+          <div class="link-item">
+            <a
+              target="_blank"
+              href="https://chrome.google.com/webstore/detail/autojoin-for-steamgifts/bchhlccjhoedhhegglilngpbnldfcidc"
+            >
+              <i class="fab fa-chrome"></i>
+              <span>Chrome Web Store</span>
+            </a>
+          </div>
+          <div class="link-item">
+            <a
+              target="_blank"
+              href="https://addons.mozilla.org/firefox/addon/autojoin/"
+            >
+              <i class="fab fa-firefox"></i>
+              <span>Firefox Add-ons</span>
+            </a>
+          </div>
+          <div class="link-item">
+            <a target="_blank" href="http://steamcommunity.com/groups/autojoin">
+              <i class="fab fa-steam"></i>
+              <span>Steam Group</span>
+            </a>
+          </div>
+          <div class="link-item">
+            <a
+              target="_blank"
+              href="https://github.com/ge-ku/AutoJoin-for-SteamGifts"
+            >
+              <i class="fab fa-github"></i>
+              <span>Github Page</span>
+            </a>
+          </div>
+        </div>
+
+        <div id="SaveCancelContainer">
+          <button id="btnSetSave" class="btn-primary" type="button">
+            <i class="fas fa-save"></i> Save Settings
+          </button>
+          <button
+            id="btnSetCancel"
+            class="btn-secondary settingsCancel"
+            type="button"
+          >
+            <i class="fas fa-times"></i> Cancel
+          </button>
+        </div>
       </div>
-
-      <div class="settings-tabs" role="tablist" aria-label="Settings Categories">
-        <button class="tab-button active" data-tab="general" role="tab" aria-controls="general" aria-selected="true"
-          tabindex="0">
-          <i class="fas fa-sliders-h" aria-hidden="true"></i> General
-        </button>
-        <button class="tab-button" data-tab="background" role="tab" aria-controls="background" aria-selected="false"
-          tabindex="-1">
-          <i class="fas fa-robot" aria-hidden="true"></i> Background
-        </button>
-        <button class="tab-button" data-tab="filters" role="tab" aria-controls="filters" aria-selected="false"
-          tabindex="-1">
-          <i class="fas fa-filter" aria-hidden="true"></i> Filters
-        </button>
-      </div>
-
-      <div class="tab-content active" id="general" role="tabpanel" aria-labelledby="general-tab" aria-hidden="false">
-        <div class="settings-section">
-          <h3><i class="fas fa-desktop"></i> Display Options</h3>
-          <div class="settings-grid">
-            <div class="setting-item">
-              <label for="chkInfiniteScroll">
-                <input id="chkInfiniteScroll" type="checkbox" />
-                <span class="setting-text">Enable Infinite Scrolling</span>
-              </label>
-            </div>
-            <div class="setting-item">
-              <label for="chkShowPoints">
-                <input id="chkShowPoints" type="checkbox" />
-                <span class="setting-text">Show points and level in top-left corner</span>
-              </label>
-            </div>
-            <div class="setting-item">
-              <label for="chkShowButtons">
-                <input id="chkShowButtons" type="checkbox" />
-                <span class="setting-text">Show buttons beside each giveaway</span>
-              </label>
-            </div>
-            <div class="setting-item">
-              <label for="chkAutoDescription">
-                <input id="chkAutoDescription" type="checkbox" />
-                <span class="setting-text">Auto-load descriptions of joined giveaways</span>
-              </label>
-            </div>
-            <div class="setting-item">
-              <label for="chkShowChance">
-                <input id="chkShowChance" type="checkbox" />
-                <span class="setting-text">Show approximate odds of winning</span>
-              </label>
-            </div>
-            <div class="setting-item">
-              <label for="chkPreciseTime">
-                <input id="chkPreciseTime" type="checkbox" />
-                <span class="setting-text">Show precise remaining time</span>
-              </label>
-            </div>
-            <div class="setting-item">
-              <label for="chkNightTheme">
-                <input id="chkNightTheme" type="checkbox" />
-                <span class="setting-text">Enable Night theme</span>
-              </label>
-            </div>
-          </div>
-        </div>
-
-        <div class="settings-section">
-          <h3><i class="fas fa-comment"></i> Comments</h3>
-          <div class="settings-grid">
-            <div class="setting-item full-width">
-              <label for="chkAutoComment">
-                <input id="chkAutoComment" type="checkbox" />
-                <span class="setting-text">Automatically post comment on joined giveaways:</span>
-              </label>
-              <input id="txtAutoComment" type="text" placeholder="Separate different comments with #"
-                class="text-input">
-            </div>
-          </div>
-        </div>
-
-        <div class="settings-section warning-section">
-          <h3><i class="fas fa-exclamation-triangle warning-icon"></i> AutoJoin Features</h3>
-          <div class="warning-message">
-            <i class="fas fa-exclamation-triangle"></i>
-            <span>Warning: AutoJoin features are against SteamGifts rules and may result in account suspension</span>
-          </div>
-          <div class="settings-grid">
-            <div class="setting-item">
-              <label for="chkAutoJoinButton">
-                <input id="chkAutoJoinButton" type="checkbox" />
-                <span class="setting-text">Show AutoJoin button</span>
-              </label>
-            </div>
-            <div class="setting-item dependsOnAutoJoinButton">
-              <label for="chkLoadFive">
-                <input id="chkLoadFive" type="checkbox" />
-                <span class="setting-text">Load <input type="number" size="2" id="pagestoload" min="1" max="5" value="3"
-                    class="number-input"> pages before Auto-join</span>
-              </label>
-            </div>
-            <div class="setting-item dependsOnAutoJoinButton">
-              <label for="chkRepeatIfOnPage">
-                <input id="chkRepeatIfOnPage" type="checkbox" />
-                <span class="setting-text">AutoJoin every <input type="number" size="2" id="hoursField" min="1" max="24"
-                    value="2" class="number-input"> hours if page is open</span>
-              </label>
-            </div>
-          </div>
-
-          <div class="subsection dependsOnAutoJoinButton">
-            <h4><i class="fas fa-star"></i> Prioritize giveaways by:</h4>
-            <div class="settings-grid">
-              <div class="setting-item">
-                <label for="chkWishlistPriority">
-                  <input id="chkWishlistPriority" type="checkbox" />
-                  <span class="setting-text">Steam wishlist giveaways</span>
-                </label>
-              </div>
-              <div class="setting-item">
-                <label for="chkGroupPriority">
-                  <input id="chkGroupPriority" type="checkbox" />
-                  <span class="setting-text">Steam group giveaways</span>
-                </label>
-              </div>
-              <div class="setting-item">
-                <label for="chkRegionPriority">
-                  <input id="chkRegionPriority" type="checkbox" />
-                  <span class="setting-text">Region locked giveaways</span>
-                </label>
-              </div>
-              <div class="setting-item">
-                <label for="chkWhitelistPriority">
-                  <input id="chkWhitelistPriority" type="checkbox" />
-                  <span class="setting-text">SteamGifts whitelist giveaways</span>
-                </label>
-              </div>
-            </div>
-          </div>
-
-          <div class="subsection dependsOnAutoJoinButton">
-            <h4><i class="fas fa-ban"></i> Ignore giveaways by:</h4>
-            <div class="settings-grid">
-              <div class="setting-item">
-                <label for="chkIgnorePinned">
-                  <input id="chkIgnorePinned" type="checkbox" />
-                  <span class="setting-text">Featured giveaways</span>
-                </label>
-              </div>
-              <div class="setting-item">
-                <label for="chkIgnoreGroups">
-                  <input id="chkIgnoreGroups" type="checkbox" />
-                  <span class="setting-text">Steam group giveaways</span>
-                </label>
-              </div>
-              <div class="setting-item">
-                <label for="chkIgnoreWhitelist">
-                  <input id="chkIgnoreWhitelist" type="checkbox" />
-                  <span class="setting-text">SteamGifts whitelist giveaways</span>
-                </label>
-              </div>
-            </div>
-          </div>
-
-          <div class="subsection dependsOnAutoJoinButton">
-            <h4><i class="fas fa-cog"></i> AutoJoin Settings</h4>
-            <div class="settings-grid">
-              <div class="setting-item">
-                <label>
-                  <span class="setting-text">Min cost to enter: <input type="number" size="3" id="minCost" min="0"
-                      max="200" value="0" class="number-input"> points</span>
-                </label>
-              </div>
-              <div class="setting-item">
-                <label>
-                  <span class="setting-text">Max cost to enter: <input type="number" size="3" id="maxCost" min="-1"
-                      max="200" value="-1" class="number-input"> points</span>
-                </label>
-              </div>
-              <div class="setting-item">
-                <label>
-                  <span class="setting-text">Delay between requests: <input type="number" size="2" id="delay" min="5"
-                      max="60" value="10" class="number-input"> seconds</span>
-                </label>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="tab-content" id="background">
-        <div class="settings-section">
-          <h3><i class="fas fa-volume-up"></i> Notifications & Audio</h3>
-          <div class="settings-grid">
-            <div class="setting-item">
-              <label for="chkPlayAudio">
-                <input id="chkPlayAudio" type="checkbox" />
-                <span class="setting-text">Play sound when won</span>
-              </label>
-            </div>
-            <div class="setting-item">
-              <label for="audioVolume">
-                <span class="setting-text">Volume: <input type="range" id="audioVolume" min="0" max="1" step="0.01"
-                    value="1" class="volume-slider"></span>
-              </label>
-            </div>
-            <div class="setting-item">
-              <label for="chkNotifyLimit">
-                <input id="chkNotifyLimit" type="checkbox" />
-                <span class="setting-text">Notify when I have <input id="notifyLimitAmount" type="number" size="3"
-                    min="0" max="400" value="300" class="number-input">+ points</span>
-              </label>
-            </div>
-            <div class="setting-item">
-              <label for="chkAutoRedeemKey">
-                <input id="chkAutoRedeemKey" type="checkbox" />
-                <span class="setting-text">Auto-redeem Steam keys</span>
-              </label>
-            </div>
-          </div>
-        </div>
-
-        <div class="settings-section warning-section">
-          <h3><i class="fas fa-robot warning-icon"></i> Background AutoJoin</h3>
-          <div class="warning-message">
-            <i class="fas fa-exclamation-triangle"></i>
-            <span>Warning: Background AutoJoin is against SteamGifts rules and may result in account suspension</span>
-          </div>
-          <div class="settings-grid">
-            <div class="setting-item full-width">
-              <label for="chkEnableBG">
-                <input id="chkEnableBG" type="checkbox" />
-                <span class="setting-text">Enable AutoJoin in background on:</span>
-              </label>
-              <select id="pageforBG" class="select-input">
-                <option value="all">Main page (All)</option>
-                <option value="wishlist">Wishlist</option>
-                <option value="group">Group</option>
-                <option value="new">New</option>
-                <option value="recommended">Recommended</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="subsection dependsOnBackgroundAutoJoin">
-            <h4><i class="fas fa-trophy"></i> Priority Settings</h4>
-            <div class="settings-grid">
-              <div class="setting-item">
-                <label for="chkNoPriorityBG">
-                  <input id="chkNoPriorityBG" name="BGpriority" type="radio" checked="checked" />
-                  <span class="setting-text">No priority</span>
-                </label>
-              </div>
-              <div class="setting-item">
-                <label for="chkLevelPriorityBG">
-                  <input id="chkLevelPriorityBG" name="BGpriority" type="radio" />
-                  <span class="setting-text">Higher level giveaways</span>
-                </label>
-              </div>
-              <div class="setting-item">
-                <label for="chkOddsPriorityBG">
-                  <input id="chkOddsPriorityBG" name="BGpriority" type="radio" />
-                  <span class="setting-text">Higher odds of winning</span>
-                </label>
-              </div>
-            </div>
-            <div class="settings-grid">
-              <div class="setting-item">
-                <label for="chkWishlistPriorityForMainBG">
-                  <input id="chkWishlistPriorityForMainBG" type="checkbox" />
-                  <span class="setting-text">Enter wishlist giveaways first for Main page</span>
-                </label>
-              </div>
-              <div class="setting-item">
-                <label for="chkIgnorePreserveWishlistOnMainBG">
-                  <input id="chkIgnorePreserveWishlistOnMainBG" type="checkbox" />
-                  <span class="setting-text">Ignore preserve points for wishlist on Main page</span>
-                </label>
-              </div>
-            </div>
-          </div>
-
-          <div class="subsection dependsOnBackgroundAutoJoin">
-            <h4><i class="fas fa-filter"></i> Ignore Settings</h4>
-            <div class="settings-grid">
-              <div class="setting-item">
-                <label for="chkIgnoreGroupsBG">
-                  <input id="chkIgnoreGroupsBG" type="checkbox" />
-                  <span class="setting-text">Ignore groups giveaways for Main page</span>
-                </label>
-              </div>
-              <div class="setting-item">
-                <label for="chkIgnorePinnedBG">
-                  <input id="chkIgnorePinnedBG" type="checkbox" />
-                  <span class="setting-text">Ignore featured giveaways</span>
-                </label>
-              </div>
-            </div>
-          </div>
-
-          <div class="subsection dependsOnBackgroundAutoJoin">
-            <h4><i class="fas fa-clock"></i> Timing Settings</h4>
-            <div class="settings-grid">
-              <div class="setting-item">
-                <label>
-                  <span class="setting-text">AutoJoin every <input type="number" size="2" id="hoursFieldBG" min="0"
-                      max="24" value="2" class="number-input"> hours</span>
-                </label>
-              </div>
-              <div class="setting-item">
-                <label>
-                  <span class="setting-text">Load <input type="number" size="2" id="pagestoloadBG" min="1" max="3"
-                      value="2" class="number-input"> pages before joining</span>
-                </label>
-              </div>
-              <div class="setting-item">
-                <label>
-                  <span class="setting-text">Delay: <input type="number" size="2" id="delayBG" min="5" max="60"
-                      value="10" class="number-input"> seconds</span>
-                </label>
-              </div>
-            </div>
-          </div>
-
-          <div class="subsection dependsOnBackgroundAutoJoin">
-            <h4><i class="fas fa-coins"></i> Cost & Level Settings</h4>
-            <div class="settings-grid">
-              <div class="setting-item">
-                <label>
-                  <span class="setting-text">Min level: <input type="number" size="2" id="minLevelBG" min="0" max="10"
-                      value="0" class="number-input"></span>
-                </label>
-              </div>
-              <div class="setting-item">
-                <label>
-                  <span class="setting-text">Min cost: <input type="number" size="3" id="minCostBG" min="0" max="200"
-                      value="0" class="number-input"> points</span>
-                </label>
-              </div>
-              <div class="setting-item">
-                <label>
-                  <span class="setting-text">Max cost: <input type="number" size="3" id="maxCostBG" min="-1" max="200"
-                      value="-1" class="number-input"> points</span>
-                </label>
-              </div>
-              <div class="setting-item">
-                <label>
-                  <span class="setting-text">Preserve <input type="number" size="3" id="pointsToPreserve" min="0"
-                      max="300" value="0" class="number-input"> points</span>
-                </label>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="tab-content" id="filters">
-        <div class="settings-section">
-          <h3><i class="fas fa-eye-slash"></i> Filter Giveaways</h3>
-          <div class="settings-grid">
-            <div class="setting-item">
-              <label for="chkHideDlc">
-                <input id="chkHideDlc" type="checkbox" />
-                <span class="setting-text">Hide DLC giveaways</span>
-              </label>
-            </div>
-            <div class="setting-item">
-              <label for="chkHideNonTradingCards">
-                <input id="chkHideNonTradingCards" type="checkbox" />
-                <span class="setting-text">Hide non-trading card giveaways</span>
-              </label>
-            </div>
-            <div class="setting-item">
-              <label for="chkHideGroups">
-                <input id="chkHideGroups" type="checkbox" />
-                <span class="setting-text">Hide Steam group giveaways</span>
-              </label>
-            </div>
-            <div class="setting-item">
-              <label for="chkHideWhitelist">
-                <input id="chkHideWhitelist" type="checkbox" />
-                <span class="setting-text">Hide SteamGifts whitelist giveaways</span>
-              </label>
-            </div>
-            <div class="setting-item">
-              <label for="chkHideEntered">
-                <input id="chkHideEntered" type="checkbox" />
-                <span class="setting-text">Hide joined giveaways</span>
-              </label>
-            </div>
-          </div>
-        </div>
-
-        <div class="settings-section">
-          <h3><i class="fas fa-level-up-alt"></i> Level Filters</h3>
-          <div class="settings-grid">
-            <div class="setting-item">
-              <label>
-                <span class="setting-text">Hide giveaways below level <input id="hideLevelsBelow" type="number" min="0"
-                    max="10" value="0" class="number-input"></span>
-              </label>
-            </div>
-            <div class="setting-item">
-              <label>
-                <span class="setting-text">Hide giveaways above level <input id="hideLevelsAbove" type="number" min="0"
-                    max="10" value="10" class="number-input"></span>
-              </label>
-            </div>
-          </div>
-        </div>
-
-        <div class="settings-section">
-          <h3><i class="fas fa-coins"></i> Cost Filters</h3>
-          <div class="settings-grid">
-            <div class="setting-item">
-              <label>
-                <span class="setting-text">Hide giveaways with cost below <input id="hideCostsBelow" type="number"
-                    min="0" max="50" value="0" class="number-input"> points</span>
-              </label>
-            </div>
-            <div class="setting-item">
-              <label>
-                <span class="setting-text">Hide giveaways with cost above <input id="hideCostsAbove" type="number"
-                    min="0" max="50" value="50" class="number-input"> points</span>
-              </label>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div id="linksContainer">
-        <div class="link-item">
-          <a target="_blank"
-            href="https://chrome.google.com/webstore/detail/autojoin-for-steamgifts/bchhlccjhoedhhegglilngpbnldfcidc">
-            <i class="fab fa-chrome"></i>
-            <span>Chrome Web Store</span>
-          </a>
-        </div>
-        <div class="link-item">
-          <a target="_blank" href="https://addons.mozilla.org/firefox/addon/autojoin/">
-            <i class="fab fa-firefox"></i>
-            <span>Firefox Add-ons</span>
-          </a>
-        </div>
-        <div class="link-item">
-          <a target="_blank" href="http://steamcommunity.com/groups/autojoin">
-            <i class="fab fa-steam"></i>
-            <span>Steam Group</span>
-          </a>
-        </div>
-        <div class="link-item">
-          <a target="_blank" href="https://github.com/ge-ku/AutoJoin-for-SteamGifts">
-            <i class="fab fa-github"></i>
-            <span>Github Page</span>
-          </a>
-        </div>
-      </div>
-
-      <div id="SaveCancelContainer">
-        <button id="btnSetSave" class="btn-primary" type="button">
-          <i class="fas fa-save"></i> Save Settings
-        </button>
-        <button id="btnSetCancel" class="btn-secondary settingsCancel" type="button">
-          <i class="fas fa-times"></i> Cancel
-        </button>
-      </div>
+      <div id="settingsShade" class="settingsCancel"></div>
     </div>
-    <div id="settingsShade" class="settingsCancel"></div>
-  </div>
-</body>
-
+  </body>
 </html>

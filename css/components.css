@@ -40,31 +40,31 @@
 }
 
 /* Button States */
-.btnSingle[walkState="join"] {
+.btnSingle[walkState='join'] {
   background: var(--gradient-success);
   color: var(--white);
 }
 
-.btnSingle[walkState="join"]:hover:not(:disabled) {
+.btnSingle[walkState='join']:hover:not(:disabled) {
   background: linear-gradient(135deg, #45a049 0%, #3d8b40 100%);
 }
 
-.btnSingle[walkState="leave"] {
+.btnSingle[walkState='leave'] {
   background: var(--gradient-danger);
   color: var(--white);
 }
 
-.btnSingle[walkState="leave"]:hover:not(:disabled) {
+.btnSingle[walkState='leave']:hover:not(:disabled) {
   background: linear-gradient(135deg, #d32f2f 0%, #b71c1c 100%);
 }
 
-.btnSingle[walkState|="no"] {
+.btnSingle[walkState|='no'] {
   background: var(--gradient-secondary);
   color: var(--white);
   cursor: not-allowed;
 }
 
-.btnSingle[walkState|="no"]:hover {
+.btnSingle[walkState|='no']:hover {
   background: linear-gradient(135deg, #757575 0%, #616161 100%);
 }
 
@@ -94,7 +94,7 @@
   position: relative;
   width: 150px;
   cursor: pointer;
-  background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+  background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
   color: var(--white);
   border: none;
   border-radius: var(--radius-lg);
@@ -107,7 +107,7 @@
 }
 
 #btnAutoJoin:hover {
-  background: linear-gradient(135deg, #1976D2 0%, #1565C0 100%);
+  background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
 }
@@ -146,7 +146,7 @@
 }
 
 #btnSettings.AutoJoinButtonEnabled:hover {
-  background: linear-gradient(135deg, #F57C00 0%, #EF6C00 100%);
+  background: linear-gradient(135deg, #f57c00 0%, #ef6c00 100%);
   transform: scale(1.05);
   box-shadow: var(--shadow-md);
 }
@@ -168,7 +168,11 @@
 }
 
 .btnSingle.success {
-  background: linear-gradient(135deg, var(--success-color) 0%, var(--success-light) 100%) !important;
+  background: linear-gradient(
+    135deg,
+    var(--success-color) 0%,
+    var(--success-light) 100%
+  ) !important;
   animation: successPulse 0.6s ease-in-out;
 }
 

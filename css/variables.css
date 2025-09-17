@@ -39,9 +39,9 @@
 
   /* Gradients */
   --gradient-primary: linear-gradient(135deg, #3f51b5 0%, #4527a0 100%);
-  --gradient-success: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+  --gradient-success: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
   --gradient-danger: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
-  --gradient-warning: linear-gradient(135deg, #FF9800 0%, #F57C00 100%);
+  --gradient-warning: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
   --gradient-secondary: linear-gradient(135deg, #9e9e9e 0%, #757575 100%);
 
   /* Shadows */
@@ -86,7 +86,7 @@ body.night-theme {
   --bg-primary: var(--gray-900);
   --bg-secondary: #2f3540;
   --text-primary: var(--white);
-  --text-secondary: #BBBBBB;
+  --text-secondary: #bbbbbb;
   --border-color: rgba(255, 255, 255, 0.1);
   --overlay-bg: rgba(0, 0, 0, 0.9);
 }

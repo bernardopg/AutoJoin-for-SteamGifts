@@ -1,108 +1,75 @@
-# WARP.md
+# WARP • Manual para warp.dev / Cloud workspaces
 
-This file provides guidance to WARP (warp.dev) when working with code in this repository.
+Este guia ajuda ambientes warp.dev (ou terminais remotos semelhantes) a colaborar com o projeto de forma segura e produtiva.
 
-## Project Overview
+- [Português (Brasil)](#pt)
+- [English](#en)
 
-AutoJoin for SteamGifts is a browser extension (Manifest V3) that automatically joins giveaways on SteamGifts.com. The extension uses modern JavaScript ES6+ and includes background service workers, content scripts, and offscreen documents for HTML parsing.
+---
 
-## Repository Structure
+<a id="pt"></a>
+<details open>
+<summary><strong>Português (Brasil)</strong></summary>
 
-- `manifest.json` — Extension manifest (Manifest V3)
-- `js/` — Core JavaScript source files
-  - `backgroundpage.js` — Service worker handling auto-join logic, notifications, and Steam key redemption
-  - `autoentry.js` — Content script for auto-join functionality
-  - `settings.js` — Settings management
-  - `utils-enhanced.js` — Utility functions
-  - `offscreen.js` — Offscreen document for DOM parsing and audio
-- `js/core/` — Modular components
-  - `giveaway.js` — Giveaway class with join/leave/filter logic
-  - `page-enhancements.js` — UI enhancements for SteamGifts pages
-- `html/` — HTML pages (settings, offscreen)
-- `css/` — Stylesheets including night mode and FontAwesome
-- `media/` — Extension icons and audio files
+#### Resumo técnico
+- Extensão Chrome/Edge Manifest V3; scripts principais em `js/`, módulos em `js/core/` e páginas em `html/`.
+- Requer Node.js ≥ 18 apenas para lint/test automatizados (a extensão em si não depende de build).
+- Configuração recomendada: `npm install` seguido de `npm run check`.
 
-## Development Commands
+#### Fluxo sugerido no warp.dev
+1. **Inicialização**
+   ```bash
+   npm install
+   npm run check
+   ```
+2. **Desenvolvimento** – use `warp` blocks ou painéis para acompanhar logs (`npm run lint -- --fix`, `npm test`).
+3. **Hot reload** – recarregue a extensão via `chrome://extensions` → *Reload* após `npm run check`.
+4. **Pacotes** – para gerar builds locais, utilize `zip -r AutoJoin_$(date +%Y%m%d).zip . -x "node_modules/*" -x "*.git*"`.
 
-### Initial Setup
+#### Dicas específicas warp.dev
+- Configure Workflows com prompts que executem `npm run lint` e `npm test` antes de concluir.
+- Utilize blocos de saída (Output Blocks) para salvar diffs críticos ou logs relevantes para revisão humana.
+- Habilite sincronização de variáveis apenas para valores não sensíveis; tokens do SteamGifts não devem ser armazenados.
 
-```bash
-# Install dependencies (currently none, but structure is in place)
-npm install
+#### Segurança & privacidade
+- Não acesse sites externos a partir do workspace sem necessidade.
+- Use redes privadas ou VPN confiável ao testar funcionalidades que interagem com Steam/SteamGifts.
 
-# For ESLint (when dependencies are added)
-npm install --save-dev eslint eslint-config-airbnb-base
-```
+</details>
 
-### Linting and Checks
+---
 
-```bash
-# Run checks (placeholder - add linters when dependencies installed)
-npm run check
+<a id="en"></a>
+<details>
+<summary><strong>English</strong></summary>
 
-# Run tests (placeholder - no tests configured yet)
-npm test
-```
+#### Technical quick facts
+- Chrome/Edge Manifest V3 extension; core scripts under `js/`, modules under `js/core/`, pages in `html/`.
+- Node.js ≥ 18 only for linting/testing automation (extension has no bundling step).
+- Recommended bootstrap: `npm install` followed by `npm run check`.
 
-### Loading the Extension
+#### Suggested warp.dev flow
+1. **Bootstrap**
+   ```bash
+   npm install
+   npm run check
+   ```
+2. **Development** – leverage warp blocks/panels to watch lint output (`npm run lint -- --fix`, `npm test`).
+3. **Hot reload** – reload the extension via `chrome://extensions` → *Reload* after running checks.
+4. **Packaging** – produce local builds via `zip -r AutoJoin_$(date +%Y%m%d).zip . -x "node_modules/*" -x "*.git*"`.
 
-1. Chrome/Edge: Navigate to chrome://extensions/, enable Developer Mode, click "Load unpacked" and select repository root
-2. Firefox: Navigate to about:debugging, click "This Firefox", "Load Temporary Add-on" and select manifest.json
+#### warp.dev tips
+- Create Workflows that enforce `npm run lint` and `npm test` before completion.
+- Use Output Blocks to capture critical diffs/logs for human review.
+- Sync variables only for non-sensitive values; never store Steam/SteamGifts tokens in warp secrets.
 
-### Building for Distribution
+#### Security & privacy
+- Avoid browsing unrelated sites from the workspace to reduce exposure.
+- Prefer trusted networks or VPN when testing flows interacting with Steam/SteamGifts.
 
-```bash
-# Create a ZIP for distribution (manual process currently)
-zip -r AutoJoin_$(date +%Y%m%d).zip . -x "*.git*" -x "node_modules/*" -x "*.zip"
-```
+</details>
 
-## Key Technical Details
+---
 
-### Manifest V3 Specifics
+Para instruções gerais de contribuição consulte [`CONTRIBUTING.md`](CONTRIBUTING.md) e para segurança veja [`SECURITY.md`](SECURITY.md).
 
-- Uses service worker instead of background page
-- Offscreen documents for DOM parsing and audio playback (required for MV3)
-- Host permissions for steamgifts.com and store.steampowered.com
-
-### Core Functionality Flow
-
-1. Background service worker (`backgroundpage.js`) manages the auto-join logic
-2. Content scripts inject UI enhancements and handle page interactions
-3. Offscreen document handles HTML parsing and audio notifications
-4. Settings stored in chrome.storage
-
-### API Endpoints
-
-- Giveaway join/leave: `https://www.steamgifts.com/ajax.php`
-- Uses FormData with XSRF token for authentication
-- Supports automatic Steam key redemption via Steam store API
-
-### ESLint Configuration
-
-- Extends airbnb-base
-- Browser environment with jQuery and Chrome globals
-- Customized rules for extension development (see .eslintrc.json)
-
-## Testing Approach
-
-Currently no automated tests. When implementing:
-
-1. Test extension in multiple browsers (Chrome, Edge, Firefox)
-2. Verify auto-join functionality on steamgifts.com
-3. Check console for errors
-4. Test settings persistence
-5. Verify notifications work correctly
-
-## Branch Strategy
-
-- `master` — Main development branch
-- Feature branches: `feature/description` or `fix/bug-description`
-- `organize-repo` — Contains documentation and CI scaffolding
-
-## CI/CD Pipeline
-
-GitHub Actions workflow at `.github/workflows/ci.yml`:
-
-- Runs on push/PR to main branch
-- Sets up Node.js 18
-- Runs `npm run check` and `npm test` (placeholders currently)

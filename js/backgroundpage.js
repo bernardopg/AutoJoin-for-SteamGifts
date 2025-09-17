@@ -1,3 +1,5 @@
+importScripts('core/settings-store.js');
+
 /*
   This script page is the background script. autoentry.js is the autojoin button and other page
   modifications
@@ -70,7 +72,7 @@ const playAudio = async (volume) => {
 /* Variables declaration */
 let arr = [];
 let settings;
-let link = 'https://www.steamgifts.com/giveaways/search?page=';
+const link = 'https://www.steamgifts.com/giveaways/search?page=';
 let pages = 1;
 let pagestemp = pages;
 let token = '';
@@ -78,10 +80,11 @@ let mylevel = 0;
 let timepassed = 0;
 let timetopass = 100;
 let justLaunched = true;
-let thisVersion = 20170929;
+const thisVersion = 20170929;
 let totalWishlistGAcnt = 0;
 let useWishlistPriorityForMainBG = false;
 let currPoints = 0;
+const backgroundSettingsStore = globalThis.AutoJoinSettingsStore;
 
 const steamKeyRedeemResponses = {
   0: 'NoDetail',
@@ -199,7 +202,7 @@ const findAndRedeemKeys = async (wonPage) => {
         if (data.indexOf('playerAvatar') != -1) {
           const steamSessionId = data.substring(
             data.indexOf('g_sessionID') + 15,
-            data.indexOf('g_sessionID') + 15 + 24
+            data.indexOf('g_sessionID') + 15 + 24,
           );
 
           const formData = new FormData();
@@ -210,30 +213,30 @@ const findAndRedeemKeys = async (wonPage) => {
             {
               method: 'post',
               body: formData,
-            }
+            },
           );
           if (res.ok) {
             const data = res.json();
             latestSteamKeyRedeemResponse = JSON.stringify(data); // for debugging
 
             const itemsList = data.purchase_receipt_info.line_items.map(
-              (item) => item.line_item_description
+              (item) => item.line_item_description,
             );
             const redeemedGames = itemsList.join(',');
 
-            console.log(steamKeyRedeemResponses[data.purchase_result_details]);
+            console.debug(steamKeyRedeemResponses[data.purchase_result_details]);
 
             // Check response (success needs to be exactly 1, no more, no less)
             if (data.success === 1) {
-              console.log(
+              console.debug(
                 'Steam Code for ' +
                   redeemedGames +
-                  ' was redeemed successfully!'
+                  ' was redeemed successfully!',
               );
               notifySteamCodeResponse(
                 'Steam Code for ' +
                   redeemedGames +
-                  ' was redeemed successfully!'
+                  ' was redeemed successfully!',
               );
 
               // Mark as received
@@ -248,20 +251,20 @@ const findAndRedeemKeys = async (wonPage) => {
               });
               if (!res.ok)
                 console.error(
-                  `Error while trying to mark giveaway as received: HTTP ${res.status}`
+                  `Error while trying to mark giveaway as received: HTTP ${res.status}`,
                 );
             } else if (
               steamKeyRedeemResponses[data.purchase_result_details] != undefined
             ) {
               // In case there is an error but the names of the games failed to be redeemed are also returned
               if (redeemedGames != '') {
-                console.log(
+                console.warn(
                   '[!] Steam Code: ' +
                     key +
                     ' for ' +
                     redeemedGames +
                     ' was not redeemed! Error: ' +
-                    steamKeyRedeemResponses[data.purchase_result_details]
+                    steamKeyRedeemResponses[data.purchase_result_details],
                 );
                 notifySteamCodeResponse(
                   'Steam Code: ' +
@@ -269,48 +272,48 @@ const findAndRedeemKeys = async (wonPage) => {
                     ' for ' +
                     redeemedGames +
                     ' was not redeemed!\nError: ' +
-                    steamKeyRedeemResponses[data.purchase_result_details]
+                    steamKeyRedeemResponses[data.purchase_result_details],
                 );
               } else {
-                console.log(
+                console.warn(
                   '[!] Steam Code: ' +
                     key +
                     ' was not redeemed! Error: ' +
-                    steamKeyRedeemResponses[data.purchase_result_details]
+                    steamKeyRedeemResponses[data.purchase_result_details],
                 );
                 notifySteamCodeResponse(
                   'Steam Code: ' +
                     key +
                     ' was not redeemed!\nError: ' +
-                    steamKeyRedeemResponses[data.purchase_result_details]
+                    steamKeyRedeemResponses[data.purchase_result_details],
                 );
               }
             } else {
-              console.log(
+              console.warn(
                 '[!] Steam Code: ' +
                   key +
                   ' was not redeemed! Unknown Error. Debug: ' +
-                  latestSteamKeyRedeemResponse
+                  latestSteamKeyRedeemResponse,
               );
               notifySteamCodeResponse(
-                'Steam Code: ' + key + ' was not redeemed!\nUnknown Error.'
+                'Steam Code: ' + key + ' was not redeemed!\nUnknown Error.',
               );
             }
           } else {
             console.error(`Error registering key on Steam: HTTP ${res.status}`);
           }
         } else {
-          console.log(
-            '[!] Not logged in on Steam! Code: ' + key + ' was not redeemed!'
+          console.warn(
+            '[!] Not logged in on Steam! Code: ' + key + ' was not redeemed!',
           );
           notifySteamCodeResponse(
-            'Not logged in on Steam!\nCode: ' + key + ' was not redeemed!'
+            'Not logged in on Steam!\nCode: ' + key + ' was not redeemed!',
           );
         }
       } else {
-        console.log('[!] Invalid Format!');
+        console.warn('[AutoJoin] Invalid key format received from Steam.');
         notifySteamCodeResponse(
-          'Invalid Format!\nCode: ' + key + ' was not redeemed!'
+          'Invalid Format!\nCode: ' + key + ' was not redeemed!',
         );
       }
     } else {
@@ -318,6 +321,8 @@ const findAndRedeemKeys = async (wonPage) => {
     }
   }
 };
+
+globalThis.findAndRedeemKeys = findAndRedeemKeys;
 
 // Minimal Giveaway representation for background worker (decoupled from content scripts)
 class BGGiveaway {
@@ -350,7 +355,7 @@ const calculateWinChance = (
   timeStart,
   numberOfEntries,
   numberOfCopies,
-  timeLoaded
+  timeLoaded,
 ) => {
   const timePassed = timeLoaded - timeStart; // time passed in seconds
   // calculate rate of entries and multiply by time left,
@@ -366,11 +371,11 @@ const notify = async (type, msg) => {
     case 'win':
       try {
         const response = await fetch(
-          'https://www.steamgifts.com/giveaways/won'
+          'https://www.steamgifts.com/giveaways/won',
         );
         if (!response.ok) {
           console.error(
-            `Could not fetch /giveaways/won page: HTTP ${response.status}`
+            `Could not fetch /giveaways/won page: HTTP ${response.status}`,
           );
           break;
         }
@@ -390,14 +395,16 @@ const notify = async (type, msg) => {
             iconUrl: chrome.runtime.getURL('./media/autologosteam.png'),
           };
           chrome.notifications.create('won_notification', e, () => {
-            chrome.storage.sync.get(
-              { PlayAudio: 'true', AudioVolume: 1 },
-              (data) => {
+            backgroundSettingsStore
+              ?.load()
+              .then((data) => {
                 if (data.PlayAudio === true) {
                   playAudio(data.AudioVolume);
                 }
-              }
-            );
+              })
+              .catch((error) => {
+                console.error('Failed to read audio settings:', error);
+              });
           });
         });
         if (settings?.AutoRedeemKey) {
@@ -436,7 +443,7 @@ const notify = async (type, msg) => {
       });
       break;
     default:
-      console.log('Unknown notification type');
+      console.warn('Unknown notification type');
       break;
   }
 };
@@ -474,7 +481,7 @@ const scanpage = async (html) => {
       giveaway.timeStart,
       giveaway.numberOfEntries,
       giveaway.numberOfCopies,
-      timePageLoaded
+      timePageLoaded,
     );
     arr.push(
       new BGGiveaway({
@@ -487,7 +494,7 @@ const scanpage = async (html) => {
         numberOfEntries: giveaway.numberOfEntries || 0,
         status: { Entered: false, NoPoints: false, NoLevel: false },
         odds: oddsOfWinning,
-      })
+      }),
     );
   }
 
@@ -538,80 +545,84 @@ function pagesloaded() {
       continue;
     }
     if (ga.cost < settings.MinCostBG) {
-      console.log(
+      console.debug(
         `Giveaway ${ga.getUrl()} (${ga.cost} P) | Level: ${
           ga.level
-        } | Time left: ${ga.timeleft} s`
+        } | Time left: ${ga.timeleft} s`,
       );
-      console.log(
-        `^Skipped, cost: ${ga.cost}, your settings.MinCostBG is ${settings.MinCostBG}`
+      console.debug(
+        `^Skipped, cost: ${ga.cost}, your settings.MinCostBG is ${settings.MinCostBG}`,
       );
       continue;
     }
     if (settings.MaxCostBG != -1 && ga.cost > settings.MaxCostBG) {
-      console.log(
+      console.debug(
         `Giveaway ${ga.getUrl()} (${ga.cost} P) | Level: ${
           ga.level
-        } | Time left: ${ga.timeleft} s`
+        } | Time left: ${ga.timeleft} s`,
       );
-      console.log(
-        `^Skipped, cost: ${ga.cost}, your settings.MaxCostBG is ${settings.MaxCostBG}`
+      console.debug(
+        `^Skipped, cost: ${ga.cost}, your settings.MaxCostBG is ${settings.MaxCostBG}`,
       );
       continue;
     }
     if (ga.timeleft > settings.MaxTimeLeftBG && settings.MaxTimeLeftBG !== 0) {
-      console.log(
+      console.debug(
         `Giveaway ${ga.getUrl()} (${ga.cost} P) | Level: ${
           ga.level
-        } | Time left: ${ga.timeleft} s`
+        } | Time left: ${ga.timeleft} s`,
       );
-      console.log(
-        `^Skipped, timeleft: ${ga.timeleft}, your settings.MaxTimeLeftBG is ${settings.MaxTimeLeftBG}`
+      console.debug(
+        `^Skipped, timeleft: ${ga.timeleft}, your settings.MaxTimeLeftBG is ${settings.MaxTimeLeftBG}`,
       );
       continue;
     }
 
     timeouts.push(
-      setTimeout(async () => {
-        const formData = new FormData();
-        formData.append('xsrf_token', token);
-        formData.append('do', 'entry_insert');
-        formData.append('code', ga.code);
+      setTimeout(
+        async () => {
+          const formData = new FormData();
+          formData.append('xsrf_token', token);
+          formData.append('do', 'entry_insert');
+          formData.append('code', ga.code);
 
-        const res = await fetch('https://www.steamgifts.com/ajax.php', {
-          method: 'post',
-          body: formData,
-        });
-        const jsonResponse = await res.json();
-        console.log(
-          `Giveaway ${ga.getUrl()} (${ga.cost} P) | Level: ${
-            ga.level
-          } | Time left: ${ga.timeleft} s`
-        );
-
-        let clearTimeouts = false;
-        if (
-          jsonResponse.msg === 'Not Enough Points' ||
-          (jsonResponse.points < settings.PointsToPreserve &&
-            useWishlistPriorityForMainBG &&
-            settings.IgnorePreserveWishlistOnMainBG)
-        ) {
-          // Stop to preserve points when wishlist priority is enabled or not enough points
-          clearTimeouts = true;
-        }
-
-        if (clearTimeouts) {
-          console.log(
-            "^Not Enough Points or your PointsToPreserve limit reached, we're done for now"
+          const res = await fetch('https://www.steamgifts.com/ajax.php', {
+            method: 'post',
+            body: formData,
+          });
+          const jsonResponse = await res.json();
+          console.debug(
+            `Giveaway ${ga.getUrl()} (${ga.cost} P) | Level: ${
+              ga.level
+            } | Time left: ${ga.timeleft} s`,
           );
-          for (const timeout of timeouts) {
-            clearTimeout(timeout);
+
+          let clearTimeouts = false;
+          if (
+            jsonResponse.msg === 'Not Enough Points' ||
+            (jsonResponse.points < settings.PointsToPreserve &&
+              useWishlistPriorityForMainBG &&
+              settings.IgnorePreserveWishlistOnMainBG)
+          ) {
+            // Stop to preserve points when wishlist priority is enabled or not enough points
+            clearTimeouts = true;
           }
-          timeouts = [];
-        } else {
-          console.log('^Entered');
-        }
-      }, (timeouts.length + 1) * settings.DelayBG * 1000 + Math.floor(Math.random() * 2001))
+
+          if (clearTimeouts) {
+            console.debug(
+              "^Not Enough Points or your PointsToPreserve limit reached, we're done for now",
+            );
+            for (const timeout of timeouts) {
+              clearTimeout(timeout);
+            }
+            timeouts = [];
+          } else {
+            console.debug('^Entered');
+          }
+        },
+        (timeouts.length + 1) * settings.DelayBG * 1000 +
+          Math.floor(Math.random() * 2001),
+      ),
     );
   }
 }
@@ -656,17 +667,17 @@ const settingsloaded = async () => {
     } else {
       currPoints = result.myPoints;
       if (currPoints >= settings.NotifyLimitAmount && settings.NotifyLimit) {
-        console.log(
-          `Sending notification about accumulated points: ${currPoints} > ${settings.NotifyLimitAmount}`
+        console.info(
+          `Sending notification about accumulated points: ${currPoints} > ${settings.NotifyLimitAmount}`,
         );
         notify('points', currPoints);
       }
-      console.log(`Current Points: ${currPoints}`);
+      console.debug(`Current Points: ${currPoints}`);
     }
     // check level and save if changed
     mylevel = result.myLevel;
     if (settings.LastKnownLevel !== mylevel) {
-      chrome.storage.sync.set({ LastKnownLevel: mylevel });
+      backgroundSettingsStore?.save({ LastKnownLevel: mylevel });
     }
   } else {
     /* Else check if won first (since pop-up disappears after first view), then start scanning pages */
@@ -692,8 +703,8 @@ const settingsloaded = async () => {
       currPoints >= settings.NotifyLimitAmount &&
       settings.NotifyLimit
     ) {
-      console.log(
-        `Sending notification about accumulated points: ${currPoints} > ${settings.NotifyLimitAmount}`
+      console.info(
+        `Sending notification about accumulated points: ${currPoints} > ${settings.NotifyLimitAmount}`,
       );
       notify('points', currPoints);
     }
@@ -708,7 +719,7 @@ const settingsloaded = async () => {
     mylevel = result.myLevel;
     // save new level if it changed
     if (settings.LastKnownLevel !== mylevel) {
-      chrome.storage.sync.set({ LastKnownLevel: mylevel });
+      backgroundSettingsStore?.save({ LastKnownLevel: mylevel });
     }
 
     if (
@@ -737,43 +748,33 @@ const settingsloaded = async () => {
 };
 
 /* Load settings, then call settingsloaded() */
-const loadsettings = () => {
-  chrome.storage.sync.get(
-    {
-      PageForBG: 'wishlist',
-      RepeatHoursBG: 5,
-      DelayBG: 10,
-      MaxTimeLeftBG: 0, // in seconds
-      MinLevelBG: 0,
-      MinCostBG: 0,
-      MaxCostBG: -1,
-      PointsToPreserve: 0,
-      WishlistPriorityForMainBG: false,
-      IgnorePreserveWishlistOnMainBG: false,
-      PagesToLoadBG: 2,
-      BackgroundAJ: false,
-      LevelPriorityBG: true,
-      OddsPriorityBG: false,
-      IgnoreGroupsBG: false,
-      IgnorePinnedBG: true,
-      LastKnownLevel: 10, // set to 10 by default so it loads pages with max_level set to 10 (maximum) before extensions learns actual level
-      NotifyLimit: false,
-      NotifyLimitAmount: 300,
-      AutoRedeemKey: false,
+const loadsettings = async () => {
+  if (!backgroundSettingsStore) {
+    console.error('AutoJoinSettingsStore is not available in background script.');
+    return;
+  }
+
+  try {
+    settings = await backgroundSettingsStore.load({
       lastLaunchedVersion: thisVersion,
-    },
-    (data) => {
-      settings = data;
-      settingsloaded();
-    }
-  );
+    });
+    settingsloaded();
+  } catch (error) {
+    console.error('Failed to load background settings:', error);
+  }
 };
+
+loadsettings().catch((error) => {
+  console.error('Initial settings load failed:', error);
+});
 
 /* It all begins with the loadsettings call */
 chrome.alarms.onAlarm.addListener((alarm) => {
-  console.log(`Alarm fired. ${new Date().toLocaleString()}`);
+console.debug(`Alarm fired. ${new Date().toLocaleString()}`);
   if (alarm.name === 'routine') {
-    loadsettings();
+    loadsettings().catch((error) => {
+      console.error('loadsettings failed:', error);
+    });
   }
 });
 
@@ -788,8 +789,8 @@ const createAlarm = () => {
           periodInMinutes: 30,
         },
         () => {
-          console.log('Alarm set.');
-        }
+          console.debug('Alarm set.');
+        },
       );
     }
   });
@@ -839,21 +840,21 @@ chrome.runtime.onInstalled.addListener((updateInfo) => {
         .split('.')
         .map((v) => v.padStart(3, 0))
         .join('')
-        .padEnd(9, 0)
+        .padEnd(9, 0),
     );
   const prevVersion = parseVersion(updateInfo.previousVersion);
 
   if (prevVersion < parseVersion('1.5.0')) {
     console.log('Changing settings to prevent mass ban of extension users...');
-    chrome.storage.sync.set(
-      {
+    backgroundSettingsStore
+      ?.save({
         BackgroundAJ: false,
         IgnorePinnedBG: true,
         RepeatIfOnPage: false,
         RepeatHoursBG: 5,
         RepeatHours: 5,
-      },
-      () => {
+      })
+      .then(() => {
         const e = {
           type: 'basic',
           title: 'Steamgifts Guidelines Update',
@@ -861,29 +862,27 @@ chrome.runtime.onInstalled.addListener((updateInfo) => {
           iconUrl: chrome.runtime.getURL('./media/autologosteam.png'),
         };
         chrome.notifications.create('1.5.0 announcement', e);
-      }
-    );
+      })
+      .catch((error) => {
+        console.error('Failed to migrate settings for v1.5.0:', error);
+      });
   }
   if (prevVersion < parseVersion('1.6.2')) {
     console.log('Changing settings of minCost to minCostBG');
-    chrome.storage.sync.get(
-      {
-        MinCost: 0,
-      },
-      (minCost) => {
-        chrome.storage.sync.set(
-          {
-            MinCost: 0,
-            MinCostBG: minCost,
-          },
-          () => {
-            console.log(
-              'Migrated successfully minCost option from previous version'
-            );
-          }
-        );
-      }
-    );
+    backgroundSettingsStore
+      ?.load()
+      .then((current) =>
+        backgroundSettingsStore.save({
+          MinCost: 0,
+          MinCostBG: current.MinCost ?? 0,
+        }),
+      )
+      .then(() => {
+        console.info('Migrated successfully minCost option from previous version');
+      })
+      .catch((error) => {
+        console.error('Failed to migrate minCost to minCostBG:', error);
+      });
   }
 });
 
@@ -894,8 +893,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   }
   if (request.task === 'checkPermission') {
     // Check if we have "*://steamcommunity.com/profiles/*" permission, ask for them if not
-    console.log(
-      'Got a request for "*://steamcommunity.com/profiles/*" permission'
+    console.debug(
+      'Got a request for "*://steamcommunity.com/profiles/*" permission',
     );
     chrome.permissions.contains(
       {
@@ -903,7 +902,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       },
       (result) => {
         if (result) {
-          console.log('We already have permission');
+          console.debug('We already have permission');
           chrome.tabs.sendMessage(sender.tab.id, { granted: 'true' });
           sendResponse({ granted: 'true' });
         } else if (request.ask === 'true') {
@@ -914,18 +913,18 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             },
             (granted) => {
               if (granted) {
-                console.log('Permission granted');
+                console.debug('Permission granted');
                 chrome.tabs.sendMessage(sender.tab.id, { granted: 'true' });
               } else {
-                console.log('Permission declined');
+                console.debug('Permission declined');
                 chrome.tabs.sendMessage(sender.tab.id, { granted: 'false' });
               }
-            }
+            },
           );
         } else {
           sendResponse({ granted: 'false' });
         }
-      }
+      },
     );
     // Keep the message channel open for async sendResponse
     return true;
@@ -952,15 +951,19 @@ const fetchHelper = async (url) => {
     });
 
     if (!havePermissions) {
-      console.log(
-        'Disabling settings that require optional permission which is not granted.'
+      console.warn(
+        'Disabling settings that require optional permission which is not granted.',
       );
 
-      chrome.storage.sync.set({
-        PriorityWishlist: false,
-        HideNonTradingCards: false,
-        HideDlc: false,
-      });
+      backgroundSettingsStore
+        ?.save({
+          PriorityWishlist: false,
+          HideNonTradingCards: false,
+          HideDlc: false,
+        })
+        .catch((error) => {
+          console.error('Failed to update settings after permission denial:', error);
+        });
 
       result.status = 403;
       return result;

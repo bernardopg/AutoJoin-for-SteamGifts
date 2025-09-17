@@ -6,7 +6,7 @@ body.night-theme {
   --bg-primary: var(--gray-900);
   --bg-secondary: #2f3540;
   --text-primary: var(--white);
-  --text-secondary: #BBBBBB;
+  --text-secondary: #bbbbbb;
   --border-color: rgba(255, 255, 255, 0.1);
   --overlay-bg: rgba(0, 0, 0, 0.9);
 }
@@ -121,8 +121,8 @@ body.night-theme .warning-message {
 }
 
 /* Form elements in dark theme */
-body.night-theme input[type="text"],
-body.night-theme input[type="number"],
+body.night-theme input[type='text'],
+body.night-theme input[type='number'],
 body.night-theme select,
 body.night-theme textarea {
   background: var(--gray-800);
@@ -130,8 +130,8 @@ body.night-theme textarea {
   color: var(--text-primary);
 }
 
-body.night-theme input[type="text"]:focus,
-body.night-theme input[type="number"]:focus,
+body.night-theme input[type='text']:focus,
+body.night-theme input[type='number']:focus,
 body.night-theme select:focus,
 body.night-theme textarea:focus {
   border-color: var(--primary-color);
@@ -205,7 +205,8 @@ body,
 #settingsDiv,
 .settings-section,
 .setting-item {
-  transition: background-color var(--transition-base),
+  transition:
+    background-color var(--transition-base),
     color var(--transition-base),
     border-color var(--transition-base);
 }

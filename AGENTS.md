@@ -1,16 +1,84 @@
-# Repository Guidelines
+# AGENTS · Guia para agentes/automações
 
-## Project Structure & Module Organization
-Source lives in `js/`, split by role: `backgroundpage.js` orchestrates extension events, `autoentry.js` handles giveaway logic, and `settings.js` wires the UI. HTML surfaces (`html/settings.html`, `html/offscreen.html`) render the settings and offscreen helpers, while themed styles sit in `css/` with utility fragments such as `css/components.css`. All icons and audio assets are in `media/`, and `manifest.json` declares entry points and permissions. Keep new modules close to their runtime context so future contributors can map browser features to directories quickly.
+Este documento orienta agentes de IA, bots e automações (inclusive warp.dev, GitHub Codespaces ou assistentes locais) que executem ações neste repositório.
 
-## Build, Test, and Development Commands
-Install the dev toolchain with `npm install` before running scripts. `npm run lint` runs ESLint against `js/`, `npm run format` performs a Prettier check over JS/CSS/HTML/JSON, and `npm run check` chains both for CI. `npm test` executes lightweight `node --test` suites under `tests/`, currently validating that every manifest reference resolves to a real file. For manual validation, load the repository root as an unpacked Chromium extension or run `web-ext run --source-dir .` when you add that dependency.
+- [Português (Brasil)](#pt)
+- [English](#en)
 
-## Coding Style & Naming Conventions
-JavaScript follows the Airbnb Base guide via `.eslintrc.json`, with overrides allowing increment operators and pre-declarations where helpful. Use 2-space indentation, trailing commas where standard, and single quotes (`.prettierrc.json`). File names stay lowercase and descriptive (`autoentry.js`, `night.css`); prefer camelCase for variables/functions and SCREAMING_SNAKE_CASE only for constants exposed across files. Run Prettier or `npm run check` before committing to keep diffs clean.
+---
 
-## Testing Guidelines
-The repository ships with a manifest smoke test under `tests/` using Node's built-in runner—extend it with additional files that exercise giveaway logic, DOM helpers, or manifest rules. Place unit tests beside sources using a `__tests__` subfolder (`js/__tests__/autoentry.test.js`) and cross-module or integration scenarios under `tests/`. When you add broader coverage, make sure `npm test` runs them and document manual verification steps (browser, page, expected behavior) in the PR description.
+<a id="pt"></a>
+<details open>
+<summary><strong>Português (Brasil)</strong></summary>
 
-## Commit & Pull Request Guidelines
-History favors short, imperative subjects with optional scopes, e.g., `ci: update workflow configuration` or `Add modular CSS structure and settings modal styles`. Reference GitHub issues in the body (`Fixes #42`) and call out user-visible changes. Pull requests should include: a concise summary, screenshots or clips for UI alterations, a note on how you validated the change (`npm run check`, browser manual test), and reminders to update docs or assets when applicable.
+#### Política geral
+- Respeite as instruções dos mantenedores presentes em README, CONTRIBUTING, SECURITY e nos próprios arquivos.
+- Priorize segurança: nada de credenciais externas nem modificações em permissões da extensão sem aprovação humana.
+- Prefira mudanças incrementais e explique claramente cada passo no histórico de comandos/comentários.
+
+#### Tarefas típicas para agentes
+| Categoria | Ações permitidas | Scripts úteis |
+|-----------|------------------|----------------|
+| Lint/format | Executar `npm run lint`, `npm run format`, `npm run check` | `npm run lint` |
+| Testes | Executar o smoke test (`npm test`) | `npm test` |
+| Build local | Gerar `.zip` sem incluir `node_modules` | `zip -r AutoJoin.zip . -x "node_modules/*" -x "*.git*"` |
+| Análise | Mapear estrutura (`tree`, `ls`), ler arquivos, gerar relatórios | `ls`, `cat`, `grep` |
+
+#### Boas práticas
+- Antes de escrever arquivos, faça backup mental do conteúdo original (use `cat` ou `sed -n`).
+- Use `apply_patch` ou redirecionamento (`cat <<'EOF' > arquivo`) para atualizações atômicas.
+- Comente o que foi executado e o motivo, principalmente em PRs automatizados.
+- Não faça push forçado, rebase remoto ou merge automático.
+- Ao encontrar instruções conflitantes, solicite confirmação humana.
+
+#### Restrições
+- Não altere `manifest.json` para adicionar permissões sem aval explícito.
+- Não suba pacotes a lojas (Chrome Web Store / AMO).
+- Evite dependências externas não auditadas; qualquer inclusão deve ter justificativa.
+- Logs devem permanecer discretos; evite inserir `console.log` permanentes.
+
+</details>
+
+---
+
+<a id="en"></a>
+<details>
+<summary><strong>English</strong></summary>
+
+#### General policy
+- Follow maintainer instructions documented in README, CONTRIBUTING, SECURITY and in-file comments.
+- Security first: never introduce external secrets or modify extension permissions without human approval.
+- Work incrementally and describe each action in command history or PR comments.
+
+#### Typical agent tasks
+| Category | Allowed actions | Handy scripts |
+|----------|-----------------|---------------|
+| Lint/format | Run `npm run lint`, `npm run format`, `npm run check` | `npm run lint` |
+| Tests | Run the smoke test (`npm test`) | `npm test` |
+| Local package | Produce a `.zip` without `node_modules` | `zip -r AutoJoin.zip . -x "node_modules/*" -x "*.git*"` |
+| Analysis | Inspect structure (`ls`, `tree`), read files, generate reports | `ls`, `cat`, `grep` |
+
+#### Best practices
+- Inspect files before editing (`cat`, `sed -n`) to avoid accidental loss of content.
+- Use `apply_patch` or heredoc redirection for atomic edits.
+- Explain executed commands and rationale, especially when submitting automated PRs.
+- Do not force-push, remote rebase, or auto-merge without maintainer sign-off.
+- If conflicting instructions appear, escalate to a human maintainer.
+
+#### Restrictions
+- Do not modify `manifest.json` permissions without explicit approval.
+- Do not publish builds to Chrome Web Store / AMO.
+- Avoid adding unaudited external dependencies; provide justification and security notes if required.
+- Keep logging minimal; avoid introducing noisy `console.log` statements.
+
+</details>
+
+---
+
+**Checklist rápida para agentes**
+- [ ] Leu README + CONTRIBUTING + SECURITY
+- [ ] Executou `npm run check` antes de sugerir mudanças
+- [ ] Documentou comando/saída relevante
+- [ ] Validou permissões e segurança
+- [ ] Informou limitações ou dúvidas antes de prosseguir
+

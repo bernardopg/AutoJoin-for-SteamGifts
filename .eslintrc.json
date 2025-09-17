@@ -1,31 +1,76 @@
 {
-    "extends": "airbnb-base",
+  "extends": "airbnb-base",
     "env": {
-        "browser": true
+        "browser": true,
+        "es2021": true
     },
     "globals": {
         "$": false,
         "chrome": false,
-        "loadSettings": true
+        "loadSettings": true,
+        "importScripts": false,
+        "AutoJoinUtils": false,
+        "Giveaway": false
     },
-    "rules":{
-        "no-plusplus": "off",
-        "no-use-before-define": "off",
-        "no-unused-vars": "warn",
-        "prefer-const": "warn",
-        "max-len": "off",
-        "consistent-return": "off",
-        "prefer-destructuring": "off",
-        "func-names": "off",
-        "no-console": "off",
-        "no-param-reassign": ["error", { "props": false }]
-    },
-    "overrides": [
-        {
-            "files": ["tests/**/*.js"],
-            "env": {
-                "node": true
-            }
-        }
-    ]
+  "parserOptions": {
+    "ecmaVersion": 2022
+  },
+  "rules": {
+    "no-plusplus": "off",
+    "no-use-before-define": "off",
+    "no-unused-vars": "warn",
+    "prefer-const": "warn",
+    "max-len": "off",
+    "consistent-return": "off",
+    "prefer-destructuring": "off",
+    "func-names": "off",
+    "no-console": "off",
+    "no-param-reassign": ["error", { "props": false }],
+    "comma-dangle": "off",
+    "operator-linebreak": "off",
+    "indent": "off",
+    "eqeqeq": "off",
+    "no-else-return": "off",
+    "no-await-in-loop": "off",
+    "no-restricted-syntax": "off",
+    "no-continue": "off",
+    "no-loop-func": "off",
+    "no-restricted-globals": "off",
+    "no-underscore-dangle": "off",
+    "no-lonely-if": "off",
+    "no-cond-assign": "off",
+    "wrap-iife": "off",
+    "prefer-template": "off",
+    "arrow-body-style": "off",
+    "no-promise-executor-return": "off",
+    "no-return-assign": "off",
+    "no-new": "off",
+    "arrow-parens": "off",
+    "function-paren-newline": "off",
+    "implicit-arrow-linebreak": "off",
+    "object-curly-newline": "off",
+    "class-methods-use-this": "off",
+    "default-case": "off",
+    "no-case-declarations": "off",
+    "no-shadow": "off",
+    "max-classes-per-file": "off",
+    "one-var": "off",
+    "one-var-declaration-per-line": "off",
+    "no-alert": "off",
+    "nonblock-statement-body-position": "off",
+    "curly": "off",
+    "prefer-arrow-callback": "off",
+    "radix": "off",
+    "no-extra-boolean-cast": "off",
+    "spaced-comment": "off",
+    "no-empty": "off"
+  },
+  "overrides": [
+    {
+      "files": ["tests/**/*.js"],
+      "env": {
+        "node": true
+      }
+    }
+  ]
 }

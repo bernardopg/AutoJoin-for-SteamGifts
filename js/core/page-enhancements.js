@@ -26,7 +26,7 @@ class PageEnhancer {
     this.setupPerformanceOptimizations();
 
     this.initialized = true;
-    console.log('Page enhancements initialized');
+    console.debug('Page enhancements initialized');
   }
 
   /**
@@ -73,7 +73,7 @@ class PageEnhancer {
           tabindex: '0',
           'aria-label': 'Abrir configurações do AutoJoin',
         },
-        'AutoJoin Settings'
+        'AutoJoin Settings',
       );
       container.appendChild(btn);
       navbar.appendChild(container);
@@ -219,7 +219,7 @@ class PageEnhancer {
         id: 'ajFooterArrow',
         'aria-hidden': 'true',
       },
-      '▲'
+      '▲',
     );
 
     ajFooterArrowWrap.appendChild(ajFooterArrow);
@@ -275,7 +275,7 @@ class PageEnhancer {
 
     // Remove pagination widget if infinite scroll is enabled
     const paginationWidget = document.querySelector(
-      '.widget-container .widget-container--margin-top'
+      '.widget-container .widget-container--margin-top',
     );
     paginationWidget?.remove();
 
@@ -356,7 +356,7 @@ class PageEnhancer {
         const pageDOM = parser.parseFromString(html, 'text/html');
 
         const newGiveaways = pageDOM.querySelectorAll(
-          '.giveaway__row-outer-wrap'
+          '.giveaway__row-outer-wrap',
         );
 
         if (newGiveaways.length === 0) {
@@ -376,7 +376,7 @@ class PageEnhancer {
             style:
               'text-align: center; padding: var(--spacing-lg); color: var(--text-secondary); font-weight: var(--font-weight-medium);',
           },
-          `Página ${pageNum}`
+          `Página ${pageNum}`,
         );
 
         postsContainer.appendChild(pageHeader);
@@ -419,7 +419,7 @@ class PageEnhancer {
     if (existingContainer) return existingContainer;
 
     const giveawayContainer = document.querySelector(
-      '.giveaway__row-outer-wrap'
+      '.giveaway__row-outer-wrap',
     )?.parentNode;
     if (giveawayContainer) {
       giveawayContainer.id = 'posts';
@@ -447,7 +447,7 @@ class PageEnhancer {
       {
         style: 'margin-left: var(--spacing-md); color: var(--text-secondary);',
       },
-      'Carregando mais giveaways...'
+      'Carregando mais giveaways...',
     );
 
     container.appendChild(spinner);
@@ -481,7 +481,7 @@ class PageEnhancer {
   addAccessibilityAttributes(giveawayElement) {
     // Add ARIA labels to buttons
     const buttons = giveawayElement.querySelectorAll(
-      'button, input[type="button"]'
+      'button, input[type="button"]',
     );
     buttons.forEach((button) => {
       if (!button.getAttribute('aria-label')) {
@@ -504,11 +504,11 @@ class PageEnhancer {
       if (!link.getAttribute('aria-label') && link.href) {
         if (link.href.includes('/giveaway/')) {
           const gameName = giveawayElement.querySelector(
-            '.giveaway__heading__name'
+            '.giveaway__heading__name',
           )?.textContent;
           link.setAttribute(
             'aria-label',
-            `Ver giveaway: ${gameName || 'Jogo'}`
+            `Ver giveaway: ${gameName || 'Jogo'}`,
           );
         } else if (link.href.includes('store.steampowered.com')) {
           link.setAttribute('aria-label', 'Ver na Steam Store');
@@ -559,7 +559,7 @@ class PageEnhancer {
         style:
           'color: var(--primary-color); text-decoration: none; margin-right: var(--spacing-md);',
       },
-      'Pular para conteúdo principal'
+      'Pular para conteúdo principal',
     );
 
     const skipToSettings = AutoJoinUtils.createElement(
@@ -568,7 +568,7 @@ class PageEnhancer {
         href: '#ajSettingsNavBtn',
         style: 'color: var(--primary-color); text-decoration: none;',
       },
-      'Pular para configurações'
+      'Pular para configurações',
     );
 
     skipLinks.appendChild(skipToContent);
@@ -690,7 +690,7 @@ class PageEnhancer {
     AutoJoinUtils.showNotification(
       `Tema ${this.settings.NightTheme ? 'escuro' : 'claro'} ativado`,
       'info',
-      2000
+      2000,
     );
   }
 
@@ -714,7 +714,7 @@ class PageEnhancer {
    */
   trapFocus(event, element) {
     const focusableElements = element.querySelectorAll(
-      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
     );
 
     const firstElement = focusableElements[0];
@@ -797,7 +797,7 @@ class PageEnhancer {
     updateResponsiveClasses();
     window.addEventListener(
       'resize',
-      AutoJoinUtils.debounce(updateResponsiveClasses, 250)
+      AutoJoinUtils.debounce(updateResponsiveClasses, 250),
     );
   }
 
@@ -865,7 +865,7 @@ class PageEnhancer {
       {
         rootMargin: '50px',
         threshold: 0.1,
-      }
+      },
     );
 
     // Observe all giveaways

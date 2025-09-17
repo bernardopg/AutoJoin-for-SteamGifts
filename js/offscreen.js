@@ -30,9 +30,9 @@ chrome.runtime.onMessage.addListener((msg) => {
     case 'checkPermission':
       break;
     default:
-      console.log(
+      console.warn(
         `Unknown message type for offscreen document: ${msg.task}`,
-        msg
+        msg,
       );
   }
 });
@@ -68,7 +68,7 @@ const parseGiveawayCode = (item) => {
 
 const parseGiveawayLevel = (ga) => {
   const levelElement = ga.querySelector(
-    '.giveaway__column--contributor-level--positive'
+    '.giveaway__column--contributor-level--positive',
   );
   return levelElement ? levelElement.innerHTML.match(/(\d+)/)[1] : 0;
 };
@@ -116,7 +116,7 @@ const parseGiveawayData = (item) => {
 
   resultGA.GAcode = parseGiveawayCode(item);
   resultGA.levelTooHigh = !!ga.querySelector(
-    '.giveaway__column--contributor-level--negative'
+    '.giveaway__column--contributor-level--negative',
   );
   resultGA.GAlevel = parseGiveawayLevel(ga);
 
@@ -131,14 +131,14 @@ const parseGiveawayData = (item) => {
   resultGA.timeEnd = parseInt(
     ga.querySelector('.fa-clock-o').parentElement.querySelector('span').dataset
       .timestamp,
-    10
+    10,
   );
 
   resultGA.numberOfEntries = parseInt(
     ga
       .querySelector('.giveaway__links a[href$="/entries"]')
       ?.textContent.replace(',', ''),
-    10
+    10,
   );
 
   resultGA.numberOfCopies = parseGiveawayCopies(ga);
@@ -146,7 +146,7 @@ const parseGiveawayData = (item) => {
   resultGA.timeStart = parseInt(
     ga.querySelector('.giveaway__username').parentElement.querySelector('span')
       .dataset.timestamp,
-    10
+    10,
   );
 
   return resultGA;
@@ -155,7 +155,7 @@ const parseGiveawayData = (item) => {
 const parseGiveaways = (dom) => {
   const gaElements = [
     ...dom.querySelectorAll(
-      '.giveaway__row-inner-wrap:not(.is-faded) .giveaway__heading__name'
+      '.giveaway__row-inner-wrap:not(.is-faded) .giveaway__heading__name',
     ),
   ];
 
@@ -166,7 +166,7 @@ const parse = (data) => {
   const result = {};
   const html = data.html;
   const parser = new DOMParser();
-  let dom = parser.parseFromString(html, 'text/html');
+  const dom = parser.parseFromString(html, 'text/html');
 
   for (const item of data.items) {
     switch (item) {
@@ -189,7 +189,7 @@ const parse = (data) => {
         break;
       case 'giveawaysWithoutPinned': {
         const container = dom.querySelector(
-          ':not(.pinned-giveaways__inner-wrap) > .giveaway__row-outer-wrap'
+          ':not(.pinned-giveaways__inner-wrap) > .giveaway__row-outer-wrap',
         )?.parentElement;
         const scope = container || dom;
         result.giveawaysWithoutPinned = parseGiveaways(scope);
@@ -199,8 +199,8 @@ const parse = (data) => {
         result[item] = parseGiveaways(dom);
         break;
       default:
-        console.log(
-          `Unknown item requested while parsing html in offscreen document: ${item}`
+        console.warn(
+          `Unknown item requested while parsing html in offscreen document: ${item}`,
         );
     }
   }
@@ -221,7 +221,7 @@ async function redeemKeysFromWonPage(wonPage) {
         keyBtn.parentElement.nextElementSibling.querySelector('form');
       const winnerId = dataForm.querySelector("input[name='winner_id']").value;
       const xsrfToken = dataForm.querySelector(
-        "input[name='xsrf_token']"
+        "input[name='xsrf_token']",
       ).value;
 
       const formData = new FormData();
@@ -237,7 +237,7 @@ async function redeemKeysFromWonPage(wonPage) {
       if (!res.ok) {
         console.error(
           'Failed to request key from SteamGifts, HTTP',
-          res.status
+          res.status,
         );
         continue;
       }
@@ -261,14 +261,14 @@ async function redeemKeysFromWonPage(wonPage) {
       if (storeHtml.indexOf('g_sessionID') === -1) {
         console.warn('Steam session not available in offscreen context');
         notify(
-          `Could not redeem code automatically. Please redeem manually: ${key}`
+          `Could not redeem code automatically. Please redeem manually: ${key}`,
         );
         continue;
       }
 
       const steamSessionId = storeHtml.substring(
         storeHtml.indexOf('g_sessionID') + 15,
-        storeHtml.indexOf('g_sessionID') + 15 + 24
+        storeHtml.indexOf('g_sessionID') + 15 + 24,
       );
       const regData = new FormData();
       regData.append('product_key', key);
@@ -279,7 +279,7 @@ async function redeemKeysFromWonPage(wonPage) {
           method: 'post',
           body: regData,
           credentials: 'include',
-        }
+        },
       );
       if (!regRes.ok) {
         console.error('Steam key redeem request failed, HTTP', regRes.status);

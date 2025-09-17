@@ -1,4 +1,65 @@
 // Initialize tabs functionality
+const optionsSettingsStore = globalThis.AutoJoinSettingsStore;
+const lowercaseSettingsMap = optionsSettingsStore
+  ? new Map(
+      Object.keys(optionsSettingsStore.defaults).map((key) => [
+        key.toLowerCase(),
+        key,
+      ]),
+    )
+  : new Map();
+
+const specialSettingKeys = new Map(
+  Object.entries({
+    txtautocomment: 'Comment',
+    enablebg: 'BackgroundAJ',
+    grouppriority: 'PriorityGroup',
+    regionpriority: 'PriorityRegion',
+    whitelistpriority: 'PriorityWhitelist',
+    wishlistpriority: 'PriorityWishlist',
+    infinitescroll: 'InfiniteScrolling',
+    hoursbg: 'RepeatHoursBG',
+    hoursfieldbg: 'RepeatHoursBG',
+  }),
+);
+
+const deriveSettingKey = (element) => {
+  if (!optionsSettingsStore) return element.id || element.name || '';
+
+  if (element.dataset?.setting) {
+    return element.dataset.setting;
+  }
+
+  const candidates = [];
+  const pushCandidates = (raw) => {
+    if (!raw) return;
+    const normalized = raw.toLowerCase();
+    candidates.push(normalized);
+    candidates.push(normalized.replace(/^(chk|txt|sel|input)/, ''));
+    candidates.push(normalized.replace(/field/g, ''));
+    candidates.push(
+      normalized
+        .replace(/^(chk|txt|sel|input)/, '')
+        .replace(/field/g, ''),
+    );
+  };
+
+  pushCandidates(element.id);
+  pushCandidates(element.name);
+
+  for (const candidate of candidates) {
+    if (!candidate) continue;
+    if (specialSettingKeys.has(candidate)) {
+      return specialSettingKeys.get(candidate);
+    }
+    if (lowercaseSettingsMap.has(candidate)) {
+      return lowercaseSettingsMap.get(candidate);
+    }
+  }
+
+  return element.id || element.name || '';
+};
+
 function initializeTabs() {
   const tabButtons = document.querySelectorAll('.tab-button');
   const tabContents = document.querySelectorAll('.tab-content');
@@ -85,73 +146,27 @@ function activateTab(targetTab, activeButton, tabButtons, tabContents) {
 }
 
 // Call this function when #settingsDiv is present on the page.
-function loadSettings() {
-  // Initialize tabs first
+async function loadSettings() {
   initializeTabs();
 
-  chrome.storage.sync.get(
-    {
-      AutoJoinButton: false,
-      AutoDescription: true,
-      AutoComment: false,
-      Comment: '',
-      IgnoreGroups: false,
-      IgnorePinned: true,
-      IgnoreWhitelist: false,
-      IgnoreGroupsBG: false,
-      IgnorePinnedBG: true,
-      PageForBG: 'wishlist',
-      RepeatHoursBG: 5,
-      PagesToLoad: 3,
-      PagesToLoadBG: 2,
-      BackgroundAJ: false,
-      LevelPriorityBG: true,
-      OddsPriorityBG: false,
-      InfiniteScrolling: true,
-      ShowPoints: true,
-      ShowButtons: true,
-      LoadFive: false,
-      HideDlc: false,
-      HideEntered: false,
-      HideGroups: false,
-      HideNonTradingCards: false,
-      HideWhitelist: false,
-      HideLevelsBelow: 0,
-      HideCostsBelow: 0,
-      HideLevelsAbove: 10,
-      HideCostsAbove: 50,
-      PriorityGroup: false,
-      PriorityRegion: false,
-      PriorityWhitelist: false,
-      PriorityWishlist: true,
-      RepeatIfOnPage: false,
-      RepeatHours: 5,
-      NightTheme: false,
-      LevelPriority: false,
-      PlayAudio: true,
-      AudioVolume: 1,
-      Delay: 10,
-      DelayBG: 10,
-      MinLevelBG: 0,
-      MinCost: 0,
-      MinCostBG: 0,
-      MaxCost: -1,
-      MaxCostBG: -1,
-      PointsToPreserve: 0,
-      WishlistPriorityForMainBG: false,
-      IgnorePreserveWishlistOnMainBG: false,
-      ShowChance: true,
-      NotifyLimit: false,
-      NotifyLimitAmount: 300,
-      PreciseTime: false,
-      AutoRedeemKey: false,
-    },
-    (settings) => {
-      // Apply theme within options page
-      applyOptionsTheme(!!settings.NightTheme);
-      fillSettingsDiv(settings);
+  if (!optionsSettingsStore) {
+    console.error('AutoJoinSettingsStore is not available.');
+    return;
+  }
+
+  try {
+    const settings = await optionsSettingsStore.load();
+    applyOptionsTheme(Boolean(settings.NightTheme));
+    fillSettingsDiv(settings);
+  } catch (error) {
+    console.error('Failed to load settings:', error);
+    if (window.AutoJoinUtils) {
+      window.AutoJoinUtils.showNotification(
+        'Failed to load settings. Please refresh the page.',
+        'error',
+      );
     }
-  );
+  }
 }
 
 function fillSettingsDiv(settings) {
@@ -249,52 +264,72 @@ function settingsAttachEventListeners() {
     saveButtonEl.disabled = true;
 
     try {
-      // Collect form data
-      const settings = {};
+      const updates = {};
       const formElements = document.querySelectorAll(
-        '#settingsDiv input, #settingsDiv select, #settingsDiv textarea'
+        '#settingsDiv input, #settingsDiv select, #settingsDiv textarea',
       );
 
       formElements.forEach((element) => {
-        if (element.type === 'checkbox') {
-          settings[element.id] = element.checked;
-        } else if (element.type === 'radio') {
-          if (element.checked) {
-            settings[element.name] = element.value;
+        if (element.type === 'radio' && element.name === 'BGpriority') {
+          if (!element.checked) return;
+          if (element.id === 'chkNoPriorityBG') {
+            updates.LevelPriorityBG = false;
+            updates.OddsPriorityBG = false;
+          } else if (element.id === 'chkLevelPriorityBG') {
+            updates.LevelPriorityBG = true;
+            updates.OddsPriorityBG = false;
+          } else if (element.id === 'chkOddsPriorityBG') {
+            updates.LevelPriorityBG = false;
+            updates.OddsPriorityBG = true;
           }
-        } else {
-          settings[element.id] = element.value;
+          return;
         }
+
+        const key = deriveSettingKey(element);
+        if (!key) return;
+
+        let value;
+
+        switch (element.type) {
+          case 'checkbox':
+            value = element.checked;
+            break;
+          case 'number':
+          case 'range':
+            value = element.value === '' ? '' : Number(element.value);
+            break;
+          default:
+            value = element.value;
+        }
+
+        if (key === 'RepeatHoursBG' && Number(element.value) === 0.5) {
+          value = 0;
+        }
+
+        updates[key] = value;
       });
 
-      // Handle special cases
-      if (settings.hoursFieldBG === '0.5') {
-        settings.hoursFieldBG = 0;
+      // Use SettingsStore to persist values
+      if (!optionsSettingsStore) {
+        throw new Error('Settings store unavailable');
       }
 
-      // Use SettingsManager to save
-      let success = false;
-      if (window.settingsManager) {
-        success = await window.settingsManager.saveSettings(settings);
-      } else {
-        // Fallback to old method
-        success = await saveSettingsOld(settings);
-      }
+      const persistedSettings = await optionsSettingsStore.load();
+      const mergedSettings = {
+        ...persistedSettings,
+        ...updates,
+      };
 
-      if (success) {
-        // Show success state
-        saveButtonEl.innerHTML = '<i class="fas fa-check"></i> Settings Saved!';
-        setTimeout(() => {
-          saveButtonEl.innerHTML = '<i class="fas fa-save"></i> Save Settings';
-          saveButtonEl.disabled = false;
-        }, 2000);
+      await optionsSettingsStore.save(mergedSettings);
 
-        if (!document.location.protocol.includes('http')) {
-          window.location.reload();
-        }
-      } else {
+      saveButtonEl.innerHTML = '<i class="fas fa-check"></i> Settings Saved!';
+      setTimeout(() => {
         saveButtonEl.innerHTML = '<i class="fas fa-save"></i> Save Settings';
         saveButtonEl.disabled = false;
+      }, 2000);
+
+      if (!document.location.protocol.includes('http')) {
+        window.location.reload();
       }
     } catch (error) {
       console.error('Error saving settings:', error);
@@ -304,7 +339,7 @@ function settingsAttachEventListeners() {
       if (window.AutoJoinUtils) {
         window.AutoJoinUtils.showNotification(
           'Failed to save settings',
-          'error'
+          'error',
         );
       }
     }
@@ -336,7 +371,7 @@ function settingsAttachEventListeners() {
       const modal = document.getElementById('settingsDiv');
       if (!modal) return;
       const focusable = modal.querySelectorAll(
-        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
       );
       if (!focusable.length) return;
       const first = focusable[0];
@@ -372,7 +407,7 @@ function settingsAttachEventListeners() {
       // we'll have to message background script to check if we have it
 
       // set new event listener for anticipated response
-      chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+      chrome.runtime.onMessage.addListener((request) => {
         if (request.granted === 'true') {
           // we have permission, do nothing
         } else {
@@ -506,7 +541,7 @@ function validateSettings() {
 
       if (isNaN(value) || value < input.min || value > input.max) {
         errors.push(
-          `${input.name} must be between ${input.min} and ${input.max}`
+          `${input.name} must be between ${input.min} and ${input.max}`,
         );
         element.style.borderColor = '#dc3545';
       } else {
@@ -517,10 +552,10 @@ function validateSettings() {
 
   // Validate level ranges
   const hideLevelsBelow = parseInt(
-    document.getElementById('hideLevelsBelow')?.value || 0
+    document.getElementById('hideLevelsBelow')?.value || 0,
   );
   const hideLevelsAbove = parseInt(
-    document.getElementById('hideLevelsAbove')?.value || 10
+    document.getElementById('hideLevelsAbove')?.value || 10,
   );
   if (hideLevelsBelow > hideLevelsAbove) {
     errors.push('Hide levels below cannot be greater than hide levels above');
@@ -530,10 +565,10 @@ function validateSettings() {
 
   // Validate cost ranges
   const hideCostsBelow = parseInt(
-    document.getElementById('hideCostsBelow')?.value || 0
+    document.getElementById('hideCostsBelow')?.value || 0,
   );
   const hideCostsAbove = parseInt(
-    document.getElementById('hideCostsAbove')?.value || 50
+    document.getElementById('hideCostsAbove')?.value || 50,
   );
   if (hideCostsBelow > hideCostsAbove) {
     errors.push('Hide costs below cannot be greater than hide costs above');
@@ -554,7 +589,7 @@ function validateSettings() {
   const maxCostBG = parseInt(document.getElementById('maxCostBG')?.value || -1);
   if (maxCostBG !== -1 && minCostBG > maxCostBG) {
     errors.push(
-      'Background minimum cost cannot be greater than background maximum cost'
+      'Background minimum cost cannot be greater than background maximum cost',
     );
     document.getElementById('minCostBG').style.borderColor = '#dc3545';
     document.getElementById('maxCostBG').style.borderColor = '#dc3545';
@@ -565,7 +600,7 @@ function validateSettings() {
     if (window.AutoJoinUtils) {
       window.AutoJoinUtils.showNotification(
         'Please fix the following errors:\n• ' + errors.join('\n• '),
-        'error'
+        'error',
       );
     } else {
       alert('Please fix the following errors:\n• ' + errors.join('\n• '));
@@ -576,117 +611,7 @@ function validateSettings() {
   return true;
 }
 
-// Fallback save function for old method
-async function saveSettingsOld(settings) {
-  return new Promise((resolve) => {
-    chrome.storage.sync.set(settings, () => {
-      resolve(true);
-    });
-  });
-}
-
 // Show notification to user
-function showNotification(message, type = 'info') {
-  // Remove existing notifications
-  const existingNotification = document.querySelector('.settings-notification');
-  if (existingNotification) {
-    existingNotification.remove();
-  }
-
-  const notification = document.createElement('div');
-  notification.className = `settings-notification ${type}`;
-  notification.innerHTML = `
-    <div class="notification-content">
-      <i class="fas fa-${
-        type === 'error' ? 'exclamation-circle' : 'info-circle'
-      }"></i>
-      <span>${message}</span>
-      <button class="notification-close">&times;</button>
-    </div>
-  `;
-
-  // Add notification styles if not already added
-  if (!document.querySelector('#notification-styles')) {
-    const styles = document.createElement('style');
-    styles.id = 'notification-styles';
-    styles.textContent = `
-      .settings-notification {
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        z-index: 10000;
-        max-width: 400px;
-        animation: slideIn 0.3s ease-out;
-      }
-      .notification-content {
-        background: ${type === 'error' ? '#f8d7da' : '#d1ecf1'};
-        color: ${type === 'error' ? '#721c24' : '#0c5460'};
-        border: 1px solid ${type === 'error' ? '#f5c6cb' : '#bee5eb'};
-        border-radius: 8px;
-        padding: 15px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      }
-      .notification-content i {
-        font-size: 1.2rem;
-        flex-shrink: 0;
-      }
-      .notification-content span {
-        flex: 1;
-        white-space: pre-line;
-      }
-      .notification-close {
-        background: none;
-        border: none;
-        font-size: 1.5rem;
-        cursor: pointer;
-        color: ${type === 'error' ? '#721c24' : '#0c5460'};
-        padding: 0;
-        width: 24px;
-        height: 24px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 50%;
-        transition: background 0.2s ease;
-      }
-      .notification-close:hover {
-        background: ${
-          type === 'error' ? 'rgba(114, 28, 36, 0.1)' : 'rgba(12, 84, 96, 0.1)'
-        };
-      }
-      @keyframes slideIn {
-        from {
-          transform: translateX(100%);
-          opacity: 0;
-        }
-        to {
-          transform: translateX(0);
-          opacity: 1;
-        }
-      }
-    `;
-    document.head.appendChild(styles);
-  }
-
-  document.body.appendChild(notification);
-
-  // Auto remove after 5 seconds
-  const timeout = setTimeout(() => {
-    notification.remove();
-  }, 5000);
-
-  // Close button functionality
-  notification
-    .querySelector('.notification-close')
-    .addEventListener('click', () => {
-      clearTimeout(timeout);
-      notification.remove();
-    });
-}
-
 /* Show/Hide some settings that don't make sense on their own. */
 function processDependentSettings() {
   const AutoJoinButton = document.getElementById('chkAutoJoinButton');
@@ -695,10 +620,10 @@ function processDependentSettings() {
 
   function evalDependent() {
     const DependOnAutoJoinButton = document.querySelectorAll(
-      '.dependsOnAutoJoinButton'
+      '.dependsOnAutoJoinButton',
     );
     const DependOnBackgroundAutoJoin = document.querySelectorAll(
-      '.dependsOnBackgroundAutoJoin'
+      '.dependsOnBackgroundAutoJoin',
     );
 
     DependOnAutoJoinButton.forEach((li) => {

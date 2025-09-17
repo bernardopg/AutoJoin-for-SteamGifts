@@ -215,7 +215,9 @@
   }
 
   50% {
-    box-shadow: 0 0 20px rgba(63, 81, 181, 0.4), 0 0 30px rgba(63, 81, 181, 0.2);
+    box-shadow:
+      0 0 20px rgba(63, 81, 181, 0.4),
+      0 0 30px rgba(63, 81, 181, 0.2);
   }
 
   100% {
@@ -277,7 +279,10 @@
 }
 
 .transition-colors {
-  transition: color var(--transition-base), background-color var(--transition-base), border-color var(--transition-base);
+  transition:
+    color var(--transition-base),
+    background-color var(--transition-base),
+    border-color var(--transition-base);
 }
 
 .transition-transform {

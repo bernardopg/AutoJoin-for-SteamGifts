@@ -119,7 +119,6 @@
 
 /* Reduced Motion Support */
 @media (prefers-reduced-motion: reduce) {
-
   *,
   *::before,
   *::after {
@@ -164,7 +163,6 @@ body {
 
 /* Print Styles */
 @media print {
-
   .settings-close,
   .tab-button,
   #SaveCancelContainer {

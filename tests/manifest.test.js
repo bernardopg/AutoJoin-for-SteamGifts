@@ -7,7 +7,8 @@ const rootDir = path.resolve(__dirname, '..');
 const manifestPath = path.join(rootDir, 'manifest.json');
 const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
 
-const fileExists = (relativePath) => fs.existsSync(path.join(rootDir, relativePath));
+const fileExists = (relativePath) =>
+  fs.existsSync(path.join(rootDir, relativePath));
 
 test('manifest metadata is present', () => {
   assert.equal(manifest.manifest_version, 3, 'Extension must use Manifest V3');
@@ -28,7 +29,10 @@ test('content script bundles exist', () => {
   manifest.content_scripts
     .flatMap((entry) => entry.js || [])
     .forEach((scriptPath) => {
-      assert.ok(fileExists(scriptPath), `Missing content script: ${scriptPath}`);
+      assert.ok(
+        fileExists(scriptPath),
+        `Missing content script: ${scriptPath}`,
+      );
     });
 
   manifest.content_scripts
@@ -47,8 +51,9 @@ test('icon assets are available', () => {
 test('host permissions include SteamGifts domains', () => {
   const hostPermissions = manifest.host_permissions || [];
   const optionalHosts = manifest.optional_host_permissions || [];
-  const contentMatches = manifest.content_scripts
-    .flatMap((entry) => entry.matches || []);
+  const contentMatches = manifest.content_scripts.flatMap(
+    (entry) => entry.matches || [],
+  );
   const combined = [...contentMatches, ...hostPermissions, ...optionalHosts];
 
   assert.ok(
