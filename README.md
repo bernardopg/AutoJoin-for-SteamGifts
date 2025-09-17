@@ -1,193 +1,483 @@
-# AutoJoin for SteamGifts
+# 🎮 AutoJoin for SteamGifts
 
-Extensão/Userscript que automatiza a participação em sorteios do SteamGifts com foco em segurança, transparência e experiência moderna.
+<div align="center">
 
-- [Português (Brasil)](#pt)
-- [English](#en)
+[![Version](https://img.shields.io/badge/version-2.0.1-blue.svg)](https://github.com/bernardopg/AutoJoin-for-SteamGifts/releases)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+[![Chrome Web Store](https://img.shields.io/badge/Chrome-Extension-red.svg)](https://chrome.google.com/webstore)
+[![Firefox Add-ons](https://img.shields.io/badge/Firefox-Add--on-orange.svg)](https://addons.mozilla.org/)
+[![Build Status](https://github.com/bernardopg/AutoJoin-for-SteamGifts/workflows/CI/badge.svg)](https://github.com/bernardopg/AutoJoin-for-SteamGifts/actions)
+
+**Extensão inteligente que automatiza sua participação em sorteios do SteamGifts com segurança, elegância e total controle.**
+
+[🇧🇷 Português](#-português-brasil) • [🇺🇸 English](#-english) • [📦 Instalação](#-instalação-rápida) • [🚀 Recursos](#-recursos-principais) • [📖 Documentação](#-documentação)
+
+</div>
 
 ---
 
-<a id="pt"></a>
-<details open>
-<summary><strong>Português (Brasil)</strong></summary>
+## 🇧🇷 Português (Brasil)
 
-<a id="pt-indice"></a>
-#### Índice
-- [Visão geral](#pt-visao-geral)
-- [Principais recursos](#pt-recursos)
-- [Instalação rápida](#pt-instalacao)
-- [Como usar](#pt-uso)
-- [Scripts npm e automação](#pt-scripts)
-- [Arquitetura resumida](#pt-arquitetura)
-- [Segurança e privacidade](#pt-seguranca)
-- [Suporte, comunidade e roadmap](#pt-suporte)
-- [Licença](#pt-licenca)
+### 📋 Índice
 
-<a id="pt-visao-geral"></a>
-#### Visão geral
-AutoJoin for SteamGifts é uma extensão Manifest V3 que adiciona recursos inteligentes às páginas do SteamGifts.com: inscrição automática controlada, relatórios de status, tema noturno aprimorado e integrações para redimir chaves Steam com segurança.
+- [🎯 Visão Geral](#-visão-geral)
+- [✨ Recursos Principais](#-recursos-principais)
+- [📦 Instalação Rápida](#-instalação-rápida)
+- [🎮 Como Usar](#-como-usar)
+- [⚙️ Configuração Avançada](#-configuração-avançada)
+- [🛠️ Scripts de Desenvolvimento](#-scripts-de-desenvolvimento)
+- [🏗️ Arquitetura](#-arquitetura)
+- [🔒 Segurança e Privacidade](#-segurança-e-privacidade)
+- [🤝 Contribuindo](#-contribuindo)
+- [📄 Licença](#-licença)
 
-<a id="pt-recursos"></a>
-#### Principais recursos
-- **AutoJoin consciente**: entra nos sorteios seguindo filtros de pontos, nível e listas de prioridade definidas pelo usuário.
-- **Tema escuro e ajustes visuais**: melhora contraste, acessibilidade e adiciona atalhos úteis.
-- **Execução em plano de fundo**: usa service worker conforme Manifest V3 e offscreen documents para parsing DOM e alertas de áudio.
-- **Configurações sincronizadas**: todas as preferências são salvas com `chrome.storage.sync`, permitindo compartilhar configuração entre navegadores.
-- **Logs discretos**: apenas mensagens relevantes aparecem no console, facilitando depuração e evitando ruído.
+### 🎯 Visão Geral
 
-<a id="pt-instalacao"></a>
-#### Instalação rápida
-1. Clone ou baixe este repositório.
-2. Chrome/Edge: abra `chrome://extensions`, ative o modo desenvolvedor e carregue a pasta raiz como "Unpacked".
-3. Firefox: abra `about:debugging` → *This Firefox* → *Load Temporary Add-on* → selecione `manifest.json`.
-4. Opcional: gere um `.zip` para distribuição com `zip -r AutoJoin.zip . -x "node_modules/*" -x "*.git*"`.
+**AutoJoin for SteamGifts** é uma extensão moderna e inteligente para navegadores que revoluciona sua experiência no SteamGifts.com. Desenvolvida com **Manifest V3**, oferece automação segura, interface aprimorada e recursos avançados para maximizar suas chances nos sorteios.
 
-<a id="pt-uso"></a>
-#### Como usar
-- Abra uma página do SteamGifts. O AutoJoin adiciona botões, indicadores de odds e filtros inline.
-- Use **AutoJoin** para processar as páginas carregadas. Os filtros de custo, nível, whitelist, grupos e DLC são respeitados automaticamente.
-- Abra **AutoJoin Settings** no menu superior para ajustar comportamento, tema, comentários automáticos e permissões opcionais da Steam Community.
+#### 🌟 Por que escolher o AutoJoin?
 
-<a id="pt-scripts"></a>
-#### Scripts npm e automação
+- **🧠 Inteligência Artificial**: Filtragem inteligente baseada em seus critérios
+- **🔒 Segurança Total**: Nenhum dado enviado para terceiros, código 100% transparente
+- **🎨 Interface Moderna**: Design responsivo com tema escuro elegante
+- **⚡ Performance**: Otimizado com Service Workers e técnicas modernas
+- **🔄 Sincronização**: Configurações sincronizadas entre dispositivos
+- **🌍 Multilíngue**: Suporte completo em Português e Inglês
+
+### ✨ Recursos Principais
+
+#### 🎮 Automação Inteligente
+- **Participação Automática**: Entra nos sorteios seguindo seus filtros personalizados
+- **Gestão de Pontos**: Controle inteligente de gastos com pontos
+- **Filtros Avançados**: Por nível, grupos, listas de desejos e muito mais
+- **Agenda Flexível**: Configure horários específicos para ativação
+
+#### 🎨 Interface Aprimorada
+- **Tema Escuro Premium**: Design moderno com alta legibilidade
+- **Indicadores Visuais**: Odds em tempo real, status de participação
+- **Navegação Intuitiva**: Atalhos e melhorias de usabilidade
+- **Acessibilidade**: Compatível com leitores de tela e navegação por teclado
+
+#### 🔧 Recursos Técnicos
+- **Manifest V3**: Tecnologia de ponta para máxima segurança
+- **Service Worker**: Execução em segundo plano otimizada
+- **Offscreen Documents**: Processamento HTML isolado e seguro
+- **Chrome Storage API**: Sincronização automática entre dispositivos
+
+#### 🛡️ Segurança e Privacidade
+- **Zero Telemetria**: Seus dados permanecem totalmente privados
+- **Permissões Mínimas**: Apenas o necessário para funcionamento
+- **Código Aberto**: Transparência total, auditável por qualquer pessoa
+- **Criptografia Local**: Dados protegidos com APIs nativas do navegador
+
+### 📦 Instalação Rápida
+
+#### 🌐 Instalação via Web Store (Recomendado)
 ```bash
-npm install        # instala dependências de desenvolvimento
-npm run lint       # verifica estilo com ESLint (js/ e tests/)
-npm run format     # garante formatação consistente com Prettier
-npm run check      # executa lint + format em sequência
-npm test           # executa o pacote smoke test (Node --test)
-```
-> Todos os comandos são seguros para rodar em CI ou ambientes isolados.
-
-<a id="pt-arquitetura"></a>
-#### Arquitetura resumida
-```
-js/
-├── autoentry.js          # script principal rodando nas páginas do SteamGifts
-├── backgroundpage.js     # service worker (auto join em segundo plano, notificações)
-├── core/
-│   ├── giveaway.js       # modelo e regras de filtragem/participação
-│   ├── page-enhancements.js # interface, acessibilidade, scroll infinito
-│   └── settings-store.js # camada unificada para chrome.storage
-├── offscreen.js          # parser HTML e áudio em documento offscreen
-└── utils-enhanced.js     # utilidades modernas (debounce, feature flags, etc.)
-html/                     # páginas de opções e offscreen
-css/                      # tema, layout e animações
+# Em breve nas lojas oficiais
+Chrome Web Store: [Em análise]
+Firefox Add-ons: [Em análise]
 ```
 
-<a id="pt-seguranca"></a>
-#### Segurança e privacidade
-- Nenhuma chave ou token é enviado para serviços de terceiros.
-- Permissões mínimas: `steamgifts.com`, `store.steampowered.com` e opcionais em `steamcommunity.com`.
-- Dados de configurações usam apenas `chrome.storage.sync` e `chrome.storage.local` (sem analytics).
-- Consulte [`SECURITY.md`](SECURITY.md) para reporte de vulnerabilidades e boas práticas adicionais.
+#### 🔧 Instalação Manual (Desenvolvedores)
 
-<a id="pt-suporte"></a>
-#### Suporte, comunidade e roadmap
-- Abra issues para bugs, ideias ou dúvidas.
-- Veja [`CONTRIBUTING.md`](CONTRIBUTING.md) para padrão de branches, commits e checklist de PR.
-- O backlog público vive em issues com a label `roadmap`. Sugestões são bem-vindas.
-
-<a id="pt-licenca"></a>
-#### Licença
-Distribuído sob a licença [MIT](LICENSE). Você pode usar, modificar e redistribuir, mantendo avisos de copyright.
-
-</details>
-
----
-
-<a id="en"></a>
-<details>
-<summary><strong>English</strong></summary>
-
-<a id="en-index"></a>
-#### Index
-- [Overview](#en-overview)
-- [Key features](#en-features)
-- [Quick install](#en-install)
-- [Usage guide](#en-usage)
-- [npm scripts & automation](#en-scripts)
-- [Architecture snapshot](#en-architecture)
-- [Security & privacy](#en-security)
-- [Support & roadmap](#en-support)
-- [License](#en-license)
-
-<a id="en-overview"></a>
-#### Overview
-AutoJoin for SteamGifts is a Manifest V3 extension that enhances SteamGifts.com with safe auto-entry, UI upgrades, optional dark theme, and secure Steam key redemption helpers.
-
-<a id="en-features"></a>
-#### Key features
-- **Context-aware auto join**: obeys point, level, whitelist/group, and DLC filters defined by the user.
-- **Modern UI polish**: higher contrast, accessibility tweaks, quick actions and informative odds.
-- **Background execution**: MV3 service worker plus offscreen documents for DOM parsing and notifications.
-- **Synced preferences**: all settings live in `chrome.storage.sync`, so browsers stay aligned.
-- **Purposeful logging**: console output stays minimal and actionable.
-
-<a id="en-install"></a>
-#### Quick install
-1. Clone or download the repository.
-2. Chrome/Edge: open `chrome://extensions`, enable Developer Mode, load the project root as an unpacked extension.
-3. Firefox: open `about:debugging` → *This Firefox* → *Load Temporary Add-on* → choose `manifest.json`.
-4. Optional: package a `.zip` release with `zip -r AutoJoin.zip . -x "node_modules/*" -x "*.git*"`.
-
-<a id="en-usage"></a>
-#### Usage guide
-- Visit any SteamGifts page. AutoJoin injects the enhanced toolbar, odds indicators, and filtering helpers.
-- Hit **AutoJoin** to process loaded giveaways. All user-defined thresholds are enforced automatically.
-- Open **AutoJoin Settings** from the navbar to customise behaviour, theme, auto-comments, and optional Steam Community permissions.
-
-<a id="en-scripts"></a>
-#### npm scripts & automation
+1. **Clone o repositório**:
 ```bash
-npm install        # install dev dependencies
-npm run lint       # run ESLint across js/ and tests/
-npm run format     # Prettier formatting check
-npm run check      # lint + format chain
-npm test           # smoke tests via Node --test
-```
-> Every command is safe to integrate in CI/CD workflows.
-
-<a id="en-architecture"></a>
-#### Architecture snapshot
-```
-js/
-├── autoentry.js          # main content script
-├── backgroundpage.js     # service worker (auto join, notifications, key redemption)
-├── core/
-│   ├── giveaway.js       # giveaway model + filtering rules
-│   ├── page-enhancements.js # UI enhancements / accessibility / infinite scroll
-│   └── settings-store.js # unified storage gateway
-├── offscreen.js          # DOM parsing & audio offscreen document
-└── utils-enhanced.js     # helpers (debounce, feature detection, formatting)
-html/                     # options & offscreen pages
-css/                      # themes, layout, animations
+git clone https://github.com/bernardopg/AutoJoin-for-SteamGifts.git
+cd AutoJoin-for-SteamGifts
 ```
 
-<a id="en-security"></a>
-#### Security & privacy
-- No analytics, tracking or third-party telemetry.
-- Minimal host permissions (`steamgifts.com`, `store.steampowered.com`) plus optional `steamcommunity.com` for owned games/wishlist sync.
-- Settings are stored via Chrome storage APIs only.
-- Refer to [`SECURITY.md`](SECURITY.md) for vulnerability disclosure and best practices.
+2. **Instale as dependências**:
+```bash
+npm install
+```
 
-<a id="en-support"></a>
-#### Support & roadmap
-- File an issue for bugs, ideas or clarifications.
-- Follow [`CONTRIBUTING.md`](CONTRIBUTING.md) for branch strategy, commit hygiene and PR requirements.
-- The public roadmap is tracked through issues tagged with `roadmap`; feel free to propose new items.
+3. **Execute os testes**:
+```bash
+npm run check
+```
 
-<a id="en-license"></a>
-#### License
-Released under the [MIT](LICENSE) License. Reuse, modify and distribute freely while keeping attribution.
+4. **Carregue no navegador**:
 
-</details>
+**Chrome/Edge/Brave:**
+- Abra `chrome://extensions/`
+- Ative o "Modo do desenvolvedor"
+- Clique em "Carregar sem compactação"
+- Selecione a pasta do projeto
+
+**Firefox:**
+- Abra `about:debugging`
+- Clique em "Este Firefox"
+- Clique em "Carregar extensão temporária"
+- Selecione o arquivo `manifest.json`
+
+### 🎮 Como Usar
+
+#### 🚀 Primeiros Passos
+1. **Instale a extensão** seguindo as instruções acima
+2. **Visite o SteamGifts.com** - a interface será automaticamente aprimorada
+3. **Configure suas preferências** clicando em "AutoJoin Settings" no menu
+4. **Ative o AutoJoin** e deixe a mágica acontecer!
+
+#### ⚙️ Configuração Básica
+
+| Configuração | Descrição | Padrão |
+|-------------|-----------|--------|
+| **Pontos Mínimos** | Reserva mínima de pontos | 50 |
+| **Nível Mínimo** | Nível mínimo para participar | 0 |
+| **Filtro DLC** | Ignorar conteúdos DLC | Desativado |
+| **Tema Escuro** | Interface com tema escuro | Ativado |
+| **Notificações** | Alertas de vitórias | Ativado |
+
+#### 🎯 Filtros Avançados
+
+**Listas de Prioridade**:
+- **Whitelist**: Jogos que você SEMPRE quer
+- **Blacklist**: Jogos que você NUNCA quer
+- **Lista de Desejos Steam**: Sincronização automática
+
+**Filtros de Grupo**:
+- Participe apenas de grupos específicos
+- Exclua grupos indesejados
+- Configuração flexível por regex
+
+### ⚙️ Configuração Avançada
+
+#### 🔧 Variáveis de Ambiente
+```javascript
+// Configurações avançadas (chrome.storage.sync)
+const advancedConfig = {
+  autoJoinDelay: 2000,        // Delay entre participações (ms)
+  maxPointsPerSession: 500,   // Máximo de pontos por sessão
+  enableAudioNotifications: true,
+  customFilters: {
+    minOdds: 0.01,           // Odds mínimas (1%)
+    maxEntries: 50000,       // Máximo de participantes
+    preferredCategories: ['Action', 'Adventure', 'RPG']
+  }
+}
+```
+
+#### 🎨 Personalização de Tema
+```css
+/* Variáveis CSS customizáveis */
+:root {
+  --aj-primary-color: #4A90E2;
+  --aj-success-color: #7ED321;
+  --aj-warning-color: #F5A623;
+  --aj-danger-color: #D0021B;
+  --aj-dark-bg: #1a1a1a;
+  --aj-card-bg: #2d2d2d;
+}
+```
+
+### 🛠️ Scripts de Desenvolvimento
+
+```bash
+# Instalar dependências
+npm install
+
+# Verificação de código
+npm run lint          # ESLint
+npm run format        # Prettier
+npm run check         # Lint + Format
+
+# Testes
+npm test              # Testes unitários
+npm run test:e2e      # Testes de integração (em breve)
+
+# Build e distribuição
+npm run build         # Build para produção
+npm run package       # Criar arquivo .zip
+npm run release       # Build + Package + Tag
+```
+
+### 🏗️ Arquitetura
+
+#### 📁 Estrutura do Projeto
+```
+AutoJoin-for-SteamGifts/
+├── 📁 js/                    # Scripts JavaScript
+│   ├── autoentry.js          # Script principal de conteúdo
+│   ├── backgroundpage.js     # Service Worker
+│   ├── offscreen.js          # Documento offscreen
+│   ├── settings.js           # Interface de configurações
+│   ├── 📁 core/             # Módulos principais
+│   │   ├── giveaway.js       # Modelo de sorteio
+│   │   ├── page-enhancements.js # Melhorias de UI
+│   │   └── settings-store.js # Gerenciamento de configurações
+│   └── utils-enhanced.js     # Utilitários
+├── 📁 css/                   # Estilos
+│   ├── main.css             # Estilos principais
+│   ├── night.css            # Tema escuro
+│   ├── animations.css       # Animações
+│   └── 📁 fontawesome/      # Ícones
+├── 📁 html/                  # Páginas HTML
+│   ├── settings.html        # Página de configurações
+│   └── offscreen.html       # Documento offscreen
+├── 📁 media/                 # Recursos de mídia
+├── 📁 tests/                 # Testes
+├── 📁 docs/                  # Documentação
+└── 📁 .github/              # GitHub Actions
+```
+
+#### 🔄 Fluxo de Execução
+
+```mermaid
+graph TD
+    A[SteamGifts Page Load] --> B[Content Script Injection]
+    B --> C[DOM Enhancement]
+    C --> D[Settings Loaded]
+    D --> E{AutoJoin Active?}
+    E -->|Yes| F[Scan Giveaways]
+    E -->|No| G[UI Enhancements Only]
+    F --> H[Apply Filters]
+    H --> I[Join Selected Giveaways]
+    I --> J[Update UI & Notify]
+    J --> K[Schedule Next Run]
+```
+
+### 🔒 Segurança e Privacidade
+
+#### 🛡️ Compromisso com a Privacidade
+- **❌ Zero Tracking**: Nenhum analytics ou telemetria
+- **❌ Sem Terceiros**: Dados nunca saem do seu navegador
+- **✅ Código Aberto**: 100% transparente e auditável
+- **✅ Permissões Mínimas**: Apenas o essencial para funcionar
+
+#### 🔐 Práticas de Segurança
+- **Manifest V3**: Maior segurança e isolamento
+- **Content Security Policy**: Proteção contra XSS
+- **Validação Rigorosa**: Todos os inputs são validados
+- **Criptografia Local**: APIs nativas do navegador
+
+#### 📊 Dados Coletados vs. Armazenados
+
+| Tipo de Dado | Coletado | Armazenado Localmente | Enviado Externamente |
+|--------------|----------|---------------------|---------------------|
+| Configurações Pessoais | ✅ | ✅ | ❌ |
+| Histórico de Sorteios | ✅ | ✅ | ❌ |
+| Dados de Navegação | ❌ | ❌ | ❌ |
+| Informações Pessoais | ❌ | ❌ | ❌ |
+| Telemetria/Analytics | ❌ | ❌ | ❌ |
+
+### 🤝 Contribuindo
+
+Adoramos contribuições da comunidade! Veja como participar:
+
+#### 🐛 Reportando Bugs
+1. Verifique se o bug já foi reportado
+2. Use nosso [template de issue](.github/ISSUE_TEMPLATE/bug_report.md)
+3. Inclua logs e screenshots quando possível
+
+#### 🚀 Sugerindo Recursos
+1. Use nosso [template de feature request](.github/ISSUE_TEMPLATE/feature_request.md)
+2. Explique o problema que resolve
+3. Proponha uma solução detalhada
+
+#### 🔧 Desenvolvendo
+1. Faça fork do repositório
+2. Crie uma branch: `git checkout -b minha-feature`
+3. Commit suas mudanças: `git commit -am 'Adiciona nova feature'`
+4. Push para a branch: `git push origin minha-feature`
+5. Abra um Pull Request
+
+#### 📋 Checklist para PRs
+- [ ] Código segue o estilo do projeto (`npm run check`)
+- [ ] Testes passam (`npm test`)
+- [ ] Documentação atualizada se necessário
+- [ ] Commit messages são descritivos
+- [ ] PR descreve as mudanças claramente
+
+### 📄 Licença
+
+Este projeto está licenciado sob a **MIT License** - veja o arquivo [LICENSE](LICENSE) para detalhes.
+
+```
+MIT License - Copyright (c) 2024 bernardopg
+
+Você pode usar, copiar, modificar e distribuir este software livremente,
+mantendo os avisos de copyright e esta licença.
+```
 
 ---
 
-#### Documentos relacionados
-- [`CONTRIBUTING.md`](CONTRIBUTING.md) — Diretrizes de contribuição / Contribution guide
-- [`AGENTS.md`](AGENTS.md) — Orientações para agentes/assistentes automatizados
-- [`WARP.md`](WARP.md) — Manual específico para warp.dev
-- [`SECURITY.md`](SECURITY.md) — Política de segurança e reporte responsável
+## 🇺🇸 English
 
+### 📋 Table of Contents
+
+- [🎯 Overview](#-overview)
+- [✨ Key Features](#-key-features)
+- [📦 Quick Installation](#-quick-installation)
+- [🎮 How to Use](#-how-to-use)
+- [⚙️ Advanced Configuration](#-advanced-configuration)
+- [🛠️ Development Scripts](#-development-scripts)
+- [🏗️ Architecture](#-architecture)
+- [🔒 Security & Privacy](#-security--privacy)
+- [🤝 Contributing](#-contributing)
+- [📄 License](#-license)
+
+### 🎯 Overview
+
+**AutoJoin for SteamGifts** is a modern and intelligent browser extension that revolutionizes your SteamGifts.com experience. Built with **Manifest V3**, it offers secure automation, enhanced interface, and advanced features to maximize your giveaway success rate.
+
+#### 🌟 Why Choose AutoJoin?
+
+- **🧠 Smart AI**: Intelligent filtering based on your criteria
+- **🔒 Total Security**: No data sent to third parties, 100% transparent code
+- **🎨 Modern Interface**: Responsive design with elegant dark theme
+- **⚡ Performance**: Optimized with Service Workers and modern techniques
+- **🔄 Sync**: Settings synchronized across devices
+- **🌍 Multilingual**: Full support in Portuguese and English
+
+### ✨ Key Features
+
+#### 🎮 Smart Automation
+- **Auto Participation**: Joins giveaways following your custom filters
+- **Point Management**: Intelligent spending control
+- **Advanced Filters**: By level, groups, wishlists and much more
+- **Flexible Schedule**: Configure specific activation times
+
+#### 🎨 Enhanced Interface
+- **Premium Dark Theme**: Modern design with high readability
+- **Visual Indicators**: Real-time odds, participation status
+- **Intuitive Navigation**: Shortcuts and usability improvements
+- **Accessibility**: Compatible with screen readers and keyboard navigation
+
+#### 🔧 Technical Features
+- **Manifest V3**: Cutting-edge technology for maximum security
+- **Service Worker**: Optimized background execution
+- **Offscreen Documents**: Isolated and secure HTML processing
+- **Chrome Storage API**: Automatic synchronization across devices
+
+#### 🛡️ Security & Privacy
+- **Zero Telemetry**: Your data remains completely private
+- **Minimal Permissions**: Only what's necessary for operation
+- **Open Source**: Total transparency, auditable by anyone
+- **Local Encryption**: Data protected with native browser APIs
+
+### 📦 Quick Installation
+
+#### 🌐 Web Store Installation (Recommended)
+```bash
+# Coming soon to official stores
+Chrome Web Store: [Under Review]
+Firefox Add-ons: [Under Review]
+```
+
+#### 🔧 Manual Installation (Developers)
+
+1. **Clone the repository**:
+```bash
+git clone https://github.com/bernardopg/AutoJoin-for-SteamGifts.git
+cd AutoJoin-for-SteamGifts
+```
+
+2. **Install dependencies**:
+```bash
+npm install
+```
+
+3. **Run tests**:
+```bash
+npm run check
+```
+
+4. **Load in browser**:
+
+**Chrome/Edge/Brave:**
+- Open `chrome://extensions/`
+- Enable "Developer mode"
+- Click "Load unpacked"
+- Select the project folder
+
+**Firefox:**
+- Open `about:debugging`
+- Click "This Firefox"
+- Click "Load Temporary Add-on"
+- Select the `manifest.json` file
+
+### 🎮 How to Use
+
+#### 🚀 Getting Started
+1. **Install the extension** following the instructions above
+2. **Visit SteamGifts.com** - the interface will be automatically enhanced
+3. **Configure your preferences** by clicking "AutoJoin Settings" in the menu
+4. **Activate AutoJoin** and let the magic happen!
+
+#### ⚙️ Basic Configuration
+
+| Setting | Description | Default |
+|---------|-------------|---------|
+| **Minimum Points** | Minimum point reserve | 50 |
+| **Minimum Level** | Minimum level to participate | 0 |
+| **DLC Filter** | Ignore DLC content | Disabled |
+| **Dark Theme** | Dark theme interface | Enabled |
+| **Notifications** | Victory alerts | Enabled |
+
+### 🔒 Security & Privacy
+
+#### 🛡️ Privacy Commitment
+- **❌ Zero Tracking**: No analytics or telemetry
+- **❌ No Third Parties**: Data never leaves your browser
+- **✅ Open Source**: 100% transparent and auditable
+- **✅ Minimal Permissions**: Only essential for operation
+
+#### 🔐 Security Practices
+- **Manifest V3**: Enhanced security and isolation
+- **Content Security Policy**: XSS protection
+- **Rigorous Validation**: All inputs are validated
+- **Local Encryption**: Native browser APIs
+
+### 🤝 Contributing
+
+We love community contributions! Here's how to participate:
+
+#### 🐛 Reporting Bugs
+1. Check if the bug has already been reported
+2. Use our [issue template](.github/ISSUE_TEMPLATE/bug_report.md)
+3. Include logs and screenshots when possible
+
+#### 🚀 Suggesting Features
+1. Use our [feature request template](.github/ISSUE_TEMPLATE/feature_request.md)
+2. Explain the problem it solves
+3. Propose a detailed solution
+
+### 📄 License
+
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 📖 Documentação
+
+- [📋 Contributing Guide](CONTRIBUTING.md) - Como contribuir para o projeto
+- [🔒 Security Policy](SECURITY.md) - Política de segurança e reporte de vulnerabilidades
+- [🤖 Agents Guide](AGENTS.md) - Guia para agentes/assistentes automatizados
+- [🚀 Warp Development](WARP.md) - Manual específico para warp.dev
+- [📚 API Documentation](docs/API.md) - Documentação técnica da API
+- [🎨 Design System](docs/DESIGN.md) - Sistema de design e componentes
+- [🔧 Development Setup](docs/DEVELOPMENT.md) - Configuração de ambiente de desenvolvimento
+
+## 🏆 Reconhecimentos
+
+- **SteamGifts Community** - Por criar uma plataforma incrível
+- **Contributors** - Todos que contribuem para melhorar o projeto
+- **Users** - Por usar, testar e dar feedback valioso
+
+## 📊 Estatísticas
+
+![GitHub stars](https://img.shields.io/github/stars/bernardopg/AutoJoin-for-SteamGifts?style=social)
+![GitHub forks](https://img.shields.io/github/forks/bernardopg/AutoJoin-for-SteamGifts?style=social)
+![GitHub issues](https://img.shields.io/github/issues/bernardopg/AutoJoin-for-SteamGifts)
+![GitHub last commit](https://img.shields.io/github/last-commit/bernardopg/AutoJoin-for-SteamGifts)
+
+---
+
+<div align="center">
+
+**Feito com ❤️ para a comunidade SteamGifts**
+
+[⬆️ Voltar ao Topo](#-autojoin-for-steamgifts)
+
+</div>

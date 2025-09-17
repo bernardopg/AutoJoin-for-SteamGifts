@@ -1,29 +1,181 @@
-name: CI
+name: 🚀 CI/CD Pipeline
 
 on:
   push:
-    branches: [main]
+    branches: [ main, develop ]
   pull_request:
-    branches: [main]
+    branches: [ main, develop ]
+  schedule:
+    - cron: '0 3 * * 0'
+
+env:
+  NODE_VERSION: '20'
 
 jobs:
-  check:
+  lint:
+    name: 🔍 Code Analysis
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: 🟢 Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
 
-      - name: Install dependencies
-        run: npm ci
+      - name: 📦 Install Dependencies
+        run: npm ci --prefer-offline --no-audit
 
-      - name: Run checks
-        run: npm run check
+      - name: 🔍 ESLint Analysis
+        run: npm run lint
 
-      - name: Run tests
+      - name: 🎨 Prettier Format Check
+        run: npm run format
+
+  test:
+    name: 🧪 Test Suite
+    runs-on: ubuntu-latest
+    needs: lint
+
+    strategy:
+      matrix:
+        node-version: [18, 20, 22]
+
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: 📦 Install Dependencies
+        run: npm ci --prefer-offline --no-audit
+
+      - name: 🧪 Run Tests
         run: npm test
+
+  security:
+    name: 🔒 Security Audit
+    runs-on: ubuntu-latest
+    needs: lint
+
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Install Dependencies
+        run: npm ci --prefer-offline --no-audit
+
+      - name: 🛡️ NPM Security Audit
+        run: npm audit --audit-level=high
+
+      - name: 🔍 CodeQL Analysis
+        uses: github/codeql-action/init@v3
+        with:
+          languages: javascript
+
+      - name: 🔍 Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+
+  build:
+    name: 🏗️ Build Extension
+    runs-on: ubuntu-latest
+    needs: [test, security]
+
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 📦 Install Dependencies
+        run: npm ci --prefer-offline --no-audit
+
+      - name: 🏗️ Build Extension Package
+        run: |
+          zip -r AutoJoin-SteamGifts-${{ github.sha }}.zip . \
+            -x "node_modules/*" \
+            -x ".git/*" \
+            -x ".github/*" \
+            -x "tests/*" \
+            -x "*.test.js" \
+            -x ".eslintrc.json" \
+            -x ".prettierrc.json" \
+            -x "package*.json"
+
+      - name: 📤 Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: extension-build-${{ github.sha }}
+          path: AutoJoin-SteamGifts-${{ github.sha }}.zip
+          retention-days: 30
+
+  release:
+    name: 🚀 Release
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 📥 Download Build Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: extension-build-${{ github.sha }}
+
+      - name: 🏷️ Generate Release Tag
+        id: tag
+        run: |
+          VERSION=$(node -p "require('./manifest.json').version")
+          echo "version=v${VERSION}" >> $GITHUB_OUTPUT
+          echo "release_name=AutoJoin for SteamGifts v${VERSION}" >> $GITHUB_OUTPUT
+
+      - name: 📝 Generate Release Notes
+        id: notes
+        run: |
+          echo "notes<<EOF" >> $GITHUB_OUTPUT
+          echo "## 🎮 AutoJoin for SteamGifts ${{ steps.tag.outputs.version }}" >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_OUTPUT
+          echo "### 📦 Installation" >> $GITHUB_OUTPUT
+          echo "1. Download the \`AutoJoin-SteamGifts-${{ github.sha }}.zip\` file" >> $GITHUB_OUTPUT
+          echo "2. Extract and load as unpacked extension in Chrome/Firefox" >> $GITHUB_OUTPUT
+          echo "3. Visit [SteamGifts.com](https://www.steamgifts.com) and enjoy!" >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_OUTPUT
+          echo "### 🔧 Changes in this version" >> $GITHUB_OUTPUT
+          echo "See commit history for detailed changes." >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: 🚀 Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.tag.outputs.version }}
+          name: ${{ steps.tag.outputs.release_name }}
+          body: ${{ steps.notes.outputs.notes }}
+          files: AutoJoin-SteamGifts-${{ github.sha }}.zip
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

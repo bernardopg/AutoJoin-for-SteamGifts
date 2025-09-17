@@ -1,75 +1,203 @@
-# WARP • Manual para warp.dev / Cloud workspaces
+# ⚡ Guia Warp.dev | Cloud Development Guide
 
-Este guia ajuda ambientes warp.dev (ou terminais remotos semelhantes) a colaborar com o projeto de forma segura e produtiva.
+<div align="center">
 
-- [Português (Brasil)](#pt)
-- [English](#en)
+**Documentação especializada para desenvolvimento no Warp.dev**
+*Specialized documentation for Warp.dev development*
 
----
+[![Warp](https://img.shields.io/badge/Warp-Terminal-purple.svg)](https://www.warp.dev/)
+[![Cloud Dev](https://img.shields.io/badge/Cloud-Development-blue.svg)](#-quick-start-warpdev)
 
-<a id="pt"></a>
-<details open>
-<summary><strong>Português (Brasil)</strong></summary>
+[🇧🇷 Português](#-português-brasil) • [🇺🇸 English](#-english)
 
-#### Resumo técnico
-- Extensão Chrome/Edge Manifest V3; scripts principais em `js/`, módulos em `js/core/` e páginas em `html/`.
-- Requer Node.js ≥ 18 apenas para lint/test automatizados (a extensão em si não depende de build).
-- Configuração recomendada: `npm install` seguido de `npm run check`.
-
-#### Fluxo sugerido no warp.dev
-1. **Inicialização**
-   ```bash
-   npm install
-   npm run check
-   ```
-2. **Desenvolvimento** – use `warp` blocks ou painéis para acompanhar logs (`npm run lint -- --fix`, `npm test`).
-3. **Hot reload** – recarregue a extensão via `chrome://extensions` → *Reload* após `npm run check`.
-4. **Pacotes** – para gerar builds locais, utilize `zip -r AutoJoin_$(date +%Y%m%d).zip . -x "node_modules/*" -x "*.git*"`.
-
-#### Dicas específicas warp.dev
-- Configure Workflows com prompts que executem `npm run lint` e `npm test` antes de concluir.
-- Utilize blocos de saída (Output Blocks) para salvar diffs críticos ou logs relevantes para revisão humana.
-- Habilite sincronização de variáveis apenas para valores não sensíveis; tokens do SteamGifts não devem ser armazenados.
-
-#### Segurança & privacidade
-- Não acesse sites externos a partir do workspace sem necessidade.
-- Use redes privadas ou VPN confiável ao testar funcionalidades que interagem com Steam/SteamGifts.
-
-</details>
+</div>
 
 ---
 
-<a id="en"></a>
-<details>
-<summary><strong>English</strong></summary>
+## 🇧🇷 Português (Brasil)
 
-#### Technical quick facts
-- Chrome/Edge Manifest V3 extension; core scripts under `js/`, modules under `js/core/`, pages in `html/`.
-- Node.js ≥ 18 only for linting/testing automation (extension has no bundling step).
-- Recommended bootstrap: `npm install` followed by `npm run check`.
+### ⚡ Quick Start Warp.dev
 
-#### Suggested warp.dev flow
-1. **Bootstrap**
-   ```bash
-   npm install
-   npm run check
-   ```
-2. **Development** – leverage warp blocks/panels to watch lint output (`npm run lint -- --fix`, `npm test`).
-3. **Hot reload** – reload the extension via `chrome://extensions` → *Reload* after running checks.
-4. **Packaging** – produce local builds via `zip -r AutoJoin_$(date +%Y%m%d).zip . -x "node_modules/*" -x "*.git*"`.
+#### 🚀 Configuração Inicial
+```bash
+# 1. Instalar dependências
+npm install
 
-#### warp.dev tips
-- Create Workflows that enforce `npm run lint` and `npm test` before completion.
-- Use Output Blocks to capture critical diffs/logs for human review.
-- Sync variables only for non-sensitive values; never store Steam/SteamGifts tokens in warp secrets.
+# 2. Verificar saúde do projeto
+npm run check
 
-#### Security & privacy
-- Avoid browsing unrelated sites from the workspace to reduce exposure.
-- Prefer trusted networks or VPN when testing flows interacting with Steam/SteamGifts.
+# 3. Executar testes
+npm test
+```
 
-</details>
+#### 🔄 Workflows Recomendados
+
+**Workflow de Desenvolvimento:**
+```bash
+# Criar um workflow no Warp
+npm run lint -- --fix && npm test && echo "✅ Pronto para commit"
+```
+
+**Workflow de Build:**
+```bash
+# Gerar build para teste
+zip -r "AutoJoin_$(date +%Y%m%d).zip" . -x "node_modules/*" -x ".git/*" -x "*.md"
+```
+
+#### 🛠️ Comandos Essenciais
+
+| Comando | Descrição | Uso |
+|---------|-----------|-----|
+| `npm run check` | Lint + Format | Antes de commits |
+| `npm test` | Executar testes | Validação |
+| `npm run lint -- --fix` | Corrigir lint | Auto-fix |
+
+### 🔒 Segurança no Warp
+
+#### ✅ Permitido
+- Executar scripts npm locais
+- Análise de código e estrutura
+- Testes automatizados
+- Build local da extensão
+
+#### ❌ Restrito
+- Não armazenar credenciais no Warp
+- Não executar scripts externos não verificados
+- Não modificar permissões da extensão
+- Não publicar builds automaticamente
+
+### 🎯 Dicas Warp.dev
+
+#### 📋 Usar Output Blocks
+```bash
+# Salvar logs importantes em blocos
+npm run check 2>&1 | tee check_results.log
+```
+
+#### 🤖 AI Commands
+- Use `#` para comandos AI contextuais
+- Configure aliases para comandos frequentes
+- Use workflows para sequências complexas
 
 ---
 
-Para instruções gerais de contribuição consulte [`CONTRIBUTING.md`](CONTRIBUTING.md) e para segurança veja [`SECURITY.md`](SECURITY.md).
+## 🇺🇸 English
 
+### ⚡ Quick Start Warp.dev
+
+#### 🚀 Initial Setup
+```bash
+# 1. Install dependencies
+npm install
+
+# 2. Check project health
+npm run check
+
+# 3. Run tests
+npm test
+```
+
+#### 🔄 Recommended Workflows
+
+**Development Workflow:**
+```bash
+# Create a Warp workflow
+npm run lint -- --fix && npm test && echo "✅ Ready to commit"
+```
+
+**Build Workflow:**
+```bash
+# Generate test build
+zip -r "AutoJoin_$(date +%Y%m%d).zip" . -x "node_modules/*" -x ".git/*" -x "*.md"
+```
+
+#### 🛠️ Essential Commands
+
+| Command | Description | Usage |
+|---------|-------------|-------|
+| `npm run check` | Lint + Format | Before commits |
+| `npm test` | Run tests | Validation |
+| `npm run lint -- --fix` | Fix linting | Auto-fix |
+
+### 🔒 Security in Warp
+
+#### ✅ Allowed
+- Run local npm scripts
+- Code analysis and structure review
+- Automated testing
+- Local extension builds
+
+#### ❌ Restricted
+- Don't store credentials in Warp
+- Don't execute unverified external scripts
+- Don't modify extension permissions
+- Don't auto-publish builds
+
+### 🎯 Warp.dev Tips
+
+#### 📋 Use Output Blocks
+```bash
+# Save important logs in blocks
+npm run check 2>&1 | tee check_results.log
+```
+
+#### 🤖 AI Commands
+- Use `#` for contextual AI commands
+- Set up aliases for frequent commands
+- Use workflows for complex sequences
+
+---
+
+## 🔧 Configuração Avançada | Advanced Configuration
+
+### 📝 Warp Settings
+
+```json
+{
+  "terminal": {
+    "shell": "/bin/zsh",
+    "theme": "dark",
+    "font_size": 14
+  },
+  "workflows": {
+    "autojoin_check": "npm run check",
+    "autojoin_test": "npm test",
+    "autojoin_build": "zip -r AutoJoin.zip . -x node_modules/*"
+  }
+}
+```
+
+### 🚀 Aliases Úteis | Useful Aliases
+
+```bash
+# Adicionar ao ~/.zshrc ou ~/.bashrc
+alias ajcheck="npm run check"
+alias ajtest="npm test"
+alias ajbuild="zip -r AutoJoin_$(date +%Y%m%d).zip . -x 'node_modules/*' -x '.git/*'"
+alias ajlint="npm run lint -- --fix"
+```
+
+---
+
+## 📞 Suporte | Support
+
+### 🇧🇷 Português
+- **📖 Documentação completa**: [README.md](README.md)
+- **🤝 Contribuir**: [CONTRIBUTING.md](CONTRIBUTING.md)
+- **🔒 Segurança**: [SECURITY.md](SECURITY.md)
+
+### 🇺🇸 English
+- **📖 Full documentation**: [README.md](README.md)
+- **🤝 Contributing**: [CONTRIBUTING.md](CONTRIBUTING.md)
+- **🔒 Security**: [SECURITY.md](SECURITY.md)
+
+---
+
+<div align="center">
+
+**Desenvolvimento eficiente com Warp.dev! ⚡🚀**
+*Efficient development with Warp.dev!*
+
+[⬆️ Voltar ao Topo | Back to Top](#-guia-warpdev--cloud-development-guide)
+
+</div>
