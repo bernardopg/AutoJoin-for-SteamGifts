@@ -6,7 +6,6 @@ baseurl: /AutoJoin-for-SteamGifts
 
 # Theme
 theme: jekyll-theme-primer
-remote_theme: primer/github-pages
 
 # Build settings
 markdown: kramdown
