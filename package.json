@@ -25,7 +25,7 @@
   },
   "homepage": "https://github.com/bernardopg/AutoJoin-for-SteamGifts#readme",
   "devDependencies": {
-    "eslint": "^8.56.0",
+    "eslint": "^9.38.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.29.1",
     "prettier": "^3.1.0"
