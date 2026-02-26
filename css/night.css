@@ -38,6 +38,8 @@ body.night-theme .featured__outer-wrap--home {
 
 body.night-theme header,
 body.night-theme .page__outer-wrap,
+body.night-theme .pinned-giveaways__inner-wrap,
+body.night-theme .pinned-giveaways__outer-wrap,
 body.night-theme .page__inner-wrap,
 body.night-theme .widget-container,
 body.night-theme .sidebar,
@@ -54,11 +56,19 @@ body.night-theme .sidebar__navigation__item {
   border-color: var(--border-color);
 }
 
+body.night-theme .pinned-giveaways__button {
+  background: rgba(82, 156, 255, 0.32);
+  color: #bfe1ff;
+  border-color: rgba(82, 156, 255, 0.5);
+}
+
 body.night-theme .sidebar__navigation__item.is-selected,
 body.night-theme .giveaway__row-inner-wrap:hover,
 body.night-theme .featured__outer-wrap:hover {
   background: rgba(28, 35, 45, 0.98);
 }
+
+
 
 body.night-theme .giveaway__heading__name,
 body.night-theme .featured__heading__medium,
@@ -196,113 +206,117 @@ body.night-theme .btnSingle:hover:not(:disabled) {
 }
 
 /* =================================
-   SETTINGS MODAL COMPLETE DARK THEME
+   NAVIGATION & DROPDOWNS
    ================================= */
-
-/* Modal Container with proper dark theme */
-body.night-theme #settingsDiv {
-  background: #161d2b !important;
-  color: #f4f6ff !important;
-  border: 1px solid rgba(98, 116, 164, 0.45) !important;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8) !important;
+body.night-theme .nav__absolute-dropdown {
+  background-color: var(--bg-secondary) !important;
+  border: 1px solid var(--border-color) !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5) !important;
 }
 
-/* Modal backdrop */
-body.night-theme #settingsShade {
-  background-color: rgba(0, 0, 0, 0.85) !important;
+body.night-theme .nav__row {
+  border-bottom: 1px solid var(--border-color) !important;
+  transition: background-color 0.2s ease !important;
+  background-image: none !important;
 }
 
-/* Header with gradient */
-body.night-theme .settings-header {
-  background: linear-gradient(135deg, #7cc7ff 0%, #6495ed 100%) !important;
+body.night-theme .nav__row:hover {
+  background-color: rgba(124, 203, 255, 0.1) !important;
+  background-image: none !important;
+}
+
+body.night-theme .nav__row__summary__name {
+  color: var(--text-primary) !important;
+}
+
+body.night-theme .nav__row__summary__description {
+  color: var(--text-secondary) !important;
+}
+
+/* Nav Button Containers */
+body.night-theme .nav__button-container:not(.nav__button-container--notification) {
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%) !important;
+  background-color: var(--bg-secondary) !important;
+  border-radius: 4px !important;
+  border: 1px solid var(--border-color) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+}
+
+body.night-theme .nav__button {
+  color: var(--text-primary) !important;
+  text-shadow: none !important;
+  background-image: none !important;
+  background-color: transparent !important;
+}
+
+body.night-theme .nav__button-container:not(.nav__button-container--notification) .nav__button:hover,
+body.night-theme .nav__button-container:not(.nav__button-container--notification) .nav__button--is-dropdown-arrow:hover {
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.05) 100%) !important;
   color: #ffffff !important;
 }
 
-body.night-theme .settings-header h1 {
-  color: #ffffff !important;
+/* Active/Selected category */
+body.night-theme .nav__button-container:not(.nav__button-container--notification).is-selected {
+  background-image: linear-gradient(to bottom, rgba(124, 203, 255, 0.15) 0%, rgba(124, 203, 255, 0.05) 100%) !important;
+  border-color: rgba(124, 203, 255, 0.3) !important;
+  box-shadow: 0 1px 4px rgba(124, 203, 255, 0.1) !important;
 }
 
-body.night-theme .settings-header p {
-  color: #f0f8ff !important;
-  opacity: 0.95;
-}
-
-/* Close button */
-body.night-theme .settings-close {
-  background: rgba(0, 0, 0, 0.6) !important;
-  color: #ffffff !important;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-body.night-theme .settings-close:hover {
-  background: rgba(0, 0, 0, 0.8) !important;
-  transform: scale(1.05);
-}
-
-/* Tabs system */
-body.night-theme .settings-tabs {
-  background: #1b2231 !important;
-  border-bottom: 1px solid rgba(98, 116, 164, 0.45) !important;
-}
-
-body.night-theme .tab-button {
-  color: #c0c9e6 !important;
-  background: transparent !important;
-}
-
-body.night-theme .tab-button:hover {
-  background: rgba(124, 203, 255, 0.1) !important;
-  color: #f4f6ff !important;
-}
-
-body.night-theme .tab-button.active {
-  color: #7cc7ff !important;
-  background: #161d2b !important;
-  border-bottom-color: #7cc7ff !important;
-}
-
-body.night-theme .tab-button i {
-  color: inherit !important;
-}
-
-/* Tab content */
-body.night-theme .tab-content {
-  background: #161d2b !important;
-}
-
-/* Settings sections */
-body.night-theme .settings-section {
-  background: rgba(27, 34, 49, 0.6) !important;
-  border: 1px solid rgba(98, 116, 164, 0.3) !important;
-  border-radius: 12px !important;
-}
-
-body.night-theme .settings-section h3 {
-  color: #f4f6ff !important;
-}
-
-body.night-theme .settings-section h3 i {
+body.night-theme .nav__button-container.is-selected .nav__button {
+  background-image: none !important;
   color: #7cc7ff !important;
 }
 
-/* Warning sections */
-body.night-theme .settings-section.warning-section {
-  background: rgba(255, 152, 0, 0.1) !important;
-  border-left: 4px solid #ff9800 !important;
+body.night-theme .nav__button-container.is-selected .nav__button:hover:not(.is-selected),
+body.night-theme .nav__button-container.is-selected .nav__button--is-dropdown-arrow:hover {
+  background-image: linear-gradient(to bottom, rgba(124, 203, 255, 0.25) 0%, rgba(124, 203, 255, 0.1) 100%) !important;
+  color: #ffffff !important;
 }
 
-body.night-theme .warning-section h3 i.warning-icon {
-  color: #ff9800 !important;
+/* Selected nested button (not commonly used but handled) */
+body.night-theme .nav__button-container:not(.nav__button-container--notification) .nav__button.is-selected {
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.5) 100%) !important;
+  color: #7cc7ff !important;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5) !important;
 }
 
-body.night-theme .warning-message {
-  background: rgba(255, 152, 0, 0.15) !important;
-  border: 1px solid rgba(255, 152, 0, 0.4) !important;
-  color: #ffcc80 !important;
+/* Arrow separator */
+body.night-theme .nav__button--is-dropdown-arrow {
+  border-left: 1px solid var(--border-color) !important;
+  box-shadow: none !important;
 }
 
-body.night-theme .warning-message i {
-  color: #ff9800 !important;
+body.night-theme .nav__button-container.is-selected .nav__button--is-dropdown-arrow {
+  border-left: 1px solid rgba(124, 203, 255, 0.3) !important;
+}
+
+/* Right-side Notification/Message buttons */
+body.night-theme .nav__button-container--inactive i {
+  color: var(--text-secondary) !important;
+  text-shadow: none !important;
+  transition: color 0.2s ease;
+}
+
+body.night-theme .nav__button-container--inactive:hover i {
+  color: var(--text-primary) !important;
+}
+
+body.night-theme .nav__button-container--active i,
+body.night-theme .nav__button-container--active .nav__button,
+body.night-theme .nav__button-container--notification .nav__button:hover i {
+  color: #7cc7ff !important;
+  text-shadow: 0 0 5px rgba(124, 203, 255, 0.4) !important;
+}
+
+body.night-theme .nav__notification {
+  border: 1px solid rgba(0, 0, 0, 0.5) !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+}
+
+body.night-theme .nav__avatar-outer-wrap {
+  border-color: rgba(0, 0, 0, 0.5) !important;
+  background-color: rgba(0, 0, 0, 0.3) !important;
+  box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.5), 0 1px 0 rgba(255, 255, 255, 0.1) !important;
 }
 
 /* Setting items */
@@ -801,125 +815,121 @@ body,
 }
 
 /* =================================
-   CRITICAL FIXES FOR INLINE STYLES
+   NAVIGATION & DROPDOWNS
    ================================= */
-
-/* Fix featured giveaway background that has inline style */
-body.night-theme
-  .featured__outer-wrap.featured__outer-wrap--home[style*='background-color'] {
-  background-color: rgba(19, 26, 39, 0.92) !important;
-  background-image: radial-gradient(
-    circle at center,
-    rgba(89, 86, 0, 0.1) 0%,
-    transparent 60%
-  ) !important;
+body.night-theme .nav__absolute-dropdown {
+  background-color: var(--bg-secondary) !important;
+  border: 1px solid var(--border-color) !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5) !important;
 }
 
-/* Fix inline colored icons and text with better dark theme colors */
-body.night-theme .featured__column i[style*='color'],
-body.night-theme .featured__column a[style*='color'] {
-  color: #e4c96a !important;
-  /* Warm gold that works on dark backgrounds */
+body.night-theme .nav__row {
+  border-bottom: 1px solid var(--border-color) !important;
+  transition: background-color 0.2s ease !important;
+  background-image: none !important;
 }
 
-/* Fix Steam store links with inline styles */
-body.night-theme a[style*='background-color: rgb(124, 116, 255)'] {
-  background-color: rgba(100, 149, 237, 0.9) !important;
+body.night-theme .nav__row:hover {
+  background-color: rgba(124, 203, 255, 0.1) !important;
+  background-image: none !important;
+}
+
+body.night-theme .nav__row__summary__name {
+  color: var(--text-primary) !important;
+}
+
+body.night-theme .nav__row__summary__description {
+  color: var(--text-secondary) !important;
+}
+
+/* Nav Button Containers */
+body.night-theme .nav__button-container:not(.nav__button-container--notification) {
+  background-image: linear-gradient(#3a4254 0px, #242a38 100%) !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 2px rgba(0, 0, 0, 0.2) !important;
+}
+
+body.night-theme .nav__button {
+  color: #b8c4d9 !important;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.5) !important;
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+body.night-theme .nav__button-container:not(.nav__button-container--notification) .nav__button:hover,
+body.night-theme .nav__button-container:not(.nav__button-container--notification) .nav__button--is-dropdown-arrow:hover {
+  background-image: linear-gradient(#4b5468 0px, #303748 100%) !important;
   color: #ffffff !important;
-  border: 1px solid rgba(100, 149, 237, 0.3);
-  border-radius: var(--radius-sm);
-  transition: all var(--transition-fast);
 }
 
-body.night-theme a[style*='background-color: rgb(124, 116, 255)']:hover {
-  background-color: rgba(100, 149, 237, 1) !important;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(100, 149, 237, 0.3);
-}
-
-/* Fix fanatical and bundle containers with inline styles */
-body.night-theme .fanatical_container[style*='background-color'] {
-  background-color: rgba(100, 149, 237, 0.9) !important;
-  border: 1px solid rgba(100, 149, 237, 0.3);
-  border-radius: var(--radius-md);
-}
-
-/* Fix elements with light borders that conflict with dark theme */
-body.night-theme
-  .lixhebt[style*='border-bottom: 1px solid rgb(210, 214, 224)'] {
-  border-bottom-color: var(--border-color) !important;
+/* Active/Selected category */
+body.night-theme .nav__button-container:not(.nav__button-container--notification).is-selected,
+body.night-theme .nav__button-container.is-selected .nav__button {
+  background-image: linear-gradient(#1f2633 0px, #161b24 100%) !important;
+  border: none !important;
   box-shadow: none !important;
 }
 
-/* Fix elements with white box-shadow that don't belong in dark theme */
-body.night-theme [style*='box-shadow'][style*='255, 255, 255'] {
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
-}
-
-/* Fix skip links with proper dark theme variables */
-body.night-theme .skip-links[style*='background: var(--bg-primary)'] {
-  background-color: var(--bg-primary) !important;
-  border-color: var(--border-color) !important;
-}
-
-body.night-theme .skip-links a[style*='color: var(--primary-color)'] {
+body.night-theme .nav__button-container.is-selected .nav__button {
   color: #7cc7ff !important;
 }
 
-/* Fix ad containers to be less intrusive in dark theme */
-body.night-theme .adsbygoogle,
-body.night-theme [id*='aswift'] {
-  opacity: 0.8;
-  filter: brightness(0.9) contrast(1.1);
-  border-radius: var(--radius-md);
-}
-
-/* Fix footer Steam logo with inline styles */
-body.night-theme .footer_steam_logo[style*='background-color'] {
-  background-color: rgba(100, 149, 237, 0.9) !important;
+body.night-theme .nav__button-container.is-selected .nav__button:hover:not(.is-selected),
+body.night-theme .nav__button-container.is-selected .nav__button--is-dropdown-arrow:hover {
+  background-image: linear-gradient(#272f3f 0px, #1a202a 100%) !important;
   color: #ffffff !important;
-  border: 1px solid rgba(100, 149, 237, 0.3);
-  border-radius: var(--radius-sm);
-  transition: all var(--transition-fast);
 }
 
-body.night-theme .footer_steam_logo[style*='background-color']:hover {
-  background-color: rgba(100, 149, 237, 1) !important;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(100, 149, 237, 0.4);
+/* Selected nested button (not commonly used but handled) */
+body.night-theme .nav__button-container:not(.nav__button-container--notification) .nav__button.is-selected {
+  background-image: linear-gradient(#141822 0px, #0e1118 5px, #0a0d12 100%) !important;
+  color: #7cc7ff !important;
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.4) !important;
 }
 
-/* =================================
-   ENHANCED ACCESSIBILITY & UX
-   ================================= */
-
-/* Improve focus states for better keyboard navigation */
-body.night-theme *:focus {
-  outline: 2px solid #7cc7ff !important;
-  outline-offset: 2px;
-  border-radius: var(--radius-sm);
+/* Arrow separator */
+body.night-theme .nav__button--is-dropdown-arrow {
+  border-left: 1px solid rgba(0, 0, 0, 0.3) !important;
+  box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.05) !important;
 }
 
-/* Enhanced giveaway cards with better visual hierarchy */
-body.night-theme .giveaway__row-outer-wrap:hover {
-  transform: translateY(-2px);
-  transition: transform var(--transition-base);
+body.night-theme .nav__button-container.is-selected .nav__button--is-dropdown-arrow {
+  border-left: 1px solid rgba(0, 0, 0, 0.4) !important;
+  box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.05) !important;
 }
 
-/* Better visual feedback for interactive elements */
-body.night-theme .giveaway__icon:hover,
-body.night-theme .nav__button:hover,
-body.night-theme .sidebar__navigation__item__link:hover {
-  background-color: rgba(124, 203, 255, 0.1) !important;
-  border-radius: var(--radius-sm);
-  transition: background-color var(--transition-fast);
+/* Right-side Notification/Message buttons */
+body.night-theme .nav__button-container--inactive i {
+  color: rgba(255, 255, 255, 0.3) !important;
+  text-shadow: none !important;
+  transition: color 0.2s ease;
 }
 
-/* Improved text contrast for better readability */
-body.night-theme .giveaway__username,
-body.night-theme .featured__column a {
-  color: #b8d4ff !important;
-  font-weight: 500;
+body.night-theme .nav__button-container--inactive:hover i {
+  color: #ffffff !important;
+}
+
+body.night-theme .nav__button-container--active i,
+body.night-theme .nav__button-container--active .nav__button,
+body.night-theme .nav__button-container--notification .nav__button:hover i {
+  color: #7cc7ff !important;
+  text-shadow: 0 0 5px rgba(124, 203, 255, 0.4) !important;
+}
+
+body.night-theme .nav__notification {
+  border: 1px solid rgba(0, 0, 0, 0.5) !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+}
+
+body.night-theme .nav__avatar-outer-wrap {
+  border-color: rgba(0, 0, 0, 0.5) !important;
+  background-color: rgba(0, 0, 0, 0.3) !important;
+  box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.5), 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+}
+
+body.night-theme .nav__points {
+  color: #ffcc80 !important;
 }
 
 body.night-theme .giveaway__username:hover,
@@ -1158,4 +1168,482 @@ body.night-theme .giveaway__row-inner-wrap:hover .giveaway__columns .fa-clock-o,
 body.night-theme .giveaway__row-inner-wrap:hover .giveaway__columns .fa-trophy {
   opacity: 1;
   color: #b4bcc8 !important;
+}
+
+/* =================================
+   NAVIGATION & DROPDOWNS
+   ================================= */
+body.night-theme .nav__absolute-dropdown {
+  background-color: var(--bg-secondary) !important;
+  border: 1px solid var(--border-color) !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5) !important;
+}
+
+body.night-theme .nav__row {
+  border-bottom: 1px solid var(--border-color) !important;
+  transition: background-color 0.2s ease !important;
+  background-image: none !important;
+}
+
+body.night-theme .nav__row:hover {
+  background-color: rgba(124, 203, 255, 0.1) !important;
+  background-image: none !important;
+}
+
+body.night-theme .nav__row__summary__name {
+  color: var(--text-primary) !important;
+}
+
+body.night-theme .nav__row__summary__description {
+  color: var(--text-secondary) !important;
+}
+
+/* Nav Button Containers */
+body.night-theme .nav__button-container:not(.nav__button-container--notification) {
+  background-image: linear-gradient(to bottom, #323b4f 0%, #202635 100%) !important;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.5) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+}
+
+body.night-theme .nav__button {
+  color: #e5e7eb !important;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.5) !important;
+}
+
+body.night-theme .nav__button-container:not(.nav__button-container--notification) .nav__button:hover,
+body.night-theme .nav__button-container:not(.nav__button-container--notification) .nav__button--is-dropdown-arrow:hover {
+  background-image: linear-gradient(to bottom, #424e66 0%, #293144 100%) !important;
+  color: #ffffff !important;
+}
+
+/* Active/Selected category */
+body.night-theme .nav__button-container:not(.nav__button-container--notification).is-selected {
+  background-image: linear-gradient(to bottom, #1d2b42 0%, #151d2d 100%) !important;
+  border: 1px solid #111824 !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+}
+
+body.night-theme .nav__button-container.is-selected .nav__button {
+  background-image: linear-gradient(to bottom, #1d2b42 0%, #151d2d 100%) !important;
+  color: #7cc7ff !important;
+}
+
+body.night-theme .nav__button-container.is-selected .nav__button:hover:not(.is-selected),
+body.night-theme .nav__button-container.is-selected .nav__button--is-dropdown-arrow:hover {
+  background-image: linear-gradient(to bottom, #2b3e5c 0%, #1f2a40 100%) !important;
+  color: #ffffff !important;
+}
+
+/* Selected nested button (not commonly used but handled) */
+body.night-theme .nav__button-container:not(.nav__button-container--notification) .nav__button.is-selected {
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.2) 100%) !important;
+  color: #7cc7ff !important;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Arrow separator */
+body.night-theme .nav__button--is-dropdown-arrow {
+  border-left: 1px solid rgba(0, 0, 0, 0.4) !important;
+  box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.05) !important;
+}
+
+body.night-theme .nav__button-container.is-selected .nav__button--is-dropdown-arrow {
+  border-left: 1px solid rgba(0, 0, 0, 0.5) !important;
+  box-shadow: inset 1px 0 0 rgba(124, 203, 255, 0.1) !important;
+}
+
+/* Right-side Notification/Message buttons */
+body.night-theme .nav__button-container--inactive i {
+  color: var(--text-secondary) !important;
+  text-shadow: none !important;
+  transition: color 0.2s ease;
+}
+
+body.night-theme .nav__button-container--inactive:hover i {
+  color: var(--text-primary) !important;
+}
+
+body.night-theme .nav__button-container--active i,
+body.night-theme .nav__button-container--active .nav__button,
+body.night-theme .nav__button-container--notification .nav__button:hover i {
+  color: #7cc7ff !important;
+  text-shadow: 0 0 5px rgba(124, 203, 255, 0.4) !important;
+}
+
+body.night-theme .nav__notification {
+  border: none !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+}
+
+body.night-theme .nav__avatar-outer-wrap {
+  border-color: rgba(0, 0, 0, 0.5) !important;
+  background-color: rgba(0, 0, 0, 0.3) !important;
+  box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.5), 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+}
+
+body.night-theme .nav__points {
+  color: #ffcc80 !important;
+}
+
+/* =================================
+   POPUPS & MODALS
+   ================================= */
+body.night-theme .popup {
+  background-color: var(--bg-secondary) !important;
+  border: 1px solid var(--border-color) !important;
+  color: var(--text-primary) !important;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6) !important;
+}
+
+body.night-theme .popup__heading {
+  color: var(--text-primary) !important;
+}
+
+body.night-theme .popup__actions {
+  background-color: var(--bg-primary) !important;
+  border-top: 1px solid var(--border-color) !important;
+}
+
+body.night-theme .form__submit-button {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%) !important;
+  color: #fff !important;
+  border: none !important;
+}
+
+body.night-theme .form__submit-button:hover {
+  background: linear-gradient(135deg, #20c997 0%, #17a2b8 100%) !important;
+}
+
+body.night-theme .form__saving-button {
+  background-color: var(--bg-primary) !important;
+  color: var(--text-secondary) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+/* =================================
+   LIGHTBOX
+   ================================= */
+body.night-theme .lightbox {
+  background-color: rgba(7, 10, 18, 0.95) !important;
+}
+
+body.night-theme .lightbox-header,
+body.night-theme .lightbox-footer-outer {
+  background-color: var(--bg-secondary) !important;
+  border-color: var(--border-color) !important;
+}
+
+body.night-theme .lightbox-header-description-name {
+  color: var(--text-primary) !important;
+}
+
+body.night-theme .lightbox-header-description-count {
+  color: var(--text-secondary) !important;
+}
+
+body.night-theme .lightbox-header-icon {
+  color: var(--text-secondary) !important;
+}
+
+body.night-theme .lightbox-header-icon:hover {
+  color: #7cc7ff !important;
+}
+
+/* =================================
+   SIDEBAR ENHANCEMENTS
+   ================================= */
+body.night-theme .sidebar__heading {
+  color: var(--text-primary) !important;
+  border-bottom: 1px solid var(--border-color) !important;
+}
+
+body.night-theme .sidebar__navigation__item__underline {
+  background-color: var(--border-color) !important;
+}
+
+/* =================================
+   GIVEAWAY ELEMENTS
+   ================================= */
+body.night-theme .giveaway__column--contributor-level {
+  color: #a0a7b8 !important;
+}
+
+body.night-theme .giveaway__column--contributor-level--positive {
+  color: #4caf50 !important;
+}
+
+body.night-theme .giveaway__column--contributor-level--negative {
+  color: #f44336 !important;
+}
+
+body.night-theme .giveaway__icon {
+  color: rgba(255, 255, 255, 0.5) !important;
+  transition: color 0.2s ease !important;
+}
+
+body.night-theme .giveaway__icon:hover {
+  color: #7cc7ff !important;
+}
+
+body.night-theme .giveaway_image_avatar,
+body.night-theme .featured_giveaway_image_avatar {
+  border: 1px solid var(--border-color) !important;
+}
+
+body.night-theme .giveaway_image_thumbnail {
+  border: 1px solid var(--border-color) !important;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* =================================
+   FANATICAL / ADS
+   ================================= */
+body.night-theme .fanatical_description {
+  color: var(--text-primary) !important;
+}
+
+body.night-theme .fanatical_name {
+  color: #7cc7ff !important;
+}
+
+body.night-theme .fanatical_date {
+  color: var(--text-secondary) !important;
+}
+
+body.night-theme .fanatical_pricing {
+  color: #4caf50 !important;
+  background-color: rgba(76, 175, 80, 0.1) !important;
+  border: 1px solid rgba(76, 175, 80, 0.3) !important;
+}
+
+/* =================================
+   COMMENTS & DISCUSSIONS
+   ================================= */
+body.night-theme .comment__parent,
+body.night-theme .comment__child {
+  border-bottom: 1px solid var(--border-color) !important;
+}
+
+body.night-theme .comment__summary {
+  color: var(--text-primary) !important;
+}
+
+body.night-theme .comment__display-state {
+  background-color: var(--bg-secondary) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+body.night-theme .markdown {
+  color: var(--text-primary) !important;
+}
+
+body.night-theme .markdown blockquote {
+  border-left: 4px solid var(--border-color) !important;
+  color: var(--text-secondary) !important;
+  background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+body.night-theme .markdown code {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  color: #ffcc80 !important;
+}
+
+body.night-theme .markdown pre {
+  background-color: var(--bg-primary) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+body.night-theme .page__heading__button {
+  background-color: var(--bg-secondary) !important;
+  border: 1px solid var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+body.night-theme .page__heading__button:hover {
+  background-color: rgba(124, 203, 255, 0.1) !important;
+  color: #7cc7ff !important;
+}
+
+/* =================================
+   FORMS & INPUTS
+   ================================= */
+body.night-theme textarea,
+body.night-theme input[type="text"],
+body.night-theme input[type="password"],
+body.night-theme select {
+  background-color: var(--bg-primary) !important;
+  border: 1px solid var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+body.night-theme textarea:focus,
+body.night-theme input[type="text"]:focus,
+body.night-theme input[type="password"]:focus,
+body.night-theme select:focus {
+  border-color: #7cc7ff !important;
+  outline: none !important;
+}
+
+/* =================================
+   TABLES & BLOCKS
+   ================================= */
+body.night-theme .table {
+  border: 1px solid var(--border-color) !important;
+  box-shadow: none !important;
+}
+
+body.night-theme .table__heading {
+  background-color: var(--bg-secondary) !important;
+  border-bottom: 1px solid var(--border-color) !important;
+  color: var(--text-primary) !important;
+  box-shadow: none !important;
+}
+
+body.night-theme .table__row-outer-wrap {
+  border-bottom: 1px solid var(--border-color) !important;
+}
+
+body.night-theme .table__row-inner-wrap {
+  background-color: transparent !important;
+}
+
+body.night-theme .table__row-outer-wrap:hover .table__row-inner-wrap {
+  background-color: rgba(255, 255, 255, 0.04) !important;
+}
+
+body.night-theme .table__column__heading,
+body.night-theme .homepage_table_column_heading {
+  color: var(--text-primary) !important;
+}
+
+body.night-theme .table__column__heading:hover,
+body.night-theme .homepage_table_column_heading:hover {
+  color: #7cc7ff !important;
+}
+
+body.night-theme .table__column__secondary-link {
+  color: var(--text-secondary) !important;
+}
+
+body.night-theme .table__column__secondary-link:hover {
+  color: #c0c9e6 !important;
+}
+
+body.night-theme .block_header {
+  background-color: var(--bg-secondary) !important;
+  border-color: var(--border-color) !important;
+  box-shadow: none !important;
+}
+
+body.night-theme .block_header_text,
+body.night-theme .block_header_link {
+  color: var(--text-primary) !important;
+}
+
+body.night-theme .block_header_link:hover {
+  color: #7cc7ff !important;
+}
+
+/* =================================
+   PAGE HEADING & UI FIXES
+   ================================= */
+body.night-theme .page__heading {
+  box-shadow: none !important;
+  background: transparent !important;
+  border: none !important;
+}
+
+body.night-theme .page__heading > * {
+  background-image: linear-gradient(rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%) !important;
+  background-color: var(--bg-secondary) !important;
+  border: 1px solid var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+body.night-theme .page__heading > *:hover {
+  background-image: linear-gradient(rgba(124, 203, 255, 0.1) 0%, rgba(124, 203, 255, 0.05) 100%) !important;
+}
+
+body.night-theme .page__heading * {
+  text-shadow: none !important;
+}
+
+body.night-theme .page__heading__breadcrumbs a {
+  color: #7cc7ff !important;
+}
+
+body.night-theme .page__heading__breadcrumbs a:hover {
+  color: #9fd6ff !important;
+}
+
+body.night-theme .page__heading a i.fa-cog,
+body.night-theme .page__heading a i {
+  color: var(--text-secondary) !important;
+  transition: color 0.2s ease;
+}
+
+body.night-theme .page__heading a:hover i {
+  color: #7cc7ff !important;
+
+}
+
+body.night-theme .pagination {
+  box-shadow: none !important;
+}
+
+body.night-theme .pagination__results {
+  color: var(--text-secondary) !important;
+}
+
+body.night-theme .pagination__results strong {
+  color: var(--text-primary) !important;
+}
+
+body.night-theme .pagination__navigation a {
+  box-shadow: none !important;
+}
+
+body.night-theme header {
+  box-shadow: none !important;
+  background-image: none !important;
+  border-bottom: 1px solid var(--border-color) !important;
+}
+
+/* Giveaways Fixes */
+body.night-theme .giveaway__row-outer-wrap {
+  border-color: var(--border-color) !important;
+}
+
+body.night-theme .giveaway_image_thumbnail_missing,
+body.night-theme .global__image-outer-wrap--missing-image {
+  background-color: var(--bg-secondary) !important;
+  border-color: var(--border-color) !important;
+}
+
+body.night-theme .giveaway_image_thumbnail_missing i,
+body.night-theme .global__image-outer-wrap--missing-image i {
+  color: var(--text-secondary) !important;
+}
+
+/* Footer fixes */
+body.night-theme footer {
+  background-color: var(--bg-secondary) !important;
+  background-image: none !important;
+  border-top: 1px solid var(--border-color) !important;
+  box-shadow: none !important;
+}
+
+body.night-theme .footer_column_heading {
+  color: var(--text-primary) !important;
+}
+
+body.night-theme .footer_column_name,
+body.night-theme .footer_steam div,
+body.night-theme .footer_column_link {
+  color: var(--text-secondary) !important;
+}
+
+body.night-theme .footer_column_link:hover {
+  color: #7cc7ff !important;
 }
