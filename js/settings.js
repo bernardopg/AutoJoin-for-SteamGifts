@@ -214,6 +214,8 @@ function fillSettingsDiv(settings) {
     settings.OddsPriorityBG;
   document.getElementById('chkPlayAudio').checked = settings.PlayAudio;
   document.getElementById('audioVolume').value = settings.AudioVolume;
+  const vd = document.getElementById('audioVolumeDisplay');
+  if (vd) vd.textContent = Math.round(settings.AudioVolume * 100) + '%';
   document.getElementById('chkShowChance').checked = settings.ShowChance;
   document.getElementById('hoursField').value = settings.RepeatHours;
   document.getElementById('pagestoload').value = settings.PagesToLoad;
@@ -450,6 +452,13 @@ function settingsAttachEventListeners() {
 
   const volumeSlider = document.getElementById('audioVolume');
   volumeSlider.addEventListener('click', setAudioVolume);
+
+  const volumeDisplay = document.getElementById('audioVolumeDisplay');
+  if (volumeDisplay) {
+    volumeSlider.addEventListener('input', () => {
+      volumeDisplay.textContent = Math.round(volumeSlider.value * 100) + '%';
+    });
+  }
 
   processDependentSettings();
 }
