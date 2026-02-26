@@ -68,8 +68,6 @@ body.night-theme .featured__outer-wrap:hover {
   background: rgba(28, 35, 45, 0.98);
 }
 
-
-
 body.night-theme .giveaway__heading__name,
 body.night-theme .featured__heading__medium,
 body.night-theme .giveaway__heading__name a,
@@ -234,8 +232,13 @@ body.night-theme .nav__row__summary__description {
 }
 
 /* Nav Button Containers */
-body.night-theme .nav__button-container:not(.nav__button-container--notification) {
-  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%) !important;
+body.night-theme
+  .nav__button-container:not(.nav__button-container--notification) {
+  background-image: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.08) 0%,
+    rgba(255, 255, 255, 0.02) 100%
+  ) !important;
   background-color: var(--bg-secondary) !important;
   border-radius: 4px !important;
   border: 1px solid var(--border-color) !important;
@@ -249,15 +252,28 @@ body.night-theme .nav__button {
   background-color: transparent !important;
 }
 
-body.night-theme .nav__button-container:not(.nav__button-container--notification) .nav__button:hover,
-body.night-theme .nav__button-container:not(.nav__button-container--notification) .nav__button--is-dropdown-arrow:hover {
-  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.05) 100%) !important;
+body.night-theme
+  .nav__button-container:not(.nav__button-container--notification)
+  .nav__button:hover,
+body.night-theme
+  .nav__button-container:not(.nav__button-container--notification)
+  .nav__button--is-dropdown-arrow:hover {
+  background-image: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.12) 0%,
+    rgba(255, 255, 255, 0.05) 100%
+  ) !important;
   color: #ffffff !important;
 }
 
 /* Active/Selected category */
-body.night-theme .nav__button-container:not(.nav__button-container--notification).is-selected {
-  background-image: linear-gradient(to bottom, rgba(124, 203, 255, 0.15) 0%, rgba(124, 203, 255, 0.05) 100%) !important;
+body.night-theme
+  .nav__button-container:not(.nav__button-container--notification).is-selected {
+  background-image: linear-gradient(
+    to bottom,
+    rgba(124, 203, 255, 0.15) 0%,
+    rgba(124, 203, 255, 0.05) 100%
+  ) !important;
   border-color: rgba(124, 203, 255, 0.3) !important;
   box-shadow: 0 1px 4px rgba(124, 203, 255, 0.1) !important;
 }
@@ -267,15 +283,29 @@ body.night-theme .nav__button-container.is-selected .nav__button {
   color: #7cc7ff !important;
 }
 
-body.night-theme .nav__button-container.is-selected .nav__button:hover:not(.is-selected),
-body.night-theme .nav__button-container.is-selected .nav__button--is-dropdown-arrow:hover {
-  background-image: linear-gradient(to bottom, rgba(124, 203, 255, 0.25) 0%, rgba(124, 203, 255, 0.1) 100%) !important;
+body.night-theme
+  .nav__button-container.is-selected
+  .nav__button:hover:not(.is-selected),
+body.night-theme
+  .nav__button-container.is-selected
+  .nav__button--is-dropdown-arrow:hover {
+  background-image: linear-gradient(
+    to bottom,
+    rgba(124, 203, 255, 0.25) 0%,
+    rgba(124, 203, 255, 0.1) 100%
+  ) !important;
   color: #ffffff !important;
 }
 
 /* Selected nested button (not commonly used but handled) */
-body.night-theme .nav__button-container:not(.nav__button-container--notification) .nav__button.is-selected {
-  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.5) 100%) !important;
+body.night-theme
+  .nav__button-container:not(.nav__button-container--notification)
+  .nav__button.is-selected {
+  background-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.3) 0%,
+    rgba(0, 0, 0, 0.5) 100%
+  ) !important;
   color: #7cc7ff !important;
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5) !important;
 }
@@ -286,7 +316,9 @@ body.night-theme .nav__button--is-dropdown-arrow {
   box-shadow: none !important;
 }
 
-body.night-theme .nav__button-container.is-selected .nav__button--is-dropdown-arrow {
+body.night-theme
+  .nav__button-container.is-selected
+  .nav__button--is-dropdown-arrow {
   border-left: 1px solid rgba(124, 203, 255, 0.3) !important;
 }
 
@@ -316,7 +348,9 @@ body.night-theme .nav__notification {
 body.night-theme .nav__avatar-outer-wrap {
   border-color: rgba(0, 0, 0, 0.5) !important;
   background-color: rgba(0, 0, 0, 0.3) !important;
-  box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.5), 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+  box-shadow:
+    inset 1px 1px 2px rgba(0, 0, 0, 0.5),
+    0 1px 0 rgba(255, 255, 255, 0.1) !important;
 }
 
 /* Setting items */
@@ -843,11 +877,14 @@ body.night-theme .nav__row__summary__description {
 }
 
 /* Nav Button Containers */
-body.night-theme .nav__button-container:not(.nav__button-container--notification) {
+body.night-theme
+  .nav__button-container:not(.nav__button-container--notification) {
   background-image: linear-gradient(#3a4254 0px, #242a38 100%) !important;
   background-color: transparent !important;
   border: none !important;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 2px rgba(0, 0, 0, 0.2) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 1px 2px rgba(0, 0, 0, 0.2) !important;
 }
 
 body.night-theme .nav__button {
@@ -857,14 +894,19 @@ body.night-theme .nav__button {
   background-image: none !important;
 }
 
-body.night-theme .nav__button-container:not(.nav__button-container--notification) .nav__button:hover,
-body.night-theme .nav__button-container:not(.nav__button-container--notification) .nav__button--is-dropdown-arrow:hover {
+body.night-theme
+  .nav__button-container:not(.nav__button-container--notification)
+  .nav__button:hover,
+body.night-theme
+  .nav__button-container:not(.nav__button-container--notification)
+  .nav__button--is-dropdown-arrow:hover {
   background-image: linear-gradient(#4b5468 0px, #303748 100%) !important;
   color: #ffffff !important;
 }
 
 /* Active/Selected category */
-body.night-theme .nav__button-container:not(.nav__button-container--notification).is-selected,
+body.night-theme
+  .nav__button-container:not(.nav__button-container--notification).is-selected,
 body.night-theme .nav__button-container.is-selected .nav__button {
   background-image: linear-gradient(#1f2633 0px, #161b24 100%) !important;
   border: none !important;
@@ -875,15 +917,25 @@ body.night-theme .nav__button-container.is-selected .nav__button {
   color: #7cc7ff !important;
 }
 
-body.night-theme .nav__button-container.is-selected .nav__button:hover:not(.is-selected),
-body.night-theme .nav__button-container.is-selected .nav__button--is-dropdown-arrow:hover {
+body.night-theme
+  .nav__button-container.is-selected
+  .nav__button:hover:not(.is-selected),
+body.night-theme
+  .nav__button-container.is-selected
+  .nav__button--is-dropdown-arrow:hover {
   background-image: linear-gradient(#272f3f 0px, #1a202a 100%) !important;
   color: #ffffff !important;
 }
 
 /* Selected nested button (not commonly used but handled) */
-body.night-theme .nav__button-container:not(.nav__button-container--notification) .nav__button.is-selected {
-  background-image: linear-gradient(#141822 0px, #0e1118 5px, #0a0d12 100%) !important;
+body.night-theme
+  .nav__button-container:not(.nav__button-container--notification)
+  .nav__button.is-selected {
+  background-image: linear-gradient(
+    #141822 0px,
+    #0e1118 5px,
+    #0a0d12 100%
+  ) !important;
   color: #7cc7ff !important;
   box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.4) !important;
 }
@@ -894,7 +946,9 @@ body.night-theme .nav__button--is-dropdown-arrow {
   box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.05) !important;
 }
 
-body.night-theme .nav__button-container.is-selected .nav__button--is-dropdown-arrow {
+body.night-theme
+  .nav__button-container.is-selected
+  .nav__button--is-dropdown-arrow {
   border-left: 1px solid rgba(0, 0, 0, 0.4) !important;
   box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.05) !important;
 }
@@ -925,7 +979,9 @@ body.night-theme .nav__notification {
 body.night-theme .nav__avatar-outer-wrap {
   border-color: rgba(0, 0, 0, 0.5) !important;
   background-color: rgba(0, 0, 0, 0.3) !important;
-  box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.5), 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+  box-shadow:
+    inset 1px 1px 2px rgba(0, 0, 0, 0.5),
+    0 1px 0 rgba(255, 255, 255, 0.1) !important;
 }
 
 body.night-theme .nav__points {
@@ -1199,11 +1255,18 @@ body.night-theme .nav__row__summary__description {
 }
 
 /* Nav Button Containers */
-body.night-theme .nav__button-container:not(.nav__button-container--notification) {
-  background-image: linear-gradient(to bottom, #323b4f 0%, #202635 100%) !important;
+body.night-theme
+  .nav__button-container:not(.nav__button-container--notification) {
+  background-image: linear-gradient(
+    to bottom,
+    #323b4f 0%,
+    #202635 100%
+  ) !important;
   border-radius: 4px;
   border: 1px solid rgba(0, 0, 0, 0.5) !important;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 1px 2px rgba(0, 0, 0, 0.3) !important;
 }
 
 body.night-theme .nav__button {
@@ -1211,33 +1274,66 @@ body.night-theme .nav__button {
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.5) !important;
 }
 
-body.night-theme .nav__button-container:not(.nav__button-container--notification) .nav__button:hover,
-body.night-theme .nav__button-container:not(.nav__button-container--notification) .nav__button--is-dropdown-arrow:hover {
-  background-image: linear-gradient(to bottom, #424e66 0%, #293144 100%) !important;
+body.night-theme
+  .nav__button-container:not(.nav__button-container--notification)
+  .nav__button:hover,
+body.night-theme
+  .nav__button-container:not(.nav__button-container--notification)
+  .nav__button--is-dropdown-arrow:hover {
+  background-image: linear-gradient(
+    to bottom,
+    #424e66 0%,
+    #293144 100%
+  ) !important;
   color: #ffffff !important;
 }
 
 /* Active/Selected category */
-body.night-theme .nav__button-container:not(.nav__button-container--notification).is-selected {
-  background-image: linear-gradient(to bottom, #1d2b42 0%, #151d2d 100%) !important;
+body.night-theme
+  .nav__button-container:not(.nav__button-container--notification).is-selected {
+  background-image: linear-gradient(
+    to bottom,
+    #1d2b42 0%,
+    #151d2d 100%
+  ) !important;
   border: 1px solid #111824 !important;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 1px 2px rgba(0, 0, 0, 0.3) !important;
 }
 
 body.night-theme .nav__button-container.is-selected .nav__button {
-  background-image: linear-gradient(to bottom, #1d2b42 0%, #151d2d 100%) !important;
+  background-image: linear-gradient(
+    to bottom,
+    #1d2b42 0%,
+    #151d2d 100%
+  ) !important;
   color: #7cc7ff !important;
 }
 
-body.night-theme .nav__button-container.is-selected .nav__button:hover:not(.is-selected),
-body.night-theme .nav__button-container.is-selected .nav__button--is-dropdown-arrow:hover {
-  background-image: linear-gradient(to bottom, #2b3e5c 0%, #1f2a40 100%) !important;
+body.night-theme
+  .nav__button-container.is-selected
+  .nav__button:hover:not(.is-selected),
+body.night-theme
+  .nav__button-container.is-selected
+  .nav__button--is-dropdown-arrow:hover {
+  background-image: linear-gradient(
+    to bottom,
+    #2b3e5c 0%,
+    #1f2a40 100%
+  ) !important;
   color: #ffffff !important;
 }
 
 /* Selected nested button (not commonly used but handled) */
-body.night-theme .nav__button-container:not(.nav__button-container--notification) .nav__button.is-selected {
-  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.2) 100%) !important;
+body.night-theme
+  .nav__button-container:not(.nav__button-container--notification)
+  .nav__button.is-selected {
+  background-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.4) 0%,
+    rgba(0, 0, 0, 0.2) 100%
+  ) !important;
   color: #7cc7ff !important;
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5) !important;
 }
@@ -1248,7 +1344,9 @@ body.night-theme .nav__button--is-dropdown-arrow {
   box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.05) !important;
 }
 
-body.night-theme .nav__button-container.is-selected .nav__button--is-dropdown-arrow {
+body.night-theme
+  .nav__button-container.is-selected
+  .nav__button--is-dropdown-arrow {
   border-left: 1px solid rgba(0, 0, 0, 0.5) !important;
   box-shadow: inset 1px 0 0 rgba(124, 203, 255, 0.1) !important;
 }
@@ -1279,7 +1377,9 @@ body.night-theme .nav__notification {
 body.night-theme .nav__avatar-outer-wrap {
   border-color: rgba(0, 0, 0, 0.5) !important;
   background-color: rgba(0, 0, 0, 0.3) !important;
-  box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.5), 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+  box-shadow:
+    inset 1px 1px 2px rgba(0, 0, 0, 0.5),
+    0 1px 0 rgba(255, 255, 255, 0.1) !important;
 }
 
 body.night-theme .nav__points {
@@ -1469,8 +1569,8 @@ body.night-theme .page__heading__button:hover {
    FORMS & INPUTS
    ================================= */
 body.night-theme textarea,
-body.night-theme input[type="text"],
-body.night-theme input[type="password"],
+body.night-theme input[type='text'],
+body.night-theme input[type='password'],
 body.night-theme select {
   background-color: var(--bg-primary) !important;
   border: 1px solid var(--border-color) !important;
@@ -1478,8 +1578,8 @@ body.night-theme select {
 }
 
 body.night-theme textarea:focus,
-body.night-theme input[type="text"]:focus,
-body.night-theme input[type="password"]:focus,
+body.night-theme input[type='text']:focus,
+body.night-theme input[type='password']:focus,
 body.night-theme select:focus {
   border-color: #7cc7ff !important;
   outline: none !important;
@@ -1555,14 +1655,20 @@ body.night-theme .page__heading {
 }
 
 body.night-theme .page__heading > * {
-  background-image: linear-gradient(rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%) !important;
+  background-image: linear-gradient(
+    rgba(255, 255, 255, 0.08) 0%,
+    rgba(255, 255, 255, 0.03) 100%
+  ) !important;
   background-color: var(--bg-secondary) !important;
   border: 1px solid var(--border-color) !important;
   color: var(--text-primary) !important;
 }
 
 body.night-theme .page__heading > *:hover {
-  background-image: linear-gradient(rgba(124, 203, 255, 0.1) 0%, rgba(124, 203, 255, 0.05) 100%) !important;
+  background-image: linear-gradient(
+    rgba(124, 203, 255, 0.1) 0%,
+    rgba(124, 203, 255, 0.05) 100%
+  ) !important;
 }
 
 body.night-theme .page__heading * {
@@ -1585,7 +1691,6 @@ body.night-theme .page__heading a i {
 
 body.night-theme .page__heading a:hover i {
   color: #7cc7ff !important;
-
 }
 
 body.night-theme .pagination {
