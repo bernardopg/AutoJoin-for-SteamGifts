@@ -77,6 +77,7 @@
           </button>
         </div>
 
+        <!-- General Tab -->
         <div
           class="tab-content active"
           id="general"
@@ -88,53 +89,74 @@
             <h3><i class="fas fa-desktop"></i> Display Options</h3>
             <div class="settings-grid">
               <div class="setting-item">
-                <label for="chkInfiniteScroll">
-                  <input id="chkInfiniteScroll" type="checkbox" />
+                <label for="chkInfiniteScroll" class="toggle-label">
                   <span class="setting-text">Enable Infinite Scrolling</span>
+                  <span class="toggle">
+                    <input id="chkInfiniteScroll" type="checkbox" />
+                    <span class="toggle-track"></span>
+                  </span>
                 </label>
               </div>
               <div class="setting-item">
-                <label for="chkShowPoints">
-                  <input id="chkShowPoints" type="checkbox" />
+                <label for="chkShowPoints" class="toggle-label">
                   <span class="setting-text"
                     >Show points and level in top-left corner</span
                   >
+                  <span class="toggle">
+                    <input id="chkShowPoints" type="checkbox" />
+                    <span class="toggle-track"></span>
+                  </span>
                 </label>
               </div>
               <div class="setting-item">
-                <label for="chkShowButtons">
-                  <input id="chkShowButtons" type="checkbox" />
+                <label for="chkShowButtons" class="toggle-label">
                   <span class="setting-text"
                     >Show buttons beside each giveaway</span
                   >
+                  <span class="toggle">
+                    <input id="chkShowButtons" type="checkbox" />
+                    <span class="toggle-track"></span>
+                  </span>
                 </label>
               </div>
               <div class="setting-item">
-                <label for="chkAutoDescription">
-                  <input id="chkAutoDescription" type="checkbox" />
+                <label for="chkAutoDescription" class="toggle-label">
                   <span class="setting-text"
                     >Auto-load descriptions of joined giveaways</span
                   >
+                  <span class="toggle">
+                    <input id="chkAutoDescription" type="checkbox" />
+                    <span class="toggle-track"></span>
+                  </span>
                 </label>
               </div>
               <div class="setting-item">
-                <label for="chkShowChance">
-                  <input id="chkShowChance" type="checkbox" />
+                <label for="chkShowChance" class="toggle-label">
                   <span class="setting-text"
                     >Show approximate odds of winning</span
                   >
+                  <span class="toggle">
+                    <input id="chkShowChance" type="checkbox" />
+                    <span class="toggle-track"></span>
+                  </span>
                 </label>
               </div>
               <div class="setting-item">
-                <label for="chkPreciseTime">
-                  <input id="chkPreciseTime" type="checkbox" />
+                <label for="chkPreciseTime" class="toggle-label">
                   <span class="setting-text">Show precise remaining time</span>
+                  <span class="toggle">
+                    <input id="chkPreciseTime" type="checkbox" />
+                    <span class="toggle-track"></span>
+                  </span>
                 </label>
               </div>
               <div class="setting-item">
-                <label for="chkNightTheme">
-                  <input id="chkNightTheme" type="checkbox" />
+                <label for="chkNightTheme" class="toggle-label">
                   <span class="setting-text">Enable Night theme</span>
+                  <span class="toggle">
+                    <input id="chkNightTheme" type="checkbox" />
+                    <span class="toggle-track"></span>
+                  </span>
                 </label>
               </div>
             </div>
@@ -144,11 +166,14 @@
             <h3><i class="fas fa-comment"></i> Comments</h3>
             <div class="settings-grid">
               <div class="setting-item full-width">
-                <label for="chkAutoComment">
-                  <input id="chkAutoComment" type="checkbox" />
+                <label for="chkAutoComment" class="toggle-label">
                   <span class="setting-text"
-                    >Automatically post comment on joined giveaways:</span
+                    >Automatically post comment on joined giveaways</span
                   >
+                  <span class="toggle">
+                    <input id="chkAutoComment" type="checkbox" />
+                    <span class="toggle-track"></span>
+                  </span>
                 </label>
                 <input
                   id="txtAutoComment"
@@ -169,20 +194,22 @@
             <div class="warning-message">
               <i class="fas fa-exclamation-triangle"></i>
               <span
-                >Warning: AutoJoin features are against SteamGifts rules and may
-                result in account suspension</span
+                >Warning: AutoJoin features are against SteamGifts rules and
+                may result in account suspension</span
               >
             </div>
             <div class="settings-grid">
               <div class="setting-item">
-                <label for="chkAutoJoinButton">
-                  <input id="chkAutoJoinButton" type="checkbox" />
+                <label for="chkAutoJoinButton" class="toggle-label">
                   <span class="setting-text">Show AutoJoin button</span>
+                  <span class="toggle">
+                    <input id="chkAutoJoinButton" type="checkbox" />
+                    <span class="toggle-track"></span>
+                  </span>
                 </label>
               </div>
               <div class="setting-item dependsOnAutoJoinButton">
-                <label for="chkLoadFive">
-                  <input id="chkLoadFive" type="checkbox" />
+                <label for="chkLoadFive" class="toggle-label">
                   <span class="setting-text"
                     >Load
                     <input
@@ -196,11 +223,14 @@
                     />
                     pages before Auto-join</span
                   >
+                  <span class="toggle">
+                    <input id="chkLoadFive" type="checkbox" />
+                    <span class="toggle-track"></span>
+                  </span>
                 </label>
               </div>
               <div class="setting-item dependsOnAutoJoinButton">
-                <label for="chkRepeatIfOnPage">
-                  <input id="chkRepeatIfOnPage" type="checkbox" />
+                <label for="chkRepeatIfOnPage" class="toggle-label">
                   <span class="setting-text"
                     >AutoJoin every
                     <input
@@ -214,6 +244,10 @@
                     />
                     hours if page is open</span
                   >
+                  <span class="toggle">
+                    <input id="chkRepeatIfOnPage" type="checkbox" />
+                    <span class="toggle-track"></span>
+                  </span>
                 </label>
               </div>
             </div>
@@ -222,45 +256,57 @@
               <h4><i class="fas fa-star"></i> Prioritize giveaways by:</h4>
               <div class="settings-grid">
                 <div class="setting-item">
-                  <label for="chkWishlistPriority">
-                    <input
-                      id="chkWishlistPriority"
-                      data-setting="PriorityWishlist"
-                      type="checkbox"
-                    />
+                  <label for="chkWishlistPriority" class="toggle-label">
                     <span class="setting-text">Steam wishlist giveaways</span>
+                    <span class="toggle">
+                      <input
+                        id="chkWishlistPriority"
+                        data-setting="PriorityWishlist"
+                        type="checkbox"
+                      />
+                      <span class="toggle-track"></span>
+                    </span>
                   </label>
                 </div>
                 <div class="setting-item">
-                  <label for="chkGroupPriority">
-                    <input
-                      id="chkGroupPriority"
-                      data-setting="PriorityGroup"
-                      type="checkbox"
-                    />
+                  <label for="chkGroupPriority" class="toggle-label">
                     <span class="setting-text">Steam group giveaways</span>
+                    <span class="toggle">
+                      <input
+                        id="chkGroupPriority"
+                        data-setting="PriorityGroup"
+                        type="checkbox"
+                      />
+                      <span class="toggle-track"></span>
+                    </span>
                   </label>
                 </div>
                 <div class="setting-item">
-                  <label for="chkRegionPriority">
-                    <input
-                      id="chkRegionPriority"
-                      data-setting="PriorityRegion"
-                      type="checkbox"
-                    />
+                  <label for="chkRegionPriority" class="toggle-label">
                     <span class="setting-text">Region locked giveaways</span>
+                    <span class="toggle">
+                      <input
+                        id="chkRegionPriority"
+                        data-setting="PriorityRegion"
+                        type="checkbox"
+                      />
+                      <span class="toggle-track"></span>
+                    </span>
                   </label>
                 </div>
                 <div class="setting-item">
-                  <label for="chkWhitelistPriority">
-                    <input
-                      id="chkWhitelistPriority"
-                      data-setting="PriorityWhitelist"
-                      type="checkbox"
-                    />
+                  <label for="chkWhitelistPriority" class="toggle-label">
                     <span class="setting-text"
                       >SteamGifts whitelist giveaways</span
                     >
+                    <span class="toggle">
+                      <input
+                        id="chkWhitelistPriority"
+                        data-setting="PriorityWhitelist"
+                        type="checkbox"
+                      />
+                      <span class="toggle-track"></span>
+                    </span>
                   </label>
                 </div>
               </div>
@@ -270,35 +316,44 @@
               <h4><i class="fas fa-ban"></i> Ignore giveaways by:</h4>
               <div class="settings-grid">
                 <div class="setting-item">
-                  <label for="chkIgnorePinned">
-                    <input
-                      id="chkIgnorePinned"
-                      data-setting="IgnorePinned"
-                      type="checkbox"
-                    />
+                  <label for="chkIgnorePinned" class="toggle-label">
                     <span class="setting-text">Featured giveaways</span>
+                    <span class="toggle">
+                      <input
+                        id="chkIgnorePinned"
+                        data-setting="IgnorePinned"
+                        type="checkbox"
+                      />
+                      <span class="toggle-track"></span>
+                    </span>
                   </label>
                 </div>
                 <div class="setting-item">
-                  <label for="chkIgnoreGroups">
-                    <input
-                      id="chkIgnoreGroups"
-                      data-setting="IgnoreGroups"
-                      type="checkbox"
-                    />
+                  <label for="chkIgnoreGroups" class="toggle-label">
                     <span class="setting-text">Steam group giveaways</span>
+                    <span class="toggle">
+                      <input
+                        id="chkIgnoreGroups"
+                        data-setting="IgnoreGroups"
+                        type="checkbox"
+                      />
+                      <span class="toggle-track"></span>
+                    </span>
                   </label>
                 </div>
                 <div class="setting-item">
-                  <label for="chkIgnoreWhitelist">
-                    <input
-                      id="chkIgnoreWhitelist"
-                      data-setting="IgnoreWhitelist"
-                      type="checkbox"
-                    />
+                  <label for="chkIgnoreWhitelist" class="toggle-label">
                     <span class="setting-text"
                       >SteamGifts whitelist giveaways</span
                     >
+                    <span class="toggle">
+                      <input
+                        id="chkIgnoreWhitelist"
+                        data-setting="IgnoreWhitelist"
+                        type="checkbox"
+                      />
+                      <span class="toggle-track"></span>
+                    </span>
                   </label>
                 </div>
               </div>
@@ -308,98 +363,94 @@
               <h4><i class="fas fa-cog"></i> AutoJoin Settings</h4>
               <div class="settings-grid">
                 <div class="setting-item">
-                  <label>
-                    <span class="setting-text"
-                      >Min cost to enter:
-                      <input
-                        type="number"
-                        size="3"
-                        id="minCost"
-                        min="0"
-                        max="200"
-                        value="0"
-                        class="number-input"
-                      />
-                      points</span
-                    >
-                  </label>
+                  <label for="minCost" class="setting-text"
+                    >Min cost to enter</label
+                  >
+                  <div class="number-group">
+                    <input
+                      type="number"
+                      id="minCost"
+                      min="0"
+                      max="200"
+                      value="0"
+                      class="number-input"
+                    />
+                    <span class="input-suffix">pts</span>
+                  </div>
                 </div>
                 <div class="setting-item">
-                  <label>
-                    <span class="setting-text"
-                      >Max cost to enter:
-                      <input
-                        type="number"
-                        size="3"
-                        id="maxCost"
-                        min="-1"
-                        max="200"
-                        value="-1"
-                        class="number-input"
-                      />
-                      points</span
-                    >
-                  </label>
+                  <label for="maxCost" class="setting-text"
+                    >Max cost to enter</label
+                  >
+                  <div class="number-group">
+                    <input
+                      type="number"
+                      id="maxCost"
+                      min="-1"
+                      max="200"
+                      value="-1"
+                      class="number-input"
+                    />
+                    <span class="input-suffix">pts</span>
+                  </div>
                 </div>
                 <div class="setting-item">
-                  <label>
-                    <span class="setting-text"
-                      >Delay between requests:
-                      <input
-                        type="number"
-                        size="2"
-                        id="delay"
-                        min="5"
-                        max="60"
-                        value="10"
-                        class="number-input"
-                      />
-                      seconds</span
-                    >
-                  </label>
+                  <label for="delay" class="setting-text"
+                    >Delay between requests</label
+                  >
+                  <div class="number-group">
+                    <input
+                      type="number"
+                      id="delay"
+                      min="5"
+                      max="60"
+                      value="10"
+                      class="number-input"
+                    />
+                    <span class="input-suffix">sec</span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
+        <!-- Background Tab -->
         <div class="tab-content" id="background">
           <div class="settings-section">
-            <h3><i class="fas fa-volume-up"></i> Notifications & Audio</h3>
+            <h3><i class="fas fa-volume-up"></i> Notifications &amp; Audio</h3>
             <div class="settings-grid">
               <div class="setting-item">
-                <label for="chkPlayAudio">
-                  <input
-                    id="chkPlayAudio"
-                    data-setting="PlayAudio"
-                    type="checkbox"
-                  />
+                <label for="chkPlayAudio" class="toggle-label">
                   <span class="setting-text">Play sound when won</span>
-                </label>
-              </div>
-              <div class="setting-item">
-                <label for="audioVolume">
-                  <span class="setting-text"
-                    >Volume:
+                  <span class="toggle">
                     <input
-                      type="range"
-                      id="audioVolume"
-                      data-setting="AudioVolume"
-                      min="0"
-                      max="1"
-                      step="0.01"
-                      value="1"
-                      class="volume-slider"
-                  /></span>
+                      id="chkPlayAudio"
+                      data-setting="PlayAudio"
+                      type="checkbox"
+                    />
+                    <span class="toggle-track"></span>
+                  </span>
                 </label>
               </div>
               <div class="setting-item">
-                <label for="chkNotifyLimit">
+                <label for="audioVolume" class="setting-text">Volume</label>
+                <div class="volume-control">
                   <input
-                    id="chkNotifyLimit"
-                    data-setting="NotifyLimit"
-                    type="checkbox"
+                    type="range"
+                    id="audioVolume"
+                    data-setting="AudioVolume"
+                    min="0"
+                    max="1"
+                    step="0.01"
+                    value="1"
+                    class="volume-slider"
                   />
+                  <span class="volume-value" id="audioVolumeDisplay">100%</span>
+                </div>
+              </div>
+              <div class="setting-item">
+                <label for="chkNotifyLimit" class="toggle-label">
                   <span class="setting-text"
                     >Notify when I have
                     <input
@@ -411,18 +462,30 @@
                       max="400"
                       value="300"
                       class="number-input"
-                    />+ points</span
+                    />
+                    + points</span
                   >
+                  <span class="toggle">
+                    <input
+                      id="chkNotifyLimit"
+                      data-setting="NotifyLimit"
+                      type="checkbox"
+                    />
+                    <span class="toggle-track"></span>
+                  </span>
                 </label>
               </div>
               <div class="setting-item">
-                <label for="chkAutoRedeemKey">
-                  <input
-                    id="chkAutoRedeemKey"
-                    data-setting="AutoRedeemKey"
-                    type="checkbox"
-                  />
+                <label for="chkAutoRedeemKey" class="toggle-label">
                   <span class="setting-text">Auto-redeem Steam keys</span>
+                  <span class="toggle">
+                    <input
+                      id="chkAutoRedeemKey"
+                      data-setting="AutoRedeemKey"
+                      type="checkbox"
+                    />
+                    <span class="toggle-track"></span>
+                  </span>
                 </label>
               </div>
             </div>
@@ -441,84 +504,93 @@
             </div>
             <div class="settings-grid">
               <div class="setting-item full-width">
-                <label for="chkEnableBG">
-                  <input
-                    id="chkEnableBG"
-                    data-setting="BackgroundAJ"
-                    type="checkbox"
-                  />
+                <label for="chkEnableBG" class="toggle-label">
                   <span class="setting-text"
-                    >Enable AutoJoin in background on:</span
-                  >
+                    >Enable AutoJoin in background on:
+                    <select id="pageforBG" class="select-input">
+                      <option value="all">Main page (All)</option>
+                      <option value="wishlist">Wishlist</option>
+                      <option value="group">Group</option>
+                      <option value="new">New</option>
+                      <option value="recommended">Recommended</option>
+                    </select>
+                  </span>
+                  <span class="toggle">
+                    <input
+                      id="chkEnableBG"
+                      data-setting="BackgroundAJ"
+                      type="checkbox"
+                    />
+                    <span class="toggle-track"></span>
+                  </span>
                 </label>
-                <select id="pageforBG" class="select-input">
-                  <option value="all">Main page (All)</option>
-                  <option value="wishlist">Wishlist</option>
-                  <option value="group">Group</option>
-                  <option value="new">New</option>
-                  <option value="recommended">Recommended</option>
-                </select>
               </div>
             </div>
 
             <div class="subsection dependsOnBackgroundAutoJoin">
               <h4><i class="fas fa-trophy"></i> Priority Settings</h4>
-              <div class="settings-grid">
-                <div class="setting-item">
-                  <label for="chkNoPriorityBG">
-                    <input
-                      id="chkNoPriorityBG"
-                      name="BGpriority"
-                      type="radio"
-                      checked="checked"
-                    />
-                    <span class="setting-text">No priority</span>
-                  </label>
-                </div>
-                <div class="setting-item">
-                  <label for="chkLevelPriorityBG">
-                    <input
-                      id="chkLevelPriorityBG"
-                      name="BGpriority"
-                      type="radio"
-                    />
-                    <span class="setting-text">Higher level giveaways</span>
-                  </label>
-                </div>
-                <div class="setting-item">
-                  <label for="chkOddsPriorityBG">
-                    <input
-                      id="chkOddsPriorityBG"
-                      name="BGpriority"
-                      type="radio"
-                    />
-                    <span class="setting-text">Higher odds of winning</span>
-                  </label>
-                </div>
+              <div class="radio-group">
+                <label class="radio-option">
+                  <input
+                    id="chkNoPriorityBG"
+                    name="BGpriority"
+                    type="radio"
+                    checked="checked"
+                  />
+                  <span>No priority</span>
+                </label>
+                <label class="radio-option">
+                  <input
+                    id="chkLevelPriorityBG"
+                    name="BGpriority"
+                    type="radio"
+                  />
+                  <span>Higher level giveaways</span>
+                </label>
+                <label class="radio-option">
+                  <input
+                    id="chkOddsPriorityBG"
+                    name="BGpriority"
+                    type="radio"
+                  />
+                  <span>Higher odds of winning</span>
+                </label>
               </div>
-              <div class="settings-grid">
+              <div class="settings-grid radio-follow-grid">
                 <div class="setting-item">
-                  <label for="chkWishlistPriorityForMainBG">
-                    <input
-                      id="chkWishlistPriorityForMainBG"
-                      data-setting="WishlistPriorityForMainBG"
-                      type="checkbox"
-                    />
+                  <label
+                    for="chkWishlistPriorityForMainBG"
+                    class="toggle-label"
+                  >
                     <span class="setting-text"
                       >Enter wishlist giveaways first for Main page</span
                     >
+                    <span class="toggle">
+                      <input
+                        id="chkWishlistPriorityForMainBG"
+                        data-setting="WishlistPriorityForMainBG"
+                        type="checkbox"
+                      />
+                      <span class="toggle-track"></span>
+                    </span>
                   </label>
                 </div>
                 <div class="setting-item">
-                  <label for="chkIgnorePreserveWishlistOnMainBG">
-                    <input
-                      id="chkIgnorePreserveWishlistOnMainBG"
-                      data-setting="IgnorePreserveWishlistOnMainBG"
-                      type="checkbox"
-                    />
+                  <label
+                    for="chkIgnorePreserveWishlistOnMainBG"
+                    class="toggle-label"
+                  >
                     <span class="setting-text"
                       >Ignore preserve points for wishlist on Main page</span
                     >
+                    <span class="toggle">
+                      <input
+                        id="chkIgnorePreserveWishlistOnMainBG"
+                        data-setting="IgnorePreserveWishlistOnMainBG"
+                        type="checkbox"
+                      />
+                      <span class="toggle-track"></span>
+                    </span>
                   </label>
                 </div>
               </div>
@@ -528,25 +600,31 @@
               <h4><i class="fas fa-filter"></i> Ignore Settings</h4>
               <div class="settings-grid">
                 <div class="setting-item">
-                  <label for="chkIgnoreGroupsBG">
-                    <input
-                      id="chkIgnoreGroupsBG"
-                      data-setting="IgnoreGroupsBG"
-                      type="checkbox"
-                    />
+                  <label for="chkIgnoreGroupsBG" class="toggle-label">
                     <span class="setting-text"
                       >Ignore groups giveaways for Main page</span
                     >
+                    <span class="toggle">
+                      <input
+                        id="chkIgnoreGroupsBG"
+                        data-setting="IgnoreGroupsBG"
+                        type="checkbox"
+                      />
+                      <span class="toggle-track"></span>
+                    </span>
                   </label>
                 </div>
                 <div class="setting-item">
-                  <label for="chkIgnorePinnedBG">
-                    <input
-                      id="chkIgnorePinnedBG"
-                      data-setting="IgnorePinnedBG"
-                      type="checkbox"
-                    />
+                  <label for="chkIgnorePinnedBG" class="toggle-label">
                     <span class="setting-text">Ignore featured giveaways</span>
+                    <span class="toggle">
+                      <input
+                        id="chkIgnorePinnedBG"
+                        data-setting="IgnorePinnedBG"
+                        type="checkbox"
+                      />
+                      <span class="toggle-track"></span>
+                    </span>
                   </label>
                 </div>
               </div>
@@ -556,170 +634,173 @@
               <h4><i class="fas fa-clock"></i> Timing Settings</h4>
               <div class="settings-grid">
                 <div class="setting-item">
-                  <label>
-                    <span class="setting-text"
-                      >AutoJoin every
-                      <input
-                        type="number"
-                        size="2"
-                        id="hoursFieldBG"
-                        data-setting="RepeatHoursBG"
-                        min="0"
-                        max="24"
-                        value="2"
-                        class="number-input"
-                      />
-                      hours</span
-                    >
-                  </label>
+                  <label for="hoursFieldBG" class="setting-text"
+                    >AutoJoin every</label
+                  >
+                  <div class="number-group">
+                    <input
+                      type="number"
+                      id="hoursFieldBG"
+                      data-setting="RepeatHoursBG"
+                      min="0"
+                      max="24"
+                      value="2"
+                      class="number-input"
+                    />
+                    <span class="input-suffix">hrs</span>
+                  </div>
                 </div>
                 <div class="setting-item">
-                  <label>
-                    <span class="setting-text"
-                      >Load
-                      <input
-                        type="number"
-                        size="2"
-                        id="pagestoloadBG"
-                        min="1"
-                        max="3"
-                        value="2"
-                        class="number-input"
-                      />
-                      pages before joining</span
-                    >
-                  </label>
+                  <label for="pagestoloadBG" class="setting-text"
+                    >Pages to load</label
+                  >
+                  <div class="number-group">
+                    <input
+                      type="number"
+                      id="pagestoloadBG"
+                      min="1"
+                      max="3"
+                      value="2"
+                      class="number-input"
+                    />
+                  </div>
                 </div>
                 <div class="setting-item">
-                  <label>
-                    <span class="setting-text"
-                      >Delay:
-                      <input
-                        type="number"
-                        size="2"
-                        id="delayBG"
-                        min="5"
-                        max="60"
-                        value="10"
-                        class="number-input"
-                      />
-                      seconds</span
-                    >
-                  </label>
+                  <label for="delayBG" class="setting-text"
+                    >Delay between requests</label
+                  >
+                  <div class="number-group">
+                    <input
+                      type="number"
+                      id="delayBG"
+                      min="5"
+                      max="60"
+                      value="10"
+                      class="number-input"
+                    />
+                    <span class="input-suffix">sec</span>
+                  </div>
                 </div>
               </div>
             </div>
 
             <div class="subsection dependsOnBackgroundAutoJoin">
-              <h4><i class="fas fa-coins"></i> Cost & Level Settings</h4>
+              <h4><i class="fas fa-coins"></i> Cost &amp; Level Settings</h4>
               <div class="settings-grid">
                 <div class="setting-item">
-                  <label>
-                    <span class="setting-text"
-                      >Min level:
-                      <input
-                        type="number"
-                        size="2"
-                        id="minLevelBG"
-                        min="0"
-                        max="10"
-                        value="0"
-                        class="number-input"
-                    /></span>
-                  </label>
+                  <label for="minLevelBG" class="setting-text">Min level</label>
+                  <div class="number-group">
+                    <input
+                      type="number"
+                      id="minLevelBG"
+                      min="0"
+                      max="10"
+                      value="0"
+                      class="number-input"
+                    />
+                  </div>
                 </div>
                 <div class="setting-item">
-                  <label>
-                    <span class="setting-text"
-                      >Min cost:
-                      <input
-                        type="number"
-                        size="3"
-                        id="minCostBG"
-                        min="0"
-                        max="200"
-                        value="0"
-                        class="number-input"
-                      />
-                      points</span
-                    >
-                  </label>
+                  <label for="minCostBG" class="setting-text">Min cost</label>
+                  <div class="number-group">
+                    <input
+                      type="number"
+                      id="minCostBG"
+                      min="0"
+                      max="200"
+                      value="0"
+                      class="number-input"
+                    />
+                    <span class="input-suffix">pts</span>
+                  </div>
                 </div>
                 <div class="setting-item">
-                  <label>
-                    <span class="setting-text"
-                      >Max cost:
-                      <input
-                        type="number"
-                        size="3"
-                        id="maxCostBG"
-                        min="-1"
-                        max="200"
-                        value="-1"
-                        class="number-input"
-                      />
-                      points</span
-                    >
-                  </label>
+                  <label for="maxCostBG" class="setting-text">Max cost</label>
+                  <div class="number-group">
+                    <input
+                      type="number"
+                      id="maxCostBG"
+                      min="-1"
+                      max="200"
+                      value="-1"
+                      class="number-input"
+                    />
+                    <span class="input-suffix">pts</span>
+                  </div>
                 </div>
                 <div class="setting-item">
-                  <label>
-                    <span class="setting-text"
-                      >Preserve
-                      <input
-                        type="number"
-                        size="3"
-                        id="pointsToPreserve"
-                        min="0"
-                        max="300"
-                        value="0"
-                        class="number-input"
-                      />
-                      points</span
-                    >
-                  </label>
+                  <label for="pointsToPreserve" class="setting-text"
+                    >Preserve points</label
+                  >
+                  <div class="number-group">
+                    <input
+                      type="number"
+                      id="pointsToPreserve"
+                      min="0"
+                      max="300"
+                      value="0"
+                      class="number-input"
+                    />
+                    <span class="input-suffix">pts</span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
+        <!-- Filters Tab -->
         <div class="tab-content" id="filters">
           <div class="settings-section">
             <h3><i class="fas fa-eye-slash"></i> Filter Giveaways</h3>
             <div class="settings-grid">
               <div class="setting-item">
-                <label for="chkHideDlc">
-                  <input id="chkHideDlc" type="checkbox" />
+                <label for="chkHideDlc" class="toggle-label">
                   <span class="setting-text">Hide DLC giveaways</span>
+                  <span class="toggle">
+                    <input id="chkHideDlc" type="checkbox" />
+                    <span class="toggle-track"></span>
+                  </span>
                 </label>
               </div>
               <div class="setting-item">
-                <label for="chkHideNonTradingCards">
-                  <input id="chkHideNonTradingCards" type="checkbox" />
+                <label for="chkHideNonTradingCards" class="toggle-label">
                   <span class="setting-text"
                     >Hide non-trading card giveaways</span
                   >
+                  <span class="toggle">
+                    <input id="chkHideNonTradingCards" type="checkbox" />
+                    <span class="toggle-track"></span>
+                  </span>
                 </label>
               </div>
               <div class="setting-item">
-                <label for="chkHideGroups">
-                  <input id="chkHideGroups" type="checkbox" />
+                <label for="chkHideGroups" class="toggle-label">
                   <span class="setting-text">Hide Steam group giveaways</span>
+                  <span class="toggle">
+                    <input id="chkHideGroups" type="checkbox" />
+                    <span class="toggle-track"></span>
+                  </span>
                 </label>
               </div>
               <div class="setting-item">
-                <label for="chkHideWhitelist">
-                  <input id="chkHideWhitelist" type="checkbox" />
+                <label for="chkHideWhitelist" class="toggle-label">
                   <span class="setting-text"
                     >Hide SteamGifts whitelist giveaways</span
                   >
+                  <span class="toggle">
+                    <input id="chkHideWhitelist" type="checkbox" />
+                    <span class="toggle-track"></span>
+                  </span>
                 </label>
               </div>
               <div class="setting-item">
-                <label for="chkHideEntered">
-                  <input id="chkHideEntered" type="checkbox" />
+                <label for="chkHideEntered" class="toggle-label">
                   <span class="setting-text">Hide joined giveaways</span>
+                  <span class="toggle">
+                    <input id="chkHideEntered" type="checkbox" />
+                    <span class="toggle-track"></span>
+                  </span>
                 </label>
               </div>
             </div>
@@ -729,32 +810,34 @@
             <h3><i class="fas fa-level-up-alt"></i> Level Filters</h3>
             <div class="settings-grid">
               <div class="setting-item">
-                <label>
-                  <span class="setting-text"
-                    >Hide giveaways below level
-                    <input
-                      id="hideLevelsBelow"
-                      type="number"
-                      min="0"
-                      max="10"
-                      value="0"
-                      class="number-input"
-                  /></span>
-                </label>
+                <label for="hideLevelsBelow" class="setting-text"
+                  >Hide giveaways below level</label
+                >
+                <div class="number-group">
+                  <input
+                    id="hideLevelsBelow"
+                    type="number"
+                    min="0"
+                    max="10"
+                    value="0"
+                    class="number-input"
+                  />
+                </div>
               </div>
               <div class="setting-item">
-                <label>
-                  <span class="setting-text"
-                    >Hide giveaways above level
-                    <input
-                      id="hideLevelsAbove"
-                      type="number"
-                      min="0"
-                      max="10"
-                      value="10"
-                      class="number-input"
-                  /></span>
-                </label>
+                <label for="hideLevelsAbove" class="setting-text"
+                  >Hide giveaways above level</label
+                >
+                <div class="number-group">
+                  <input
+                    id="hideLevelsAbove"
+                    type="number"
+                    min="0"
+                    max="10"
+                    value="10"
+                    class="number-input"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -763,36 +846,36 @@
             <h3><i class="fas fa-coins"></i> Cost Filters</h3>
             <div class="settings-grid">
               <div class="setting-item">
-                <label>
-                  <span class="setting-text"
-                    >Hide giveaways with cost below
-                    <input
-                      id="hideCostsBelow"
-                      type="number"
-                      min="0"
-                      max="50"
-                      value="0"
-                      class="number-input"
-                    />
-                    points</span
-                  >
-                </label>
+                <label for="hideCostsBelow" class="setting-text"
+                  >Hide giveaways below</label
+                >
+                <div class="number-group">
+                  <input
+                    id="hideCostsBelow"
+                    type="number"
+                    min="0"
+                    max="50"
+                    value="0"
+                    class="number-input"
+                  />
+                  <span class="input-suffix">pts</span>
+                </div>
               </div>
               <div class="setting-item">
-                <label>
-                  <span class="setting-text"
-                    >Hide giveaways with cost above
-                    <input
-                      id="hideCostsAbove"
-                      type="number"
-                      min="0"
-                      max="50"
-                      value="50"
-                      class="number-input"
-                    />
-                    points</span
-                  >
-                </label>
+                <label for="hideCostsAbove" class="setting-text"
+                  >Hide giveaways above</label
+                >
+                <div class="number-group">
+                  <input
+                    id="hideCostsAbove"
+                    type="number"
+                    min="0"
+                    max="50"
+                    value="50"
+                    class="number-input"
+                  />
+                  <span class="input-suffix">pts</span>
+                </div>
               </div>
             </div>
           </div>
