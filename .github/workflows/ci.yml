@@ -13,7 +13,7 @@ permissions:
   contents: read
 
 env:
-  NODE_VERSION: '20'
+  NODE_VERSION: '22'
 
 jobs:
   lint:
@@ -46,7 +46,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18, 20, 22]
+        node-version: [20, 22]
 
     steps:
       - name: 📥 Checkout Code
@@ -165,7 +165,7 @@ jobs:
           echo "EOF" >> $GITHUB_OUTPUT
 
       - name: 🚀 Create Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.tag.outputs.version }}
           name: ${{ steps.tag.outputs.release_name }}

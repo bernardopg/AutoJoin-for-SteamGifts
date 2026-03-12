@@ -1,16 +1,39 @@
-# To get started with Dependabot version updates, you'll need to specify which
-# package ecosystems to update and where the package manifests are located.
-# Please see the documentation for all configuration options:
-# https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
-
 version: 2
 updates:
-  - package-ecosystem: "npm" # For Node.js dependencies
-    directory: "/" # Location of package manifests
+  - package-ecosystem: "npm"
+    directory: "/"
     schedule:
       interval: "weekly"
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 5
     reviewers:
       - "bernardopg"
     assignees:
       - "bernardopg"
+    labels:
+      - "dependencies"
+    versioning-strategy: "increase-if-necessary"
+    ignore:
+      # eslint-config-airbnb-base only supports eslint ^7 or ^8.
+      # Block major eslint upgrades until the config supports them.
+      - dependency-name: "eslint"
+        update-types: ["version-update:semver-major"]
+      # Prevent unexpected breaking changes in other dev dependencies
+      - dependency-name: "eslint-config-airbnb-base"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "eslint-plugin-import"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "prettier"
+        update-types: ["version-update:semver-major"]
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "bernardopg"
+    assignees:
+      - "bernardopg"
+    labels:
+      - "dependencies"
+      - "github-actions"
