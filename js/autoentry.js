@@ -4,6 +4,11 @@ const thisVersion = 20230517;
 let settings = autoJoinSettingsStore
   ? autoJoinSettingsStore.getDefaults({ lastLaunchedVersion: thisVersion })
   : {};
+const autoJoinI18n = globalThis.AutoJoinI18n;
+const steamCommunityHelper = globalThis.AutoJoinSteamCommunity;
+function t(key, params = {}) {
+  return autoJoinI18n ? autoJoinI18n.t(key, params) : key;
+}
 let token;
 const currentState = {
   amountOfPoints: 0,
@@ -28,6 +33,110 @@ let lastPage;
 let loadingNextPage;
 let pageLink;
 let thirdPart;
+
+function shouldLoadSteamData() {
+  return (
+    settings.HideDlc ||
+    settings.HideNonTradingCards ||
+    settings.HideGroups ||
+    settings.PriorityWishlist
+  );
+}
+
+function normalizeSteamProfileUrl(url) {
+  if (!url) {
+    return '';
+  }
+
+  return url.endsWith('/') ? url : `${url}/`;
+}
+
+function getSteamCacheKeys(profileUrl, steamProfileID) {
+  return [
+    ...new Set(
+      [steamProfileID, normalizeSteamProfileUrl(profileUrl)].filter(Boolean),
+    ),
+  ];
+}
+
+function applyCachedSteamData(storageData, cacheKeys) {
+  for (const cacheKey of cacheKeys) {
+    if (!storageData[cacheKey]) {
+      continue;
+    }
+
+    ownedSteamApps = storageData[cacheKey].ownedGames || [];
+    wishList = storageData[cacheKey].wishlist || [];
+    console.debug('Owned games: ', ownedSteamApps);
+    console.debug('Wishlist: ', wishList);
+    return true;
+  }
+
+  return false;
+}
+
+function saveSteamData(cacheKeys) {
+  const steamUserData = {
+    ownedGames: [...new Set(ownedSteamApps)],
+    wishlist: [...new Set(wishList)],
+  };
+  const payload = {};
+
+  cacheKeys.forEach((cacheKey) => {
+    payload[cacheKey] = steamUserData;
+  });
+
+  chrome.storage.local.set(payload);
+}
+
+function updateSteamDataBanner(steamDataIssueKey, retryContext = {}) {
+  if (!steamDataIssueKey) {
+    const existingBanner = document.getElementById('aj-permission-banner');
+    if (existingBanner) existingBanner.style.display = 'none';
+    return;
+  }
+
+  const featuredSummary = document.querySelector('.featured__summary');
+  const anchor = featuredSummary || document.body;
+  let banner = document.getElementById('aj-permission-banner');
+
+  if (!banner) {
+    banner = document.createElement('div');
+    banner.id = 'aj-permission-banner';
+    banner.className = 'aj-permission-banner';
+
+    const titleEl = document.createElement('strong');
+    titleEl.textContent = t('content.permissionBanner.title');
+
+    const bodyEl = document.createTextNode(
+      ` ${t(
+        steamDataIssueKey === 'content.notifications.steamLoginRequired'
+          ? 'content.permissionBanner.loginBody'
+          : 'content.permissionBanner.body',
+      )} `,
+    );
+
+    const retryLink = document.createElement('a');
+    retryLink.href = '#';
+    retryLink.id = 'aj-perm-retry';
+    retryLink.textContent = t('content.permissionBanner.retry');
+    banner.append(titleEl, bodyEl, retryLink, '.');
+
+    if (featuredSummary) {
+      anchor.prepend(banner);
+    } else {
+      anchor.appendChild(banner);
+    }
+
+    const retry = banner.querySelector('#aj-perm-retry');
+    retry?.addEventListener('click', (e) => {
+      e.preventDefault();
+      refreshSteamData(retryContext);
+    });
+  }
+
+  banner.style.display = 'block';
+}
 
 function modifyPageDOM(pageDOM, timeLoaded) {
   pageDOM.querySelectorAll('.giveaway__row-outer-wrap').forEach((giveaway) => {
@@ -81,7 +190,7 @@ function modifyPageDOM(pageDOM, timeLoaded) {
       } else if (settings.ShowButtons) {
         const leaveBtn = document.createElement('input');
         leaveBtn.type = 'button';
-        leaveBtn.value = 'Leave';
+        leaveBtn.value = t('content.leave');
         leaveBtn.className = 'btnSingle';
         leaveBtn.setAttribute('walkState', 'leave');
         giveawayInnerWrap.appendChild(leaveBtn);
@@ -95,7 +204,7 @@ function modifyPageDOM(pageDOM, timeLoaded) {
           '.giveaway__column--contributor-level--negative',
         )
       ) {
-        joinBtn.value = 'Need a higher level';
+        joinBtn.value = t('content.needHigherLevel');
         joinBtn.setAttribute('walkState', 'no-level');
         joinBtn.disabled = true;
       } else {
@@ -108,11 +217,11 @@ function modifyPageDOM(pageDOM, timeLoaded) {
           ].textContent.match(/(\d+)P/);
         const pointsNeeded = pointsNeededRaw[pointsNeededRaw.length - 1];
         if (parseInt(pointsNeeded, 10) > currentState.points) {
-          joinBtn.value = 'Not enough points';
+          joinBtn.value = t('content.notEnoughPoints');
           joinBtn.setAttribute('walkState', 'no-points');
           joinBtn.disabled = true;
         } else {
-          joinBtn.value = 'Join';
+          joinBtn.value = t('content.join');
           joinBtn.setAttribute('walkState', 'join');
         }
       }
@@ -131,7 +240,7 @@ function modifyPageDOM(pageDOM, timeLoaded) {
     if (settings.ShowChance) {
       const oddsDiv = document.createElement('div');
       oddsDiv.style.cursor = 'help';
-      oddsDiv.title = 'approx. odds of winning';
+      oddsDiv.title = t('content.winOddsTitle');
       const oddsIcon = document.createElement('i');
       oddsIcon.className = 'fa fa-trophy';
       const oddsText = document.createTextNode(
@@ -152,7 +261,7 @@ function modifyPageDOM(pageDOM, timeLoaded) {
     const descriptionIcon = document.createElement('i');
     descriptionIcon.className = 'fa fa-file-text descriptionIcon';
     const descriptionText = document.createElement('span');
-    descriptionText.textContent = 'Show description';
+    descriptionText.textContent = t('content.showDescription');
     descriptionA.appendChild(descriptionIcon);
     descriptionA.appendChild(document.createTextNode(' '));
     descriptionA.appendChild(descriptionText);
@@ -191,12 +300,13 @@ async function getSettings() {
     settings = await autoJoinSettingsStore.load({
       lastLaunchedVersion: thisVersion,
     });
+    autoJoinI18n?.setLocale(settings.Language);
     loadCache();
   } catch (error) {
     console.error('Failed to load settings:', error);
     if (window.AutoJoinUtils) {
       AutoJoinUtils.showNotification(
-        'Unable to load AutoJoin settings. Please refresh the page.',
+        t('content.notifications.settingsLoadFailed'),
         'error',
       );
     }
@@ -204,11 +314,7 @@ async function getSettings() {
 }
 
 function loadCache() {
-  if (
-    !settings.HideDlc &&
-    !settings.HideNonTradingCards &&
-    !settings.HideGroups
-  ) {
+  if (!shouldLoadSteamData()) {
     // skip loading and updating cache in no setting that uses it is turned on
     onPageLoad();
     return;
@@ -232,63 +338,59 @@ function loadCache() {
       onPageLoad();
       return;
     }
-    const userProfile = avatarLink.href;
-    let steamProfileID;
-
-    const url = userProfile;
+    const userProfile = normalizeSteamProfileUrl(avatarLink.href);
+    let steamProfileID = '';
     const response = await chrome.runtime.sendMessage({
       task: 'fetch',
-      url,
+      url: userProfile,
     });
     if (response.status === 200) {
-      const regex = /steamcommunity\.com\/profiles\/(\d+)/g;
-      let matches;
-      while ((matches = regex.exec(response.text)) != null) {
-        steamProfileID = matches[1];
-      }
-      if (typeof data[steamProfileID] != 'undefined') {
-        ownedSteamApps = data[steamProfileID].ownedGames;
-        console.debug('Owned games: ', ownedSteamApps);
-        wishList = data[steamProfileID].wishlist;
-        console.debug('Wishlist: ', wishList);
-      }
-
-      onPageLoad(); // should be after updating cache, but it takes a lot of time
-      // Ask for Steam Community permission and update steam data once granted
-      requestSteamCommunityPermissionAndUpdate(steamProfileID);
-    } else {
-      onPageLoad();
+      steamProfileID =
+        steamCommunityHelper?.extractSteamIdFromProfileHtml(response.text) ||
+        '';
     }
+
+    applyCachedSteamData(data, getSteamCacheKeys(userProfile, steamProfileID));
+
+    onPageLoad(); // should be after updating cache, but it takes a lot of time
+    refreshSteamData({
+      profileUrl: userProfile,
+      steamProfileID,
+    });
   });
 }
 
-// Request optional Steam Community permission and then refresh owned games/wishlist
-function requestSteamCommunityPermissionAndUpdate(steamProfileID) {
-  const handler = async (request) => {
-    if (request && typeof request.granted !== 'undefined') {
-      chrome.runtime.onMessage.removeListener(handler);
-      if (request.granted === 'true') {
-        await fetchAndStoreSteamData(steamProfileID);
-      } else {
-        console.warn(
-          'Steam Community permission not granted. Owned games and wishlist will remain unavailable.',
-        );
-      }
-    }
-  };
-  chrome.runtime.onMessage.addListener(handler);
-  // This will either immediately respond (if already granted) or trigger a prompt
-  chrome.runtime.sendMessage({ task: 'checkPermission', ask: 'true' });
+async function resolveSteamProfileId(profileUrl) {
+  if (!profileUrl) {
+    return '';
+  }
+
+  const response = await chrome.runtime.sendMessage({
+    task: 'fetch',
+    url: profileUrl,
+  });
+
+  if (response.status !== 200) {
+    return '';
+  }
+
+  return (
+    steamCommunityHelper?.extractSteamIdFromProfileHtml(response.text) || ''
+  );
 }
 
-// Fetch owned games and wishlist from Steam Community and store locally
-async function fetchAndStoreSteamData(steamProfileID) {
-  try {
-    let url = `https://steamcommunity.com/profiles/${steamProfileID}/games?tab=all`;
-    let response = await chrome.runtime.sendMessage({ task: 'fetch', url });
-    if (response.status === 200) {
-      // Try multiple patterns Steam has used historically
-      // 1) rgGames = [...];  2) var rgGames = [...];  3) RG.games = [...];
+async function fetchCommunitySteamData(steamProfileID) {
+  const requiresSteamLogin = (html) =>
+    /<title>\s*(Sign In|Wishlist - Error)\s*<\/title>/i.test(html);
+  let steamDataIssueKey = null;
+
+  let url = `https://steamcommunity.com/profiles/${steamProfileID}/games?tab=all`;
+  let response = await chrome.runtime.sendMessage({ task: 'fetch', url });
+  if (response.status === 200) {
+    if (requiresSteamLogin(response.text)) {
+      steamDataIssueKey = 'content.notifications.steamLoginRequired';
+      console.info(t(steamDataIssueKey));
+    } else {
       const patterns = [
         /rgGames\s*=\s*(\[.*?\])/s,
         /var\s+rgGames\s*=\s*(\[.*?\])/s,
@@ -296,9 +398,9 @@ async function fetchAndStoreSteamData(steamProfileID) {
       ];
       let jsonArrayStr = null;
       for (const pat of patterns) {
-        const m = pat.exec(response.text);
-        if (m && m[1]) {
-          jsonArrayStr = m[1];
+        const match = pat.exec(response.text);
+        if (match && match[1]) {
+          jsonArrayStr = match[1];
           break;
         }
       }
@@ -306,94 +408,105 @@ async function fetchAndStoreSteamData(steamProfileID) {
         try {
           const jsonResponse = JSON.parse(jsonArrayStr);
           ownedSteamApps = jsonResponse.map((g) => g.appid).filter(Boolean);
-        } catch (e) {
+        } catch (error) {
           console.info('Failed to parse owned games JSON');
         }
       } else {
-        console.info(
-          'Could not parse owned games. Is your Steam profile public?',
-        );
+        steamDataIssueKey = 'content.notifications.ownedGamesParseFailed';
+        console.info(t(steamDataIssueKey));
       }
-    } else if (response.status === 403) {
-      console.warn(
-        'Missing permission for Steam Community. Skipping owned games fetch.',
-      );
     }
+  } else if (response.status === 403) {
+    console.warn(t('content.notifications.skipOwnedGames'));
+    steamDataIssueKey ||= 'content.notifications.skipOwnedGames';
+  }
 
-    url = `https://steamcommunity.com/profiles/${steamProfileID}/wishlist`;
-    response = await chrome.runtime.sendMessage({ task: 'fetch', url });
-    if (response.status === 200) {
+  url = `https://steamcommunity.com/profiles/${steamProfileID}/wishlist`;
+  response = await chrome.runtime.sendMessage({ task: 'fetch', url });
+  if (response.status === 200) {
+    if (requiresSteamLogin(response.text)) {
+      steamDataIssueKey ||= 'content.notifications.steamLoginRequired';
+    } else {
       const regex = /steamcommunity\.com\/app\/(\d+)/g;
       let match;
       wishList = [];
       while ((match = regex.exec(response.text)) != null) {
         wishList.push(parseInt(match[1], 10));
       }
-    } else if (response.status === 403) {
-      console.warn(
-        'Missing permission for Steam Community. Skipping wishlist fetch.',
-      );
+    }
+  } else if (response.status === 403) {
+    console.warn(t('content.notifications.skipWishlist'));
+    steamDataIssueKey ||= 'content.notifications.skipWishlist';
+  }
+
+  return steamDataIssueKey;
+}
+
+async function refreshSteamData({ profileUrl = '', steamProfileID = '' } = {}) {
+  try {
+    let steamDataIssueKey = null;
+
+    const storeResponse = await chrome.runtime.sendMessage({
+      task: 'fetchSteamStoreUserData',
+    });
+    if (storeResponse?.status === 200 && storeResponse.isLoggedIn) {
+      ownedSteamApps = storeResponse.ownedGames || [];
+      wishList = storeResponse.wishlist || [];
+      saveSteamData(getSteamCacheKeys(profileUrl, steamProfileID));
+
+      console.debug('Steam data updated:', {
+        ownedGames: ownedSteamApps.length,
+        wishlist: wishList.length,
+      });
+
+      updateSteamDataBanner(null, {
+        profileUrl,
+        steamProfileID,
+      });
+      return;
     }
 
-    const ownedSteamAppsObj = {};
-    ownedSteamAppsObj[steamProfileID] = {
-      ownedGames: ownedSteamApps,
-      wishlist: wishList,
-    };
-    chrome.storage.local.set(ownedSteamAppsObj);
+    if (storeResponse?.isLoggedIn === false) {
+      steamDataIssueKey = 'content.notifications.steamLoginRequired';
+      console.info(t(steamDataIssueKey));
+    }
+
+    let resolvedSteamProfileID = steamProfileID;
+    const permissionResponse = await chrome.runtime.sendMessage({
+      task: 'checkPermission',
+      ask: 'true',
+    });
+
+    if (permissionResponse?.granted === 'true') {
+      if (!resolvedSteamProfileID && profileUrl) {
+        resolvedSteamProfileID = await resolveSteamProfileId(profileUrl);
+      }
+
+      if (resolvedSteamProfileID) {
+        steamDataIssueKey =
+          (await fetchCommunitySteamData(resolvedSteamProfileID)) ||
+          steamDataIssueKey;
+      } else {
+        steamDataIssueKey ||= 'content.notifications.steamLoginRequired';
+      }
+    } else {
+      steamDataIssueKey ||= 'content.notifications.permissionDenied';
+      console.warn(t('content.notifications.permissionDenied'));
+    }
+
+    saveSteamData(getSteamCacheKeys(profileUrl, resolvedSteamProfileID));
 
     console.debug('Steam data updated:', {
       ownedGames: ownedSteamApps.length,
       wishlist: wishList.length,
     });
 
-    // If both are empty, optionally surface a small helper banner near controls
-    if (ownedSteamApps.length === 0 && wishList.length === 0) {
-      const featuredSummary = document.querySelector('.featured__summary');
-      const anchor = featuredSummary || document.body;
-      let banner = document.getElementById('aj-permission-banner');
-      if (!banner) {
-        banner = document.createElement('div');
-        banner.id = 'aj-permission-banner';
-        banner.className = 'aj-permission-banner';
-        banner.innerHTML =
-          '<strong>Steam data unavailable.</strong> Grant permission when prompted and ensure your Steam profile game details and wishlist are public. <a href="#" id="aj-perm-retry">Check permission again</a>.';
-        if (featuredSummary) {
-          anchor.prepend(banner);
-        } else {
-          anchor.appendChild(banner);
-        }
-        banner.style.display = 'block';
-        const retry = banner.querySelector('#aj-perm-retry');
-        retry?.addEventListener('click', (e) => {
-          e.preventDefault();
-          // Re-trigger permission request flow
-          const profileId = (function () {
-            const link = document.querySelector(
-              '.nav__button-container--notification a.nav__avatar-outer-wrap',
-            );
-            const href = link?.href || '';
-            const m = /steamcommunity\.com\/profiles\/(\d+)/.exec(href);
-            return m ? m[1] : null;
-          })();
-          if (profileId) {
-            requestSteamCommunityPermissionAndUpdate(profileId);
-          } else {
-            chrome.runtime.sendMessage({
-              task: 'checkPermission',
-              ask: 'true',
-            });
-          }
-        });
-      } else {
-        banner.style.display = 'block';
-      }
-    } else {
-      const banner = document.getElementById('aj-permission-banner');
-      if (banner) banner.style.display = 'none';
-    }
-  } catch (e) {
-    console.error('Error updating Steam data:', e);
+    updateSteamDataBanner(steamDataIssueKey, {
+      profileUrl,
+      steamProfileID: resolvedSteamProfileID,
+    });
+  } catch (error) {
+    console.error('Error updating Steam data:', error);
   }
 }
 
@@ -403,7 +516,7 @@ function onPageLoad() {
     console.error('Could not find CSRF token');
     if (window.AutoJoinUtils) {
       AutoJoinUtils.showNotification(
-        'Security token not found. Please refresh the page.',
+        t('content.notifications.securityTokenMissing'),
         'error',
       );
     }
@@ -436,7 +549,7 @@ function onPageLoad() {
     const btnAutoJoin = document.createElement('input');
     btnAutoJoin.id = 'btnAutoJoin';
     btnAutoJoin.type = 'button';
-    btnAutoJoin.value = 'AutoJoin';
+    btnAutoJoin.value = t('content.autoJoin');
 
     // Add debounced click handler to prevent rapid clicking
     const debouncedAutoJoin = AutoJoinUtils.debounce(() => {
@@ -446,9 +559,9 @@ function onPageLoad() {
       btnAutoJoin.classList.add('loading');
 
       if (settings.LoadFive && pagesLoaded < 5) {
-        btnAutoJoin.value = 'Loading Pages...';
+        btnAutoJoin.value = t('content.loadingPages');
       } else {
-        btnAutoJoin.value = 'Processing...';
+        btnAutoJoin.value = t('content.processing');
       }
 
       try {
@@ -457,10 +570,12 @@ function onPageLoad() {
         console.error('Error during AutoJoin:', error);
         btnAutoJoin.disabled = false;
         btnAutoJoin.classList.remove('loading');
-        btnAutoJoin.value = 'AutoJoin';
+        btnAutoJoin.value = t('content.autoJoin');
         if (window.AutoJoinUtils) {
           AutoJoinUtils.showNotification(
-            'AutoJoin failed: ' + error.message,
+            t('content.notifications.autoJoinFailed', {
+              message: error.message,
+            }),
             'error',
           );
         }
@@ -475,8 +590,11 @@ function onPageLoad() {
     linkToAnnouncement.href =
       'http://steamcommunity.com/groups/autojoin#announcements/detail/1485483400577229657';
     linkToAnnouncement.target = '_blank';
-    linkToAnnouncement.innerHTML =
-      '<p>By using AutoJoin button and AutoJoin in background you risk getting a suspension.</p><p>Click to read more...</p>';
+    const riskLine = document.createElement('p');
+    riskLine.textContent = t('content.suspensionRisk');
+    const readMoreLine = document.createElement('p');
+    readMoreLine.textContent = t('content.readMore');
+    linkToAnnouncement.append(riskLine, readMoreLine);
     suspensionNotice.appendChild(linkToAnnouncement);
 
     buttonsAJ.appendChild(btnAutoJoin);
@@ -499,7 +617,7 @@ function onPageLoad() {
         button.className = 'nav__button';
         // Use a unique ID distinct from the circular cog button
         button.id = 'ajSettingsNavBtn';
-        button.textContent = 'AutoJoin Settings';
+        button.textContent = t('content.settingsButton');
         buttonContainer.appendChild(button);
         navbar.appendChild(buttonContainer);
       }
@@ -767,7 +885,7 @@ function onPageLoad() {
                         const btnEl = current.querySelector('.btnSingle');
                         btnEl.setAttribute('walkState', 'leave');
                         btnEl.disabled = false;
-                        btnEl.textContent = 'Leave';
+                        btnEl.textContent = t('content.leave');
                         updateButtons();
                       }
                       if (jsonResponse.points < 5) {
@@ -779,11 +897,14 @@ function onPageLoad() {
                       const infoEl = document.querySelector('#info');
                       if (infoEl) {
                         if (entered < 1) {
-                          infoEl.textContent = 'No giveaways entered.';
+                          infoEl.textContent = t('content.enteredSummary.none');
                         } else {
-                          infoEl.textContent = `Entered ${entered} giveaway${
-                            entered !== 1 ? 's' : ''
-                          }.`;
+                          infoEl.textContent = t(
+                            entered === 1
+                              ? 'content.enteredSummary.one'
+                              : 'content.enteredSummary.other',
+                            { count: entered },
+                          );
                         }
                         infoEl.style.display = 'block';
                       }
@@ -816,20 +937,26 @@ function onPageLoad() {
           btnAutoJoin.disabled = false;
           btnAutoJoin.classList.remove('loading');
           btnAutoJoin.classList.add('success');
-          btnAutoJoin.value = entered > 0 ? `Joined ${entered}!` : 'No entries';
+          btnAutoJoin.value =
+            entered > 0
+              ? t('content.joinedButton', { count: entered })
+              : t('content.noEntries');
 
           // Show notification
           if (window.AutoJoinUtils) {
             if (entered > 0) {
               AutoJoinUtils.showNotification(
-                `Successfully joined ${entered} giveaway${
-                  entered !== 1 ? 's' : ''
-                }!`,
+                t(
+                  entered === 1
+                    ? 'content.notifications.autoJoinSummary.one'
+                    : 'content.notifications.autoJoinSummary.other',
+                  { count: entered },
+                ),
                 'success',
               );
             } else {
               AutoJoinUtils.showNotification(
-                'No giveaways were joined based on your criteria',
+                t('content.notifications.noGiveawaysMatched'),
                 'info',
               );
             }
@@ -838,7 +965,7 @@ function onPageLoad() {
           // Reset button after delay and hide info banner for a clean layout
           setTimeout(() => {
             btnAutoJoin.classList.remove('success');
-            btnAutoJoin.value = 'AutoJoin';
+            btnAutoJoin.value = t('content.autoJoin');
             const infoEl = document.querySelector('#info');
             if (infoEl) {
               infoEl.style.display = 'none';
@@ -850,7 +977,7 @@ function onPageLoad() {
       timeouts.length * settings.Delay * 1000 + 2000,
     );
 
-    document.querySelector('#btnAutoJoin').textContent = 'Good luck!';
+    document.querySelector('#btnAutoJoin').value = t('content.goodLuck');
   }
 
   if (splitPageHasNext) {
@@ -935,11 +1062,11 @@ function onPageLoad() {
             );
             if (pointsNeeded > currentState.points) {
               el.disabled = true;
-              el.value = 'Not enough points';
+              el.value = t('content.notEnoughPoints');
               el.setAttribute('walkState', 'no-points');
             } else {
               el.disabled = false;
-              el.value = 'Join';
+              el.value = t('content.join');
               el.setAttribute('walkState', 'join');
             }
           }
@@ -992,9 +1119,13 @@ function onPageLoad() {
             '.descriptionContent',
           );
           if (descriptionContent.classList.toggle('visible')) {
-            clickedEl.querySelector('span').textContent = 'Hide description';
+            clickedEl.querySelector('span').textContent = t(
+              'content.hideDescription',
+            );
           } else {
-            clickedEl.querySelector('span').textContent = 'Show description';
+            clickedEl.querySelector('span').textContent = t(
+              'content.showDescription',
+            );
           }
         }
       }
@@ -1018,7 +1149,7 @@ function onPageLoad() {
       thisButton.disabled = true;
       thisButton.classList.add('loading');
       const originalText = thisButton.textContent;
-      thisButton.textContent = 'Processing...';
+      thisButton.textContent = t('content.processing');
 
       const giveawayUrlPath = thisWrap.querySelector(
         '.giveaway__heading__name',
@@ -1070,7 +1201,7 @@ function onPageLoad() {
               thisButton.setAttribute('walkState', 'leave');
               thisButton.disabled = false;
               thisButton.classList.remove('loading');
-              thisButton.textContent = 'Leave';
+              thisButton.textContent = t('content.leave');
             }
             currentState.points = json.points.replace(',', '');
             updateButtons();
@@ -1093,13 +1224,15 @@ function onPageLoad() {
                   const res = await fetch(giveawayUrlPath, {
                     method: 'post',
                     credentials: 'include',
+                    redirect: 'follow',
                     body: commentFormData,
                   });
                   if (!res.ok) {
                     console.error(`Error leaving comment: HTTP ${res.status}`);
                   } else {
-                    const json = await res.json();
-                    console.debug('Comment response', json);
+                    console.debug(
+                      `Comment posted successfully for ${giveawayUrlPath}`,
+                    );
                   }
                 } catch (commentError) {
                   console.error('Error posting comment:', commentError);
@@ -1122,7 +1255,7 @@ function onPageLoad() {
             console.error(`Error leaving giveaway: HTTP ${res.status}`);
             thisButton.classList.remove('loading');
             thisButton.disabled = false;
-            thisButton.textContent = 'Network Error';
+            thisButton.textContent = t('content.networkError');
             setTimeout(() => {
               thisButton.textContent = originalText;
             }, 2000);
@@ -1135,7 +1268,7 @@ function onPageLoad() {
             thisButton.setAttribute('walkState', 'join');
             thisButton.disabled = false;
             thisButton.classList.remove('loading');
-            thisButton.textContent = 'Join';
+            thisButton.textContent = t('content.join');
             updateButtons();
           } else {
             thisButton.classList.remove('loading');
@@ -1145,7 +1278,7 @@ function onPageLoad() {
         }
       } catch (error) {
         console.error('Error processing giveaway action:', error);
-        thisButton.textContent = 'Error occurred';
+        thisButton.textContent = t('content.networkError');
         setTimeout(() => {
           thisButton.textContent = originalText;
           thisButton.disabled = false;
@@ -1236,7 +1369,7 @@ function loadDescription(giveaway) {
   const giveawayToggleText = giveaway.querySelector('.description span');
   const giveawayURL = giveaway.querySelector('.giveaway__heading__name').href;
   const giveawayDescriptionEl = giveaway.querySelector('.descriptionLoad');
-  giveawayToggleText.textContent = 'Hide description';
+  giveawayToggleText.textContent = t('content.hideDescription');
   giveawayDescriptionEl.className = 'description';
   const giveawayDescriptionWrapper = document.createElement('div');
   giveawayDescriptionWrapper.className = 'descriptionContent visible';
@@ -1253,7 +1386,9 @@ function loadDescription(giveaway) {
         '.page__description .markdown',
       );
       if (giveawayDescription == null) {
-        giveawayDescription = document.createTextNode('No description.');
+        giveawayDescription = document.createTextNode(
+          t('content.noDescription'),
+        );
       }
       giveawayDescriptionWrapper.appendChild(giveawayDescription);
       descriptionIcon.className = 'fa fa-file-text descriptionIcon';

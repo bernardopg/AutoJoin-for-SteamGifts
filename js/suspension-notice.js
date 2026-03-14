@@ -4,6 +4,9 @@
  */
 
 (function () {
+  const i18n = globalThis.AutoJoinI18n;
+  const t = (key, params = {}) => (i18n ? i18n.t(key, params) : key);
+
   // Configuration
   const STORAGE_KEY = 'aj_suspension_notice_dismissed';
   const MINIMIZED_KEY = 'aj_suspension_notice_minimized';
@@ -42,10 +45,7 @@
     // Add keyboard support
     noticeElement.addEventListener('keydown', handleKeydown);
     noticeElement.setAttribute('tabindex', '0');
-    noticeElement.setAttribute(
-      'aria-label',
-      'Suspension warning - Press Escape or click X to dismiss',
-    );
+    noticeElement.setAttribute('aria-label', t('suspensionNotice.ariaLabel'));
   }
 
   /**
@@ -93,10 +93,10 @@
    */
   function showDismissOptions() {
     const options = [
-      { text: 'Hide permanently', action: 'permanent' },
-      { text: 'Minimize', action: 'minimize' },
-      { text: 'Hide for this session', action: 'session' },
-      { text: 'Cancel', action: 'cancel' },
+      { text: t('suspensionNotice.option.permanent'), action: 'permanent' },
+      { text: t('suspensionNotice.option.minimize'), action: 'minimize' },
+      { text: t('suspensionNotice.option.session'), action: 'session' },
+      { text: t('suspensionNotice.option.cancel'), action: 'cancel' },
     ];
 
     // Create simple modal with options
@@ -140,7 +140,7 @@
         `;
 
     const title = document.createElement('h3');
-    title.textContent = 'Suspension Warning Options';
+    title.textContent = t('suspensionNotice.title');
     title.style.cssText = `
             margin: 0 0 16px 0;
             font-size: 18px;
@@ -150,7 +150,7 @@
         `;
 
     const description = document.createElement('p');
-    description.textContent = 'How would you like to handle this warning?';
+    description.textContent = t('suspensionNotice.description');
     description.style.cssText = `
             margin: 0 0 20px 0;
             font-size: 14px;

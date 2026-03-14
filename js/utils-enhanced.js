@@ -4,6 +4,12 @@
  */
 
 class AutoJoinUtils {
+  static t(key, params = {}) {
+    return globalThis.AutoJoinI18n
+      ? globalThis.AutoJoinI18n.t(key, params)
+      : key;
+  }
+
   /**
    * Safely parse JSON with error handling
    * @param {string} jsonString - JSON string to parse
@@ -118,19 +124,21 @@ class AutoJoinUtils {
    */
   static formatDuration(seconds) {
     const units = [
-      { name: 'day', seconds: 86400 },
-      { name: 'hour', seconds: 3600 },
-      { name: 'minute', seconds: 60 },
-      { name: 'second', seconds: 1 },
+      { baseKey: 'utils.time.day', seconds: 86400 },
+      { baseKey: 'utils.time.hour', seconds: 3600 },
+      { baseKey: 'utils.time.minute', seconds: 60 },
+      { baseKey: 'utils.time.second', seconds: 1 },
     ];
 
     for (const unit of units) {
       const count = Math.floor(seconds / unit.seconds);
       if (count >= 1) {
-        return `${count} ${unit.name}${count !== 1 ? 's' : ''}`;
+        return `${count} ${this.t(
+          `${unit.baseKey}.${count === 1 ? 'one' : 'other'}`,
+        )}`;
       }
     }
-    return '0 seconds';
+    return this.t('utils.time.zeroSeconds');
   }
 
   /**
@@ -143,7 +151,7 @@ class AutoJoinUtils {
     const remaining = endTime - now;
 
     if (remaining <= 0) {
-      return 'Ended';
+      return this.t('utils.time.ended');
     }
 
     const days = Math.floor(remaining / 86400);
@@ -196,7 +204,7 @@ class AutoJoinUtils {
       className: `notification ${type}`,
     });
 
-    const title = type.charAt(0).toUpperCase() + type.slice(1);
+    const title = this.t(`utils.notification.${type}`);
     const iconMap = {
       success: 'fas fa-check-circle',
       error: 'fas fa-exclamation-circle',
@@ -210,7 +218,9 @@ class AutoJoinUtils {
         ${title}
       </div>
       <div class="notification-message">${this.sanitizeHtml(message)}</div>
-      <button class="notification-close" type="button" aria-label="Close">
+      <button class="notification-close" type="button" aria-label="${this.t(
+        'utils.close',
+      )}">
         <i class="fas fa-times"></i>
       </button>
     `;
@@ -280,7 +290,7 @@ class AutoJoinUtils {
   static createSpinner(size = 'md') {
     return this.createElement('div', {
       className: `spinner spinner-${size}`,
-      'aria-label': 'Loading...',
+      'aria-label': this.t('utils.loading'),
       role: 'status',
     });
   }

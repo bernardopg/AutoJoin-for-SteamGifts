@@ -1,4 +1,21 @@
+const offscreenI18n = globalThis.AutoJoinI18n;
+
+const syncGet = (defaults) =>
+  new Promise((resolve) => {
+    chrome.storage.sync.get(defaults, resolve);
+  });
+
+const offscreenT = async (key, params = {}) => {
+  const { Language } = await syncGet({ Language: 'auto' });
+  offscreenI18n?.setLocale(Language);
+  return offscreenI18n ? offscreenI18n.t(key, params) : key;
+};
+
 chrome.runtime.onMessage.addListener((msg) => {
+  if (msg?.target && msg.target !== 'offscreen') {
+    return;
+  }
+
   switch (msg.task) {
     case 'parse': {
       const data = parse(msg.data);
@@ -28,12 +45,15 @@ chrome.runtime.onMessage.addListener((msg) => {
     }
     case 'fetch':
     case 'checkPermission':
+    case 'fetchSteamStoreUserData':
       break;
     default:
-      console.warn(
-        `Unknown message type for offscreen document: ${msg.task}`,
-        msg,
-      );
+      if (msg?.target === 'offscreen') {
+        console.warn(
+          `Unknown message type for offscreen document: ${msg.task}`,
+          msg,
+        );
+      }
   }
 });
 
@@ -250,7 +270,7 @@ async function redeemKeysFromWonPage(wonPage) {
 
       if (!/^[A-Z0-9]{4,6}-[A-Z0-9]{4,6}-[A-Z0-9]{4,6}$/i.test(key)) {
         console.warn('Invalid key format received:', key);
-        notify(`Invalid Format!\nCode: ${key} was not redeemed!`);
+        notify(await offscreenT('offscreen.notify.invalidFormat', { key }));
         continue;
       }
 
@@ -260,9 +280,7 @@ async function redeemKeysFromWonPage(wonPage) {
       const storeHtml = await storeRes.text();
       if (storeHtml.indexOf('g_sessionID') === -1) {
         console.warn('Steam session not available in offscreen context');
-        notify(
-          `Could not redeem code automatically. Please redeem manually: ${key}`,
-        );
+        notify(await offscreenT('offscreen.notify.manualRedeem', { key }));
         continue;
       }
 
@@ -283,19 +301,28 @@ async function redeemKeysFromWonPage(wonPage) {
       );
       if (!regRes.ok) {
         console.error('Steam key redeem request failed, HTTP', regRes.status);
-        notify(`Redeem failed (HTTP ${regRes.status}). Code: ${key}`);
+        notify(
+          await offscreenT('offscreen.notify.httpError', {
+            status: regRes.status,
+            key,
+          }),
+        );
         continue;
       }
       const regJson = await regRes.json();
       if (regJson && regJson.success === 1) {
-        notify(`Code redeemed! ${key}`);
+        notify(await offscreenT('offscreen.notify.redeemed', { key }));
       } else {
-        const reason = regJson?.purchase_result_details ?? 'Unknown';
-        notify(`Redeem unsuccessful (${reason}). Code: ${key}`);
+        const reason =
+          regJson?.purchase_result_details ??
+          (await offscreenT('offscreen.unknownReason'));
+        notify(
+          await offscreenT('offscreen.notify.unsuccessful', { reason, key }),
+        );
       }
     } catch (e) {
       console.error('Error during key redemption:', e);
-      notify('Unexpected error while redeeming a key.');
+      notify(await offscreenT('offscreen.notify.unexpected'));
     }
   }
 }

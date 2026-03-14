@@ -23,6 +23,31 @@ const specialSettingKeys = new Map(
   }),
 );
 
+const i18n = globalThis.AutoJoinI18n;
+const translate = (key, params = {}) => (i18n ? i18n.t(key, params) : key);
+
+const setSaveButtonState = (button, state) => {
+  if (!button) return;
+
+  if (state === 'saving') {
+    button.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${translate(
+      'settings.actions.saving',
+    )}`;
+    return;
+  }
+
+  if (state === 'saved') {
+    button.innerHTML = `<i class="fas fa-check"></i> ${translate(
+      'settings.actions.saved',
+    )}`;
+    return;
+  }
+
+  button.innerHTML = `<i class="fas fa-save"></i> ${translate(
+    'settings.actions.save',
+  )}`;
+};
+
 const deriveSettingKey = (element) => {
   if (!optionsSettingsStore) return element.id || element.name || '';
 
@@ -154,13 +179,20 @@ async function loadSettings() {
 
   try {
     const settings = await optionsSettingsStore.load();
+    if (i18n) {
+      i18n.setLocale(settings.Language);
+      i18n.apply(document);
+      if (!document.location.protocol.includes('http')) {
+        document.title = translate('settings.title');
+      }
+    }
     applyOptionsTheme(Boolean(settings.NightTheme));
     fillSettingsDiv(settings);
   } catch (error) {
     console.error('Failed to load settings:', error);
     if (window.AutoJoinUtils) {
       window.AutoJoinUtils.showNotification(
-        'Failed to load settings. Please refresh the page.',
+        translate('content.notifications.settingsLoadFailed'),
         'error',
       );
     }
@@ -168,6 +200,7 @@ async function loadSettings() {
 }
 
 function fillSettingsDiv(settings) {
+  document.getElementById('selLanguage').value = settings.Language || 'auto';
   document.getElementById('chkAutoJoinButton').checked =
     settings.AutoJoinButton;
   document.getElementById('chkAutoDescription').checked =
@@ -253,6 +286,15 @@ function applyOptionsTheme(night) {
 
 function settingsAttachEventListeners() {
   const saveButtonEl = document.getElementById('btnSetSave');
+  const languageSelectEl = document.getElementById('selLanguage');
+
+  languageSelectEl?.addEventListener('change', () => {
+    if (!i18n) return;
+    i18n.setLocale(languageSelectEl.value);
+    i18n.apply(document);
+    setSaveButtonState(saveButtonEl, 'default');
+  });
+
   saveButtonEl.addEventListener('click', async () => {
     // Validate inputs before saving
     if (!validateSettings()) {
@@ -260,7 +302,11 @@ function settingsAttachEventListeners() {
     }
 
     // Show loading state
-    saveButtonEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+    if (i18n) {
+      i18n.setLocale(languageSelectEl?.value || 'auto');
+      i18n.apply(document);
+    }
+    setSaveButtonState(saveButtonEl, 'saving');
     saveButtonEl.disabled = true;
 
     try {
@@ -322,9 +368,9 @@ function settingsAttachEventListeners() {
 
       await optionsSettingsStore.save(mergedSettings);
 
-      saveButtonEl.innerHTML = '<i class="fas fa-check"></i> Settings Saved!';
+      setSaveButtonState(saveButtonEl, 'saved');
       setTimeout(() => {
-        saveButtonEl.innerHTML = '<i class="fas fa-save"></i> Save Settings';
+        setSaveButtonState(saveButtonEl, 'default');
         saveButtonEl.disabled = false;
       }, 2000);
 
@@ -333,12 +379,12 @@ function settingsAttachEventListeners() {
       }
     } catch (error) {
       console.error('Error saving settings:', error);
-      saveButtonEl.innerHTML = '<i class="fas fa-save"></i> Save Settings';
+      setSaveButtonState(saveButtonEl, 'default');
       saveButtonEl.disabled = false;
 
       if (window.AutoJoinUtils) {
         window.AutoJoinUtils.showNotification(
-          'Failed to save settings',
+          translate('content.notifications.settingsSaveFailed'),
           'error',
         );
       }
@@ -401,21 +447,17 @@ function settingsAttachEventListeners() {
   document
     .getElementById('chkHideDlc')
     .addEventListener('change', requirePermissions);
-  function requirePermissions(e) {
+  async function requirePermissions(e) {
     if (e.target.checked) {
       // chrome.permissions.* API is not available in content script
       // we'll have to message background script to check if we have it
-
-      // set new event listener for anticipated response
-      chrome.runtime.onMessage.addListener((request) => {
-        if (request.granted === 'true') {
-          // we have permission, do nothing
-        } else {
-          // we don't have permission, uncheck this option
-          e.target.checked = false;
-        }
+      const response = await chrome.runtime.sendMessage({
+        task: 'checkPermission',
+        ask: 'true',
       });
-      chrome.runtime.sendMessage({ task: 'checkPermission', ask: 'true' });
+      if (response?.granted !== 'true') {
+        e.target.checked = false;
+      }
     }
   }
 
@@ -512,7 +554,7 @@ function validateSettings() {
   if (commentField?.value?.trim()) {
     const comment = commentField.value.trim();
     if (comment.length > 1000) {
-      errors.push('Comment text cannot exceed 1000 characters');
+      errors.push(translate('validation.commentTooLong'));
       commentField.style.borderColor = '#dc3545';
       commentField.classList.add('setting-input-error');
     }
@@ -522,23 +564,103 @@ function validateSettings() {
 
   // Validate number inputs
   const numberInputs = [
-    { id: 'hoursField', min: 1, max: 24, name: 'Repeat hours' },
-    { id: 'hoursFieldBG', min: 0.5, max: 24, name: 'Background repeat hours' },
-    { id: 'pagestoload', min: 1, max: 5, name: 'Pages to load' },
-    { id: 'pagestoloadBG', min: 1, max: 3, name: 'Background pages to load' },
-    { id: 'delay', min: 5, max: 60, name: 'Delay' },
-    { id: 'delayBG', min: 5, max: 60, name: 'Background delay' },
-    { id: 'minCost', min: 0, max: 200, name: 'Minimum cost' },
-    { id: 'minCostBG', min: 0, max: 200, name: 'Background minimum cost' },
-    { id: 'maxCost', min: -1, max: 200, name: 'Maximum cost' },
-    { id: 'maxCostBG', min: -1, max: 200, name: 'Background maximum cost' },
-    { id: 'pointsToPreserve', min: 0, max: 300, name: 'Points to preserve' },
-    { id: 'notifyLimitAmount', min: 0, max: 400, name: 'Notification limit' },
-    { id: 'hideLevelsBelow', min: 0, max: 10, name: 'Hide levels below' },
-    { id: 'hideLevelsAbove', min: 0, max: 10, name: 'Hide levels above' },
-    { id: 'hideCostsBelow', min: 0, max: 50, name: 'Hide costs below' },
-    { id: 'hideCostsAbove', min: 0, max: 50, name: 'Hide costs above' },
-    { id: 'minLevelBG', min: 0, max: 10, name: 'Background minimum level' },
+    {
+      id: 'hoursField',
+      min: 1,
+      max: 24,
+      nameKey: 'validation.fields.repeatHours',
+    },
+    {
+      id: 'hoursFieldBG',
+      min: 0.5,
+      max: 24,
+      nameKey: 'validation.fields.backgroundRepeatHours',
+    },
+    {
+      id: 'pagestoload',
+      min: 1,
+      max: 5,
+      nameKey: 'validation.fields.pagesToLoad',
+    },
+    {
+      id: 'pagestoloadBG',
+      min: 1,
+      max: 3,
+      nameKey: 'validation.fields.backgroundPagesToLoad',
+    },
+    { id: 'delay', min: 5, max: 60, nameKey: 'validation.fields.delay' },
+    {
+      id: 'delayBG',
+      min: 5,
+      max: 60,
+      nameKey: 'validation.fields.backgroundDelay',
+    },
+    {
+      id: 'minCost',
+      min: 0,
+      max: 200,
+      nameKey: 'validation.fields.minimumCost',
+    },
+    {
+      id: 'minCostBG',
+      min: 0,
+      max: 200,
+      nameKey: 'validation.fields.backgroundMinimumCost',
+    },
+    {
+      id: 'maxCost',
+      min: -1,
+      max: 200,
+      nameKey: 'validation.fields.maximumCost',
+    },
+    {
+      id: 'maxCostBG',
+      min: -1,
+      max: 200,
+      nameKey: 'validation.fields.backgroundMaximumCost',
+    },
+    {
+      id: 'pointsToPreserve',
+      min: 0,
+      max: 300,
+      nameKey: 'validation.fields.pointsToPreserve',
+    },
+    {
+      id: 'notifyLimitAmount',
+      min: 0,
+      max: 400,
+      nameKey: 'validation.fields.notificationLimit',
+    },
+    {
+      id: 'hideLevelsBelow',
+      min: 0,
+      max: 10,
+      nameKey: 'validation.fields.hideLevelsBelow',
+    },
+    {
+      id: 'hideLevelsAbove',
+      min: 0,
+      max: 10,
+      nameKey: 'validation.fields.hideLevelsAbove',
+    },
+    {
+      id: 'hideCostsBelow',
+      min: 0,
+      max: 50,
+      nameKey: 'validation.fields.hideCostsBelow',
+    },
+    {
+      id: 'hideCostsAbove',
+      min: 0,
+      max: 50,
+      nameKey: 'validation.fields.hideCostsAbove',
+    },
+    {
+      id: 'minLevelBG',
+      min: 0,
+      max: 10,
+      nameKey: 'validation.fields.backgroundMinimumLevel',
+    },
   ];
 
   numberInputs.forEach((input) => {
@@ -548,7 +670,11 @@ function validateSettings() {
 
       if (isNaN(value) || value < input.min || value > input.max) {
         errors.push(
-          `${input.name} must be between ${input.min} and ${input.max}`,
+          translate('validation.rangeError', {
+            name: translate(input.nameKey),
+            min: input.min,
+            max: input.max,
+          }),
         );
         element.style.borderColor = '#dc3545';
       } else {
@@ -565,7 +691,7 @@ function validateSettings() {
     document.getElementById('hideLevelsAbove')?.value || 10,
   );
   if (hideLevelsBelow > hideLevelsAbove) {
-    errors.push('Hide levels below cannot be greater than hide levels above');
+    errors.push(translate('validation.levelRange'));
     document.getElementById('hideLevelsBelow').style.borderColor = '#dc3545';
     document.getElementById('hideLevelsAbove').style.borderColor = '#dc3545';
   }
@@ -578,7 +704,7 @@ function validateSettings() {
     document.getElementById('hideCostsAbove')?.value || 50,
   );
   if (hideCostsBelow > hideCostsAbove) {
-    errors.push('Hide costs below cannot be greater than hide costs above');
+    errors.push(translate('validation.costRange'));
     document.getElementById('hideCostsBelow').style.borderColor = '#dc3545';
     document.getElementById('hideCostsAbove').style.borderColor = '#dc3545';
   }
@@ -587,7 +713,7 @@ function validateSettings() {
   const minCost = parseInt(document.getElementById('minCost')?.value || 0);
   const maxCost = parseInt(document.getElementById('maxCost')?.value || -1);
   if (maxCost !== -1 && minCost > maxCost) {
-    errors.push('Minimum cost cannot be greater than maximum cost');
+    errors.push(translate('validation.minCostRange'));
     document.getElementById('minCost').style.borderColor = '#dc3545';
     document.getElementById('maxCost').style.borderColor = '#dc3545';
   }
@@ -595,22 +721,20 @@ function validateSettings() {
   const minCostBG = parseInt(document.getElementById('minCostBG')?.value || 0);
   const maxCostBG = parseInt(document.getElementById('maxCostBG')?.value || -1);
   if (maxCostBG !== -1 && minCostBG > maxCostBG) {
-    errors.push(
-      'Background minimum cost cannot be greater than background maximum cost',
-    );
+    errors.push(translate('validation.backgroundMinCostRange'));
     document.getElementById('minCostBG').style.borderColor = '#dc3545';
     document.getElementById('maxCostBG').style.borderColor = '#dc3545';
   }
 
   // Show errors if any
   if (errors.length > 0) {
+    const errorMessage = translate('validation.fixErrors', {
+      errors: errors.join('\n• '),
+    });
     if (window.AutoJoinUtils) {
-      window.AutoJoinUtils.showNotification(
-        'Please fix the following errors:\n• ' + errors.join('\n• '),
-        'error',
-      );
+      window.AutoJoinUtils.showNotification(errorMessage, 'error');
     } else {
-      alert('Please fix the following errors:\n• ' + errors.join('\n• '));
+      alert(errorMessage);
     }
     return false;
   }

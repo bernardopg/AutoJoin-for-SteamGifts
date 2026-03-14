@@ -7,6 +7,11 @@ class PageEnhancer {
   constructor() {
     this.settings = {};
     this.initialized = false;
+    this.i18n = globalThis.AutoJoinI18n;
+  }
+
+  t(key, params = {}) {
+    return this.i18n ? this.i18n.t(key, params) : key;
   }
 
   /**
@@ -38,14 +43,17 @@ class PageEnhancer {
       InfiniteScrolling: true,
       ShowPoints: true,
       PreciseTime: false,
+      Language: 'auto',
     };
 
     try {
       const data = await chrome.storage.sync.get(defaultSettings);
       this.settings = { ...defaultSettings, ...data };
+      this.i18n?.setLocale(this.settings.Language);
     } catch (error) {
       console.error('Error loading page enhancement settings:', error);
       this.settings = defaultSettings;
+      this.i18n?.setLocale(defaultSettings.Language);
     }
   }
 
@@ -71,13 +79,18 @@ class PageEnhancer {
           href: '#',
           role: 'button',
           tabindex: '0',
-          'aria-label': 'Abrir configurações do AutoJoin',
+          'aria-label': this.i18n?.t('content.settingsButton'),
         },
-        'AutoJoin Settings',
+        this.i18n?.t('content.settingsButton') || 'AutoJoin Settings',
       );
       container.appendChild(btn);
       navbar.appendChild(container);
     }
+
+    const settingsButtonLabel =
+      this.i18n?.t('content.settingsButton') || 'AutoJoin Settings';
+    btn.textContent = settingsButtonLabel;
+    btn.setAttribute('aria-label', settingsButtonLabel);
 
     const openOptions = (e) => {
       if (e) e.preventDefault();
@@ -131,10 +144,10 @@ class PageEnhancer {
       className:
         'nav__button-container nav__button-container--notification nav__button-container--inactive',
       id: 'navbarPin',
-      title: 'Fixar barra de navegação',
+      title: this.t('page.nav.pin'),
       role: 'button',
       tabindex: '0',
-      'aria-label': 'Fixar barra de navegação',
+      'aria-label': this.t('page.nav.pin'),
     });
 
     const pinIcon = AutoJoinUtils.createElement('i', {
@@ -181,13 +194,15 @@ class PageEnhancer {
     if (pinned) {
       pinButton.classList.remove('nav__button-container--inactive');
       pinButton.classList.add('nav__button-container--active');
-      pinButton.title = 'Desfixar barra de navegação';
+      pinButton.title = this.t('page.nav.unpin');
+      pinButton.setAttribute('aria-label', this.t('page.nav.unpin'));
       bufferEl.classList.add('pinned');
       header?.classList.add('pinned');
     } else {
       pinButton.classList.remove('nav__button-container--active');
       pinButton.classList.add('nav__button-container--inactive');
-      pinButton.title = 'Fixar barra de navegação';
+      pinButton.title = this.t('page.nav.pin');
+      pinButton.setAttribute('aria-label', this.t('page.nav.pin'));
       bufferEl.classList.remove('pinned');
       header?.classList.remove('pinned');
     }
@@ -362,8 +377,9 @@ class PageEnhancer {
         if (newGiveaways.length === 0) {
           hasNextPage = false;
           if (pagination) {
-            pagination.innerHTML =
-              '<p style="text-align: center; color: var(--text-secondary);">Fim dos giveaways</p>';
+            pagination.innerHTML = `<p style="text-align: center; color: var(--text-secondary);">${this.t(
+              'page.infinite.end',
+            )}</p>`;
           }
           return;
         }
@@ -376,7 +392,7 @@ class PageEnhancer {
             style:
               'text-align: center; padding: var(--spacing-lg); color: var(--text-secondary); font-weight: var(--font-weight-medium);',
           },
-          `Página ${pageNum}`,
+          this.t('page.infinite.page', { page: pageNum }),
         );
 
         postsContainer.appendChild(pageHeader);
@@ -394,16 +410,18 @@ class PageEnhancer {
           : false;
 
         if (!hasNextPage && pagination) {
-          pagination.innerHTML =
-            '<p style="text-align: center; color: var(--text-secondary);">Fim dos giveaways</p>';
+          pagination.innerHTML = `<p style="text-align: center; color: var(--text-secondary);">${this.t(
+            'page.infinite.end',
+          )}</p>`;
         } else if (pagination) {
           pagination.innerHTML = '';
         }
       } catch (error) {
         console.error('Error loading next page:', error);
         if (pagination) {
-          pagination.innerHTML =
-            '<p style="text-align: center; color: var(--danger-color);">Erro ao carregar mais giveaways</p>';
+          pagination.innerHTML = `<p style="text-align: center; color: var(--danger-color);">${this.t(
+            'page.infinite.loadMoreError',
+          )}</p>`;
         }
       } finally {
         isLoading = false;
@@ -447,7 +465,7 @@ class PageEnhancer {
       {
         style: 'margin-left: var(--spacing-md); color: var(--text-secondary);',
       },
-      'Carregando mais giveaways...',
+      this.t('page.infinite.loadingMore'),
     );
 
     container.appendChild(spinner);
@@ -489,9 +507,9 @@ class PageEnhancer {
         let label = button.textContent || button.value;
 
         if (walkState === 'join') {
-          label = `Participar do giveaway: ${label}`;
+          label = this.t('page.aria.joinGiveaway', { label });
         } else if (walkState === 'leave') {
-          label = `Sair do giveaway: ${label}`;
+          label = this.t('page.aria.leaveGiveaway', { label });
         }
 
         button.setAttribute('aria-label', label);
@@ -508,10 +526,12 @@ class PageEnhancer {
           )?.textContent;
           link.setAttribute(
             'aria-label',
-            `Ver giveaway: ${gameName || 'Jogo'}`,
+            this.t('page.aria.viewGiveaway', {
+              name: gameName || this.t('page.aria.viewGiveawayFallback'),
+            }),
           );
         } else if (link.href.includes('store.steampowered.com')) {
-          link.setAttribute('aria-label', 'Ver na Steam Store');
+          link.setAttribute('aria-label', this.t('page.aria.viewSteamStore'));
         }
       }
     });
@@ -559,7 +579,7 @@ class PageEnhancer {
         style:
           'color: var(--primary-color); text-decoration: none; margin-right: var(--spacing-md);',
       },
-      'Pular para conteúdo principal',
+      this.t('page.skip.content'),
     );
 
     const skipToSettings = AutoJoinUtils.createElement(
@@ -568,7 +588,7 @@ class PageEnhancer {
         href: '#ajSettingsNavBtn',
         style: 'color: var(--primary-color); text-decoration: none;',
       },
-      'Pular para configurações',
+      this.t('page.skip.settings'),
     );
 
     skipLinks.appendChild(skipToContent);
@@ -688,7 +708,7 @@ class PageEnhancer {
     this.applyTheme();
 
     AutoJoinUtils.showNotification(
-      `Tema ${this.settings.NightTheme ? 'escuro' : 'claro'} ativado`,
+      this.t(this.settings.NightTheme ? 'page.theme.dark' : 'page.theme.light'),
       'info',
       2000,
     );

@@ -4,6 +4,7 @@
     AutoDescription: true,
     AutoComment: false,
     Comment: '',
+    Language: 'auto',
     IgnoreGroups: false,
     IgnorePinned: true,
     IgnoreWhitelist: false,

@@ -2,12 +2,15 @@
   "background": {
     "service_worker": "js/backgroundpage.js"
   },
+  "default_locale": "en",
   "content_scripts": [
     {
       "run_at": "document_start",
       "css": ["css/general.css", "css/night.css"],
       "js": [
         "js/utils-enhanced.js",
+        "js/core/i18n.js",
+        "js/core/steam-community.js",
         "js/core/settings-store.js",
         "js/core/giveaway.js",
         "js/core/page-enhancements.js",
@@ -72,7 +75,14 @@
   "name": "AutoJoin for SteamGifts",
   "short_name": "AutoJoin",
   "description": "Enhanced AutoJoin for SteamGifts with modern UI, improved accessibility, and optimized performance",
-  "permissions": ["alarms", "notifications", "storage", "offscreen"],
+  "permissions": [
+    "alarms",
+    "notifications",
+    "storage",
+    "offscreen",
+    "scripting",
+    "tabs"
+  ],
   "host_permissions": [
     "*://www.steamgifts.com/*",
     "*://store.steampowered.com/*"

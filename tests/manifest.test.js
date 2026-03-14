@@ -14,8 +14,20 @@ test('manifest metadata is present', () => {
   assert.equal(manifest.manifest_version, 3, 'Extension must use Manifest V3');
   assert.equal(manifest.name, 'AutoJoin for SteamGifts');
   assert.equal(typeof manifest.version, 'string');
+  assert.equal(manifest.default_locale, 'en');
   assert.ok(Array.isArray(manifest.permissions));
   assert.ok(manifest.permissions.includes('storage'));
+});
+
+test('default locale resources exist', () => {
+  assert.ok(
+    fileExists('_locales/en/messages.json'),
+    'Missing default locale messages file',
+  );
+  assert.ok(
+    fileExists('_locales/pt_BR/messages.json'),
+    'Missing pt_BR locale messages file',
+  );
 });
 
 test('background service worker is reachable', () => {

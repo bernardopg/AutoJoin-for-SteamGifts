@@ -66,6 +66,8 @@
 - **Service Worker**: Execução em segundo plano otimizada
 - **Offscreen Documents**: Processamento HTML isolado e seguro
 - **Chrome Storage API**: Sincronização automática entre dispositivos
+- **i18n nativo**: Interface e configurações em Português e Inglês
+- **Steam autenticada**: Biblioteca e wishlist sincronizadas pela sessão real do navegador
 
 #### 🛡️ Segurança e Privacidade
 
@@ -113,6 +115,7 @@ npm run check
 - Ative o "Modo do desenvolvedor"
 - Clique em "Carregar sem compactação"
 - Selecione a pasta do projeto
+- Aceite as permissões adicionais de `tabs` e `scripting` se o navegador solicitar
 
 **Firefox:**
 
@@ -220,8 +223,11 @@ AutoJoin-for-SteamGifts/
 │   ├── settings.js           # Interface de configurações
 │   ├── 📁 core/             # Módulos principais
 │   │   ├── giveaway.js       # Modelo de sorteio
+│   │   ├── i18n.js           # Traduções e locale ativo
 │   │   ├── page-enhancements.js # Melhorias de UI
-│   │   └── settings-store.js # Gerenciamento de configurações
+│   │   ├── settings-store.js # Gerenciamento de configurações
+│   │   ├── steam-community.js # Resolução de steamid em perfis Steam
+│   │   └── steam-store.js    # Normalização de dados autenticados da Steam Store
 │   └── utils-enhanced.js     # Utilitários
 ├── 📁 css/                   # Estilos
 │   ├── main.css             # Estilos principais
@@ -236,6 +242,13 @@ AutoJoin-for-SteamGifts/
 ├── 📁 docs/                  # Documentação
 └── 📁 .github/              # GitHub Actions
 ```
+
+#### 🔐 Sessão Steam e permissões
+
+- A extensão usa `tabs` e `scripting` para abrir uma aba inativa temporária da Steam Store e ler `dynamicstore/userdata` com a sessão autenticada do navegador.
+- Isso reduz falhas de cookies e políticas same-site em `fetch` direto do service worker.
+- A permissão opcional de `steamcommunity.com/profiles/*` continua como fallback para perfis públicos.
+- Os textos da UI e das configurações ficam centralizados em `js/core/i18n.js`, com suporte inicial para `en` e `pt-BR`.
 
 #### 🔄 Fluxo de Execução
 
@@ -374,6 +387,8 @@ mantendo os avisos de copyright e esta licença.
 - **Service Worker**: Optimized background execution
 - **Offscreen Documents**: Isolated and secure HTML processing
 - **Chrome Storage API**: Automatic synchronization across devices
+- **Built-in i18n**: Interface and settings available in Portuguese and English
+- **Authenticated Steam sync**: Owned games and wishlist loaded from the browser's real Steam session
 
 #### 🛡️ Security & Privacy
 
@@ -421,6 +436,7 @@ npm run check
 - Enable "Developer mode"
 - Click "Load unpacked"
 - Select the project folder
+- Accept the additional `tabs` and `scripting` permissions if the browser prompts for them
 
 **Firefox:**
 
@@ -463,6 +479,24 @@ npm run check
 - **Content Security Policy**: XSS protection
 - **Rigorous Validation**: All inputs are validated
 - **Local Encryption**: Native browser APIs
+
+### 🏗️ Architecture
+
+#### 📁 Main Modules
+
+- `js/autoentry.js`: content-script workflow, giveaway actions, Steam cache usage
+- `js/backgroundpage.js`: service worker, messaging and authenticated Steam Store fallback
+- `js/core/i18n.js`: translations and locale selection
+- `js/core/steam-community.js`: vanity profile to `steamid` resolution
+- `js/core/steam-store.js`: normalization of authenticated Steam Store payloads
+- `js/offscreen.js`: offscreen parsing, audio playback and key redemption helpers
+
+#### 🔐 Steam Session and Permissions
+
+- The extension uses `tabs` and `scripting` to open a temporary inactive Steam Store tab and read `dynamicstore/userdata` with the browser's authenticated session.
+- This reduces common cookie and same-site failures from direct service-worker `fetch` requests.
+- The optional `steamcommunity.com/profiles/*` permission remains as a fallback for public profile data.
+- UI and settings strings are centralized in `js/core/i18n.js`, with initial support for `en` and `pt-BR`.
 
 ### 🤝 Contributing
 

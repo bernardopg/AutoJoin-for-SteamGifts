@@ -1,0 +1,11 @@
+{
+  "extensionName": {
+    "message": "AutoJoin for SteamGifts"
+  },
+  "extensionShortName": {
+    "message": "AutoJoin"
+  },
+  "extensionDescription": {
+    "message": "Enhanced AutoJoin for SteamGifts with modern UI, improved accessibility, and optimized performance"
+  }
+}

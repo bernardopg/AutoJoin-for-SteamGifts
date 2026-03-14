@@ -1,4 +1,4 @@
-importScripts('core/settings-store.js');
+importScripts('core/i18n.js', 'core/settings-store.js', 'core/steam-store.js');
 
 /*
   This script page is the background script. autoentry.js is the autojoin button and other page
@@ -69,6 +69,236 @@ const playAudio = async (volume) => {
   });
 };
 
+const createTab = (createProperties) =>
+  new Promise((resolve, reject) => {
+    chrome.tabs.create(createProperties, (tab) => {
+      const { lastError } = chrome.runtime;
+      if (lastError) {
+        reject(new Error(lastError.message));
+        return;
+      }
+      resolve(tab);
+    });
+  });
+
+const removeTab = (tabId) =>
+  new Promise((resolve, reject) => {
+    chrome.tabs.remove(tabId, () => {
+      const { lastError } = chrome.runtime;
+      if (lastError) {
+        reject(new Error(lastError.message));
+        return;
+      }
+      resolve();
+    });
+  });
+
+const getTab = (tabId) =>
+  new Promise((resolve, reject) => {
+    chrome.tabs.get(tabId, (tab) => {
+      const { lastError } = chrome.runtime;
+      if (lastError) {
+        reject(new Error(lastError.message));
+        return;
+      }
+      resolve(tab);
+    });
+  });
+
+const executeScript = (tabId, func, args = []) =>
+  new Promise((resolve, reject) => {
+    chrome.scripting.executeScript(
+      {
+        target: { tabId },
+        func,
+        args,
+      },
+      (results) => {
+        const { lastError } = chrome.runtime;
+        if (lastError) {
+          reject(new Error(lastError.message));
+          return;
+        }
+        resolve(results);
+      },
+    );
+  });
+
+const waitForTabComplete = (tabId, timeoutMs = 15000) =>
+  new Promise((resolve, reject) => {
+    let resolved = false;
+    const cleanup = () => {
+      chrome.tabs.onUpdated.removeListener(onUpdated);
+      clearTimeout(timeoutId);
+    };
+    const finish = (value) => {
+      if (resolved) return;
+      resolved = true;
+      cleanup();
+      resolve(value);
+    };
+    const fail = (error) => {
+      if (resolved) return;
+      resolved = true;
+      cleanup();
+      reject(error);
+    };
+    const onUpdated = (updatedTabId, changeInfo, tab) => {
+      if (updatedTabId === tabId && changeInfo.status === 'complete') {
+        finish(tab);
+      }
+    };
+    const timeoutId = setTimeout(() => {
+      fail(new Error(`Timed out waiting for tab ${tabId} to finish loading`));
+    }, timeoutMs);
+
+    chrome.tabs.onUpdated.addListener(onUpdated);
+    getTab(tabId)
+      .then((tab) => {
+        if (tab?.status === 'complete') {
+          finish(tab);
+        }
+      })
+      .catch(fail);
+  });
+
+const looksLikeSteamSessionBlocked = (url, html) => {
+  if (!html) return false;
+
+  if (
+    url.includes('steamcommunity.com') &&
+    /<title>\s*Sign In\s*<\/title>/i.test(html)
+  ) {
+    return true;
+  }
+
+  if (
+    url.includes('store.steampowered.com/wishlist') &&
+    /<title>\s*Wishlist - Error\s*<\/title>/i.test(html)
+  ) {
+    return true;
+  }
+
+  return false;
+};
+
+const fetchPageWithBrowserSession = async (url) => {
+  let tab;
+
+  try {
+    tab = await createTab({ url, active: false });
+    await waitForTabComplete(tab.id);
+
+    const [result] = await executeScript(
+      tab.id,
+      async (delayMs) => {
+        await new Promise((resolve) => {
+          setTimeout(resolve, delayMs);
+        });
+
+        return {
+          title: document.title,
+          html: document.documentElement.outerHTML,
+        };
+      },
+      [1200],
+    );
+
+    return {
+      status: 200,
+      text: result?.result?.html || '',
+      title: result?.result?.title || '',
+    };
+  } finally {
+    if (tab?.id) {
+      removeTab(tab.id).catch((error) => {
+        console.warn('Failed to remove temporary Steam tab:', error);
+      });
+    }
+  }
+};
+
+const fetchSteamStoreUserDataWithBrowserSession = async () => {
+  let tab;
+
+  try {
+    tab = await createTab({
+      url: 'https://store.steampowered.com/',
+      active: false,
+    });
+    await waitForTabComplete(tab.id);
+
+    const [result] = await executeScript(
+      tab.id,
+      async (delayMs) => {
+        await new Promise((resolve) => {
+          setTimeout(resolve, delayMs);
+        });
+
+        const isLoggedIn =
+          Boolean(document.querySelector('#global_actions .playerAvatar')) ||
+          Boolean(document.querySelector('#account_pulldown')) ||
+          Boolean(
+            document.querySelector('a.global_action_link[href*="logout"]'),
+          );
+
+        try {
+          const response = await fetch('/dynamicstore/userdata/', {
+            credentials: 'include',
+            headers: {
+              accept: 'application/json',
+            },
+          });
+          const text = await response.text();
+          let data = null;
+
+          try {
+            data = JSON.parse(text);
+          } catch (error) {
+            data = null;
+          }
+
+          return {
+            isLoggedIn,
+            ok: response.ok,
+            status: response.status,
+            data,
+          };
+        } catch (error) {
+          return {
+            isLoggedIn,
+            ok: false,
+            status: 0,
+            error: error.message,
+          };
+        }
+      },
+      [1200],
+    );
+
+    const payload = result?.result || {};
+    const normalized = steamStoreHelper?.extractStoreUserData(payload.data) || {
+      ownedGames: [],
+      wishlist: [],
+    };
+
+    return {
+      status: payload.status || 0,
+      ok: Boolean(payload.ok),
+      isLoggedIn: Boolean(payload.isLoggedIn),
+      ownedGames: normalized.ownedGames,
+      wishlist: normalized.wishlist,
+      error: payload.error || '',
+    };
+  } finally {
+    if (tab?.id) {
+      removeTab(tab.id).catch((error) => {
+        console.warn('Failed to remove temporary Steam Store tab:', error);
+      });
+    }
+  }
+};
+
 /* Variables declaration */
 let arr = [];
 let settings;
@@ -85,6 +315,13 @@ let totalWishlistGAcnt = 0;
 let useWishlistPriorityForMainBG = false;
 let currPoints = 0;
 const backgroundSettingsStore = globalThis.AutoJoinSettingsStore;
+const backgroundI18n = globalThis.AutoJoinI18n;
+const steamStoreHelper = globalThis.AutoJoinSteamStore;
+
+const bgT = (key, params = {}) => {
+  backgroundI18n?.setLocale(settings?.Language || 'auto');
+  return backgroundI18n ? backgroundI18n.t(key, params) : key;
+};
 
 const steamKeyRedeemResponses = {
   0: 'NoDetail',
@@ -231,14 +468,14 @@ const findAndRedeemKeys = async (wonPage) => {
             // Check response (success needs to be exactly 1, no more, no less)
             if (data.success === 1) {
               console.debug(
-                'Steam Code for ' +
-                  redeemedGames +
-                  ' was redeemed successfully!',
+                bgT('background.keyRedeem.success', {
+                  games: redeemedGames,
+                }),
               );
               notifySteamCodeResponse(
-                'Steam Code for ' +
-                  redeemedGames +
-                  ' was redeemed successfully!',
+                bgT('background.keyRedeem.success', {
+                  games: redeemedGames,
+                }),
               );
 
               // Mark as received
@@ -261,44 +498,44 @@ const findAndRedeemKeys = async (wonPage) => {
               // In case there is an error but the names of the games failed to be redeemed are also returned
               if (redeemedGames != '') {
                 console.warn(
-                  '[!] Steam Code: ' +
-                    key +
-                    ' for ' +
-                    redeemedGames +
-                    ' was not redeemed! Error: ' +
-                    steamKeyRedeemResponses[data.purchase_result_details],
+                  bgT('background.keyRedeem.failureWithGame', {
+                    key,
+                    games: redeemedGames,
+                    reason:
+                      steamKeyRedeemResponses[data.purchase_result_details],
+                  }),
                 );
                 notifySteamCodeResponse(
-                  'Steam Code: ' +
-                    key +
-                    ' for ' +
-                    redeemedGames +
-                    ' was not redeemed!\nError: ' +
-                    steamKeyRedeemResponses[data.purchase_result_details],
+                  bgT('background.keyRedeem.failureWithGame', {
+                    key,
+                    games: redeemedGames,
+                    reason:
+                      steamKeyRedeemResponses[data.purchase_result_details],
+                  }),
                 );
               } else {
                 console.warn(
-                  '[!] Steam Code: ' +
-                    key +
-                    ' was not redeemed! Error: ' +
-                    steamKeyRedeemResponses[data.purchase_result_details],
+                  bgT('background.keyRedeem.failure', {
+                    key,
+                    reason:
+                      steamKeyRedeemResponses[data.purchase_result_details],
+                  }),
                 );
                 notifySteamCodeResponse(
-                  'Steam Code: ' +
-                    key +
-                    ' was not redeemed!\nError: ' +
-                    steamKeyRedeemResponses[data.purchase_result_details],
+                  bgT('background.keyRedeem.failure', {
+                    key,
+                    reason:
+                      steamKeyRedeemResponses[data.purchase_result_details],
+                  }),
                 );
               }
             } else {
               console.warn(
-                '[!] Steam Code: ' +
-                  key +
-                  ' was not redeemed! Unknown Error. Debug: ' +
-                  latestSteamKeyRedeemResponse,
+                bgT('background.keyRedeem.unknown', { key }),
+                latestSteamKeyRedeemResponse,
               );
               notifySteamCodeResponse(
-                'Steam Code: ' + key + ' was not redeemed!\nUnknown Error.',
+                bgT('background.keyRedeem.unknown', { key }),
               );
             }
           } else {
@@ -387,13 +624,13 @@ const notify = async (type, msg) => {
           items: ['won', 'wonName'],
           html: wonPageHtml,
         });
-        const name = parsed.wonName || 'a game';
+        const name = parsed.wonName || bgT('background.winFallbackName');
 
         chrome.notifications.clear('won_notification', () => {
           const e = {
             type: 'basic',
-            title: 'AutoJoin',
-            message: `You won ${name}! Click here to open Steamgifts.com`,
+            title: bgT('background.title'),
+            message: bgT('background.notifications.win', { name }),
             iconUrl: chrome.runtime.getURL('./media/autologosteam.png'),
           };
           chrome.notifications.create('won_notification', e, () => {
@@ -426,8 +663,8 @@ const notify = async (type, msg) => {
       chrome.notifications.clear('points_notification', () => {
         const e = {
           type: 'basic',
-          title: 'AutoJoin',
-          message: `You have ${msg} points on Steamgifts.com. Time to spend!`,
+          title: bgT('background.title'),
+          message: bgT('background.notifications.points', { points: msg }),
           iconUrl: chrome.runtime.getURL('./media/autologosteam.png'),
         };
         chrome.notifications.create('points_notification', e);
@@ -437,7 +674,7 @@ const notify = async (type, msg) => {
       chrome.notifications.clear('key_notification', () => {
         const e = {
           type: 'basic',
-          title: 'AutoJoin',
+          title: bgT('background.title'),
           message: msg,
           iconUrl: chrome.runtime.getURL('./media/autologosteam.png'),
         };
@@ -861,8 +1098,8 @@ chrome.runtime.onInstalled.addListener((updateInfo) => {
       .then(() => {
         const e = {
           type: 'basic',
-          title: 'Steamgifts Guidelines Update',
-          message: 'Your settings were changed. Click here to read more...',
+          title: bgT('background.notifications.guidelinesTitle'),
+          message: bgT('background.notifications.guidelinesBody'),
           iconUrl: chrome.runtime.getURL('./media/autologosteam.png'),
         };
         chrome.notifications.create('1.5.0 announcement', e);
@@ -909,7 +1146,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       (result) => {
         if (result) {
           console.debug('We already have permission');
-          chrome.tabs.sendMessage(sender.tab.id, { granted: 'true' });
           sendResponse({ granted: 'true' });
         } else if (request.ask === 'true') {
           // We don't have permission, try to request them if ask is 'true'
@@ -920,10 +1156,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             (granted) => {
               if (granted) {
                 console.debug('Permission granted');
-                chrome.tabs.sendMessage(sender.tab.id, { granted: 'true' });
+                sendResponse({ granted: 'true' });
               } else {
                 console.debug('Permission declined');
-                chrome.tabs.sendMessage(sender.tab.id, { granted: 'false' });
+                sendResponse({ granted: 'false' });
               }
             },
           );
@@ -940,6 +1176,22 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     // Fetch in background script to bypass CORS (content scripts can't do it anymore)
     const url = request.url;
     fetchHelper(url).then(sendResponse);
+    return true;
+  }
+
+  if (request.task === 'fetchSteamStoreUserData') {
+    fetchSteamStoreUserDataWithBrowserSession()
+      .then(sendResponse)
+      .catch((error) => {
+        sendResponse({
+          status: 0,
+          ok: false,
+          isLoggedIn: false,
+          ownedGames: [],
+          wishlist: [],
+          error: error.message,
+        });
+      });
     return true;
   }
 });
@@ -990,6 +1242,23 @@ const fetchHelper = async (url) => {
   if (res.ok) {
     const text = await res.text();
     result.text = text;
+
+    if (looksLikeSteamSessionBlocked(url, text)) {
+      try {
+        console.info(
+          `Falling back to browser-session scrape for authenticated Steam page: ${url}`,
+        );
+        const fallback = await fetchPageWithBrowserSession(url);
+        if (fallback.text) {
+          return {
+            status: fallback.status,
+            text: fallback.text,
+          };
+        }
+      } catch (error) {
+        console.warn('Browser-session scrape fallback failed:', error);
+      }
+    }
   }
   return result;
 };
