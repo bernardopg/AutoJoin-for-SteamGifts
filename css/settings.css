@@ -2,6 +2,9 @@
 
 /* Modal Container */
 #settingsDiv {
+  --settings-accent: #5fbfff;
+  --settings-accent-soft: rgba(95, 191, 255, 0.12);
+  --settings-accent-border: rgba(95, 191, 255, 0.28);
   visibility: hidden;
   overflow-y: auto;
   color: var(--text-primary);
@@ -49,25 +52,68 @@
 
 /* Header */
 .settings-header {
-  background: var(--gradient-primary);
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(95, 191, 255, 0.24),
+      transparent 34%
+    ),
+    linear-gradient(135deg, #17314a 0%, #101826 52%, #080b12 100%);
   color: var(--white);
   padding: var(--spacing-3xl);
-  text-align: center;
+  text-align: left;
   border-radius: var(--radius-xl) var(--radius-xl) 0 0;
   position: relative;
+  overflow: hidden;
+}
+
+.settings-brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-lg);
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.settings-brand-mark {
+  width: 84px;
+  height: 84px;
+  flex: 0 0 auto;
+  padding: 11px;
+  border-radius: 24px;
+  background: rgba(10, 16, 26, 0.46);
+  border: 1px solid var(--settings-accent-border);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 16px 32px rgba(0, 0, 0, 0.2);
+}
+
+.settings-brand-logo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.25));
+}
+
+.settings-brand-copy {
+  min-width: 0;
+  text-align: left;
 }
 
 .settings-header h1 {
-  margin: 0 0 var(--spacing-sm) 0;
-  font-size: 1.75rem;
-  font-weight: 400;
-  letter-spacing: 0.5px;
+  margin: 0;
+  font-size: 1.9rem;
+  font-weight: 700;
+  letter-spacing: 0.2px;
 }
 
 .settings-header p {
-  margin: 0;
+  margin: var(--spacing-sm) 0 0;
   font-size: 0.95rem;
   color: rgba(255, 255, 255, 0.85);
+  max-width: 42ch;
 }
 
 /* Header Close Button */
@@ -142,14 +188,14 @@
 }
 
 .tab-button.active {
-  color: #667eea;
-  border-bottom-color: #667eea;
+  color: var(--settings-accent);
+  border-bottom-color: var(--settings-accent);
   background: var(--bg-primary);
   font-weight: 600;
 }
 
 .tab-button:focus-visible {
-  outline: 2px solid var(--primary-color);
+  outline: 2px solid var(--settings-accent);
   outline-offset: -2px;
 }
 
@@ -182,7 +228,7 @@
 }
 
 .settings-section h3 i {
-  color: #667eea;
+  color: var(--settings-accent);
   font-size: 0.9rem;
 }
 
@@ -316,7 +362,7 @@
 }
 
 .toggle input[type='checkbox']:checked + .toggle-track {
-  background: #667eea;
+  background: var(--settings-accent);
 }
 
 .toggle input[type='checkbox']:checked + .toggle-track::before {
@@ -324,7 +370,7 @@
 }
 
 .toggle input[type='checkbox']:focus-visible + .toggle-track {
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.35);
+  box-shadow: 0 0 0 3px var(--settings-accent-soft);
 }
 
 /* Number Group (label + input + optional suffix) */
@@ -366,7 +412,7 @@
 .volume-value {
   font-size: 0.8rem;
   font-weight: 600;
-  color: #667eea;
+  color: var(--settings-accent);
   min-width: 38px;
   text-align: right;
   flex-shrink: 0;
@@ -403,9 +449,9 @@
 }
 
 .radio-option:has(input[type='radio']:checked) {
-  border-color: #667eea;
-  background: rgba(102, 126, 234, 0.1);
-  color: #667eea;
+  border-color: var(--settings-accent);
+  background: var(--settings-accent-soft);
+  color: var(--settings-accent);
   font-weight: 600;
 }
 
@@ -574,6 +620,38 @@ input[type='range']::-moz-range-thumb {
   border-top: 1px solid var(--border-color);
 }
 
+.settings-status-message {
+  margin: var(--spacing-lg) var(--spacing-3xl) 0;
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-radius: var(--radius-lg);
+  border: 1px solid transparent;
+  font-size: 0.9rem;
+}
+
+.settings-status-message[data-tone='success'] {
+  background: rgba(16, 185, 129, 0.12);
+  border-color: rgba(16, 185, 129, 0.28);
+  color: #047857;
+}
+
+.settings-status-message[data-tone='warning'] {
+  background: rgba(245, 158, 11, 0.12);
+  border-color: rgba(245, 158, 11, 0.28);
+  color: #b45309;
+}
+
+.settings-status-message[data-tone='error'] {
+  background: rgba(220, 53, 69, 0.12);
+  border-color: rgba(220, 53, 69, 0.28);
+  color: #b91c1c;
+}
+
+.settings-status-message[data-tone='info'] {
+  background: rgba(59, 130, 246, 0.12);
+  border-color: rgba(59, 130, 246, 0.28);
+  color: #1d4ed8;
+}
+
 .btn-primary,
 .btn-secondary {
   display: inline-flex;
@@ -592,14 +670,14 @@ input[type='range']::-moz-range-thumb {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #2f6ff0 0%, #5fbfff 100%);
   color: var(--white);
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 10px 24px rgba(63, 135, 255, 0.24);
 }
 
 .btn-primary:hover {
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 14px 28px rgba(63, 135, 255, 0.32);
 }
 
 .btn-primary:active {
@@ -607,7 +685,7 @@ input[type='range']::-moz-range-thumb {
 }
 
 .btn-primary:focus-visible {
-  outline: 2px solid #667eea;
+  outline: 2px solid var(--settings-accent);
   outline-offset: 2px;
 }
 
@@ -619,13 +697,27 @@ input[type='range']::-moz-range-thumb {
 
 .btn-secondary:hover {
   background: var(--gray-100);
-  border-color: var(--gray-400);
+  border-color: var(--settings-accent-border);
   transform: translateY(-1px);
 }
 
 .btn-secondary:focus-visible {
-  outline: 2px solid var(--primary-color);
+  outline: 2px solid var(--settings-accent);
   outline-offset: 2px;
+}
+
+.btn-primary:disabled,
+.btn-secondary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.btn-primary:disabled:hover,
+.btn-secondary:disabled:hover {
+  transform: none;
+  box-shadow: none;
 }
 
 /* Modal Backdrop */
@@ -665,6 +757,34 @@ input[type='range']::-moz-range-thumb {
 
 /* Responsive */
 @media (max-width: 600px) {
+  .settings-header {
+    padding: var(--spacing-2xl) var(--spacing-lg);
+  }
+
+  .settings-brand {
+    flex-direction: column;
+    gap: var(--spacing-md);
+    padding-right: 0;
+  }
+
+  .settings-brand-mark {
+    width: 68px;
+    height: 68px;
+    padding: 10px;
+  }
+
+  .settings-brand-copy {
+    text-align: center;
+  }
+
+  .settings-header h1 {
+    font-size: 1.45rem;
+  }
+
+  .settings-header p {
+    max-width: none;
+  }
+
   .settings-grid {
     grid-template-columns: 1fr;
   }

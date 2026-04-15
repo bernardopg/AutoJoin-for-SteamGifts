@@ -66,7 +66,7 @@
 - **Service Worker**: Execução em segundo plano otimizada
 - **Offscreen Documents**: Processamento HTML isolado e seguro
 - **Chrome Storage API**: Sincronização automática entre dispositivos
-- **i18n nativo**: Interface e configurações em Português e Inglês
+- **i18n nativo**: Interface e configurações em Português e Inglês; o locale da app usa `pt-BR` e os arquivos de extensão vivem em `_locales/pt_BR`
 - **Steam autenticada**: Biblioteca e wishlist sincronizadas pela sessão real do navegador
 
 #### 🛡️ Segurança e Privacidade
@@ -101,10 +101,10 @@ cd AutoJoin-for-SteamGifts
 npm install
 ```
 
-3. **Execute os testes**:
+3. **Valide a base local**:
 
 ```bash
-npm run check
+npm run verify
 ```
 
 4. **Carregue no navegador**:
@@ -137,11 +137,24 @@ npm run check
 
 | Configuração | Descrição | Padrão |
 |-------------|-----------|--------|
-| **Pontos Mínimos** | Reserva mínima de pontos | 50 |
-| **Nível Mínimo** | Nível mínimo para participar | 0 |
+| **Botão AutoJoin** | Exibe o botão principal da extensão | Desativado |
+| **Auto Description** | Abre descrições automaticamente ao entrar | Ativado |
+| **Auto Comment** | Publica comentário automático após entrar | Desativado |
+| **Pontos preservados** | Reserva mínima antes do AutoJoin | 0 |
+| **Repetir na página** | Reexecuta o fluxo na página atual | Desativado |
+| **Horas entre repetições** | Intervalo padrão do loop em horas | 5 |
+| **Páginas carregadas** | Quantidade padrão de páginas analisadas | 3 |
+| **Scroll infinito** | Carrega mais páginas ao rolar | Ativado |
+| **Mostrar pontos** | Exibe o indicador flutuante de pontos | Ativado |
+| **Mostrar botões** | Exibe botões de entrar/sair nos sorteios | Ativado |
+| **Priorizar wishlist** | Dá prioridade a giveaways da wishlist | Ativado |
 | **Filtro DLC** | Ignorar conteúdos DLC | Desativado |
-| **Tema Escuro** | Interface com tema escuro | Ativado |
-| **Notificações** | Alertas de vitórias | Ativado |
+| **Ocultar entrados** | Esconde giveaways já participados | Desativado |
+| **Tema Escuro** | Interface com tema escuro | Desativado |
+| **Som de notificações** | Tocar áudio em alertas de vitória | Ativado |
+| **Auto Redeem Key** | Resgata chaves automaticamente | Desativado |
+
+Os defaults completos vivem em [`js/core/settings-store.js`](js/core/settings-store.js).
 
 #### 🎯 Filtros Avançados
 
@@ -159,7 +172,7 @@ npm run check
 
 ### ⚙️ Configuração Avançada
 
-#### 🔧 Variáveis de Ambiente
+#### 🔧 Configurações Avançadas
 
 ```javascript
 // Configurações avançadas (chrome.storage.sync)
@@ -195,19 +208,21 @@ const advancedConfig = {
 # Instalar dependências
 npm install
 
-# Verificação de código
-npm run lint          # ESLint
-npm run format        # Prettier
-npm run check         # Lint + Format
+# Qualidade de código
+npm run lint            # ESLint
+npm run format          # Prettier (check)
+npm run check           # lint + format
 
-# Testes
-npm test              # Testes unitários
-npm run test:e2e      # Testes de integração (em breve)
+# Validações automatizadas
+npm run metadata:check  # versão/README/repositório
+npm run i18n:check      # paridade de traduções
+npm test                # testes unitários
+npm run verify          # metadata + i18n + testes
 
 # Build e distribuição
-npm run build         # Build para produção
-npm run package       # Criar arquivo .zip
-npm run release       # Build + Package + Tag
+npm run build           # valida e monta build/extension
+npm run package         # gera dist/AutoJoin-for-SteamGifts-vX.Y.Z.zip
+npm run release         # alias local para package
 ```
 
 ### 🏗️ Arquitetura
@@ -422,10 +437,10 @@ cd AutoJoin-for-SteamGifts
 npm install
 ```
 
-3. **Run tests**:
+3. **Validate the local workspace**:
 
 ```bash
-npm run check
+npm run verify
 ```
 
 4. **Load in browser**:
@@ -458,11 +473,47 @@ npm run check
 
 | Setting | Description | Default |
 |---------|-------------|---------|
-| **Minimum Points** | Minimum point reserve | 50 |
-| **Minimum Level** | Minimum level to participate | 0 |
+| **AutoJoin Button** | Shows the main extension button | Disabled |
+| **Auto Description** | Opens descriptions automatically when joining | Enabled |
+| **Auto Comment** | Posts an automatic comment after joining | Disabled |
+| **Preserved Points** | Minimum reserve before AutoJoin | 0 |
+| **Repeat on Page** | Re-runs the flow on the current page | Disabled |
+| **Repeat Interval** | Default loop interval in hours | 5 |
+| **Pages to Load** | Default number of pages scanned | 3 |
+| **Infinite Scrolling** | Loads more pages while scrolling | Enabled |
+| **Show Points** | Shows the floating points badge | Enabled |
+| **Show Buttons** | Shows join/leave buttons on giveaways | Enabled |
+| **Wishlist Priority** | Prioritizes wishlist giveaways | Enabled |
 | **DLC Filter** | Ignore DLC content | Disabled |
-| **Dark Theme** | Dark theme interface | Enabled |
-| **Notifications** | Victory alerts | Enabled |
+| **Hide Entered** | Hides already-entered giveaways | Disabled |
+| **Dark Theme** | Dark theme interface | Disabled |
+| **Notification Sound** | Play audio for win alerts | Enabled |
+| **Auto Redeem Key** | Redeems keys automatically | Disabled |
+
+The full canonical defaults live in [`js/core/settings-store.js`](js/core/settings-store.js).
+
+### 🛠️ Development Scripts
+
+```bash
+# Install dependencies
+npm install
+
+# Code quality
+npm run lint            # ESLint
+npm run format          # Prettier (check)
+npm run check           # lint + format
+
+# Automated validation
+npm run metadata:check  # version/README/repository
+npm run i18n:check      # translation parity
+npm test                # unit tests
+npm run verify          # metadata + i18n + tests
+
+# Build and distribution
+npm run build           # validate and stage build/extension
+npm run package         # generate dist/AutoJoin-for-SteamGifts-vX.Y.Z.zip
+npm run release         # local alias for package
+```
 
 ### 🔒 Security & Privacy
 
@@ -496,7 +547,7 @@ npm run check
 - The extension uses `tabs` and `scripting` to open a temporary inactive Steam Store tab and read `dynamicstore/userdata` with the browser's authenticated session.
 - This reduces common cookie and same-site failures from direct service-worker `fetch` requests.
 - The optional `steamcommunity.com/profiles/*` permission remains as a fallback for public profile data.
-- UI and settings strings are centralized in `js/core/i18n.js`, with initial support for `en` and `pt-BR`.
+- UI and settings strings are centralized in `js/core/i18n.js`, with initial support for `en` and `pt-BR`; the app locale stays `pt-BR` while extension message files live under `_locales/pt_BR`.
 
 ### 🤝 Contributing
 
@@ -524,11 +575,9 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 
 - [📋 Contributing Guide](CONTRIBUTING.md) - Como contribuir para o projeto
 - [🔒 Security Policy](SECURITY.md) - Política de segurança e reporte de vulnerabilidades
-- [🤖 Agents Guide](AGENTS.md) - Guia para agentes/assistentes automatizados
+- [📘 Project Site](docs/index.md) - Página inicial da documentação do projeto
+- [🗺️ Technical Backlog](TO-DO.md) - Roadmap priorizado de melhorias
 - [🚀 Warp Development](WARP.md) - Manual específico para warp.dev
-- [📚 API Documentation](docs/API.md) - Documentação técnica da API
-- [🎨 Design System](docs/DESIGN.md) - Sistema de design e componentes
-- [🔧 Development Setup](docs/DEVELOPMENT.md) - Configuração de ambiente de desenvolvimento
 
 ## 🏆 Reconhecimentos
 

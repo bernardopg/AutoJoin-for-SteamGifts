@@ -14,9 +14,7 @@ class PageEnhancer {
     return this.i18n ? this.i18n.t(key, params) : key;
   }
 
-  /**
-   * Initialize page enhancements
-   */
+  /// Initialize all page enhancements
   async initialize() {
     if (this.initialized) return;
 
@@ -34,9 +32,7 @@ class PageEnhancer {
     console.debug('Page enhancements initialized');
   }
 
-  /**
-   * Load settings from storage
-   */
+  /// Load settings from storage with defaults
   async loadSettings() {
     const defaultSettings = {
       NightTheme: false,
@@ -57,9 +53,7 @@ class PageEnhancer {
     }
   }
 
-  /**
-   * Ensure a Settings button exists in the SteamGifts navbar and wire it up
-   */
+  /// Ensure a Settings button exists in the SteamGifts navbar and wire it up
   setupSettingsButton() {
     const navbar = document.querySelector('.nav__left-container');
     if (!navbar) return;
@@ -117,9 +111,7 @@ class PageEnhancer {
     } catch (e) {}
   }
 
-  /**
-   * Apply theme based on settings
-   */
+  /// Apply theme based on settings
   applyTheme() {
     if (this.settings.NightTheme) {
       document.body.classList.add('night-theme');
@@ -130,9 +122,7 @@ class PageEnhancer {
     }
   }
 
-  /**
-   * Setup navigation bar pinning functionality
-   */
+  /// Setup navbar pinning functionality
   setupNavigationPin() {
     const navbar = document.querySelector('.nav__left-container');
     if (!navbar) return;

@@ -27,261 +27,128 @@ let steamAppData = {};
 let steamPackageData = {};
 let ownedSteamApps = [];
 let wishList = [];
-
 let pageNumber;
 let lastPage;
 let loadingNextPage;
 let pageLink;
 let thirdPart;
+const autoentryState = {};
+Object.defineProperties(autoentryState, {
+  settings: {
+    get: () => settings,
+    set: (value) => {
+      settings = value;
+    },
+  },
+  token: {
+    get: () => token,
+    set: (value) => {
+      token = value;
+    },
+  },
+  steamAppData: {
+    get: () => steamAppData,
+    set: (value) => {
+      steamAppData = value;
+    },
+  },
+  steamPackageData: {
+    get: () => steamPackageData,
+    set: (value) => {
+      steamPackageData = value;
+    },
+  },
+  ownedSteamApps: {
+    get: () => ownedSteamApps,
+    set: (value) => {
+      ownedSteamApps = value;
+    },
+  },
+  wishList: {
+    get: () => wishList,
+    set: (value) => {
+      wishList = value;
+    },
+  },
+  currentState: {
+    get: () => currentState,
+  },
+});
+
+const state = autoentryState;
+
+const autoentrySteamDataFactory = globalThis.AutoJoinAutoentrySteamData;
+const autoentryGiveawayFactory = globalThis.AutoJoinAutoentryGiveaway;
+const autoentrySteamData = autoentrySteamDataFactory?.createSteamDataHelpers({
+  state: autoentryState,
+  t,
+  steamCommunityHelper,
+  chrome,
+  document,
+  refreshSteamData,
+});
+const autoentryGiveaway = autoentryGiveawayFactory?.createGiveawayHelpers({
+  state: autoentryState,
+  t,
+  chrome,
+  document,
+  thisVersion,
+});
 
 function shouldLoadSteamData() {
-  return (
-    settings.HideDlc ||
-    settings.HideNonTradingCards ||
-    settings.HideGroups ||
-    settings.PriorityWishlist
-  );
+  return autoentrySteamData.shouldLoadSteamData();
 }
 
 function normalizeSteamProfileUrl(url) {
-  if (!url) {
-    return '';
-  }
-
-  return url.endsWith('/') ? url : `${url}/`;
+  return autoentrySteamData.normalizeSteamProfileUrl(url);
 }
 
 function getSteamCacheKeys(profileUrl, steamProfileID) {
-  return [
-    ...new Set(
-      [steamProfileID, normalizeSteamProfileUrl(profileUrl)].filter(Boolean),
-    ),
-  ];
+  return autoentrySteamData.getSteamCacheKeys(profileUrl, steamProfileID);
 }
 
 function applyCachedSteamData(storageData, cacheKeys) {
-  for (const cacheKey of cacheKeys) {
-    if (!storageData[cacheKey]) {
-      continue;
-    }
-
-    ownedSteamApps = storageData[cacheKey].ownedGames || [];
-    wishList = storageData[cacheKey].wishlist || [];
-    console.debug('Owned games: ', ownedSteamApps);
-    console.debug('Wishlist: ', wishList);
-    return true;
-  }
-
-  return false;
+  return autoentrySteamData.applyCachedSteamData(storageData, cacheKeys);
 }
 
 function saveSteamData(cacheKeys) {
-  const steamUserData = {
-    ownedGames: [...new Set(ownedSteamApps)],
-    wishlist: [...new Set(wishList)],
-  };
-  const payload = {};
-
-  cacheKeys.forEach((cacheKey) => {
-    payload[cacheKey] = steamUserData;
-  });
-
-  chrome.storage.local.set(payload);
+  return autoentrySteamData.saveSteamData(cacheKeys);
 }
 
 function updateSteamDataBanner(steamDataIssueKey, retryContext = {}) {
-  if (!steamDataIssueKey) {
-    const existingBanner = document.getElementById('aj-permission-banner');
-    if (existingBanner) existingBanner.style.display = 'none';
-    return;
-  }
+  return autoentrySteamData.updateSteamDataBanner(
+    steamDataIssueKey,
+    retryContext,
+  );
+}
 
-  const featuredSummary = document.querySelector('.featured__summary');
-  const anchor = featuredSummary || document.body;
-  let banner = document.getElementById('aj-permission-banner');
+function resolveSteamProfileId(profileUrl) {
+  return autoentrySteamData.resolveSteamProfileId(profileUrl);
+}
 
-  if (!banner) {
-    banner = document.createElement('div');
-    banner.id = 'aj-permission-banner';
-    banner.className = 'aj-permission-banner';
-
-    const titleEl = document.createElement('strong');
-    titleEl.textContent = t('content.permissionBanner.title');
-
-    const bodyEl = document.createTextNode(
-      ` ${t(
-        steamDataIssueKey === 'content.notifications.steamLoginRequired'
-          ? 'content.permissionBanner.loginBody'
-          : 'content.permissionBanner.body',
-      )} `,
-    );
-
-    const retryLink = document.createElement('a');
-    retryLink.href = '#';
-    retryLink.id = 'aj-perm-retry';
-    retryLink.textContent = t('content.permissionBanner.retry');
-    banner.append(titleEl, bodyEl, retryLink, '.');
-
-    if (featuredSummary) {
-      anchor.prepend(banner);
-    } else {
-      anchor.appendChild(banner);
-    }
-
-    const retry = banner.querySelector('#aj-perm-retry');
-    retry?.addEventListener('click', (e) => {
-      e.preventDefault();
-      refreshSteamData(retryContext);
-    });
-  }
-
-  banner.style.display = 'block';
+function fetchCommunitySteamData(steamProfileID) {
+  return autoentrySteamData.fetchCommunitySteamData(steamProfileID);
 }
 
 function modifyPageDOM(pageDOM, timeLoaded) {
-  pageDOM.querySelectorAll('.giveaway__row-outer-wrap').forEach((giveaway) => {
-    const giveawayInnerWrap = giveaway.querySelector(
-      '.giveaway__row-inner-wrap',
-    );
+  return autoentryGiveaway.modifyPageDOM(pageDOM, timeLoaded);
+}
 
-    const levelEl = giveaway.querySelector(
-      '.giveaway__column--contributor-level',
-    );
-    let level;
-    if (levelEl === null) {
-      level = 0;
-    } else {
-      level = parseInt(levelEl.textContent.match(/\d+/)[0], 10);
-    }
-    if (level < settings.HideLevelsBelow) giveaway.remove();
-    if (level > settings.HideLevelsAbove) giveaway.remove();
+function loadDescription(giveaway) {
+  return autoentryGiveaway.loadDescription(giveaway);
+}
 
-    if (settings.HideCostsBelow > 0) {
-      const copiesAndCostElements = giveaway.querySelectorAll(
-        '.giveaway__heading__thin',
-      );
-      let costElement;
-      if (copiesAndCostElements.length > 1) {
-        costElement = copiesAndCostElements[1];
-      } else {
-        costElement = copiesAndCostElements[0];
-      }
-      const cost = Number.parseInt(costElement.textContent.match(/\d+/)[0], 10);
-      if (cost < settings.HideCostsBelow) giveaway.remove();
-    }
-    if (settings.HideCostsAbove < 50) {
-      const copiesAndCostElements = giveaway.querySelectorAll(
-        '.giveaway__heading__thin',
-      );
-      let costElement;
-      if (copiesAndCostElements.length > 1) {
-        costElement = copiesAndCostElements[1];
-      } else {
-        costElement = copiesAndCostElements[0];
-      }
-      const cost = Number.parseInt(costElement.textContent.match(/\d+/)[0], 10);
-      if (cost > settings.HideCostsAbove) giveaway.remove();
-    }
+function priorityGiveaway(giveaway, steamGroup, regionLocked, whitelist) {
+  return autoentryGiveaway.priorityGiveaway(
+    giveaway,
+    steamGroup,
+    regionLocked,
+    whitelist,
+  );
+}
 
-    if (giveawayInnerWrap.classList.contains('is-faded')) {
-      if (settings.HideEntered) {
-        giveaway.remove();
-        return;
-      } else if (settings.ShowButtons) {
-        const leaveBtn = document.createElement('input');
-        leaveBtn.type = 'button';
-        leaveBtn.value = t('content.leave');
-        leaveBtn.className = 'btnSingle';
-        leaveBtn.setAttribute('walkState', 'leave');
-        giveawayInnerWrap.appendChild(leaveBtn);
-      }
-    } else if (settings.ShowButtons) {
-      const joinBtn = document.createElement('input');
-      joinBtn.type = 'button';
-      joinBtn.className = 'btnSingle';
-      if (
-        giveawayInnerWrap.querySelector(
-          '.giveaway__column--contributor-level--negative',
-        )
-      ) {
-        joinBtn.value = t('content.needHigherLevel');
-        joinBtn.setAttribute('walkState', 'no-level');
-        joinBtn.disabled = true;
-      } else {
-        const pointsAndNumberOfCopies = giveaway.querySelectorAll(
-          '.giveaway__heading__thin',
-        );
-        const pointsNeededRaw =
-          pointsAndNumberOfCopies[
-            pointsAndNumberOfCopies.length - 1
-          ].textContent.match(/(\d+)P/);
-        const pointsNeeded = pointsNeededRaw[pointsNeededRaw.length - 1];
-        if (parseInt(pointsNeeded, 10) > currentState.points) {
-          joinBtn.value = t('content.notEnoughPoints');
-          joinBtn.setAttribute('walkState', 'no-points');
-          joinBtn.disabled = true;
-        } else {
-          joinBtn.value = t('content.join');
-          joinBtn.setAttribute('walkState', 'join');
-        }
-      }
-      giveawayInnerWrap.appendChild(joinBtn);
-    }
-
-    const giveawayHideEl = giveaway.querySelector('.giveaway__hide');
-    if (giveawayHideEl) giveawayHideEl.dataset.popup = '';
-    if (
-      settings.HideDlc ||
-      settings.HideNonTradingCards ||
-      settings.HideGroups
-    ) {
-      checkAppData(giveaway, timeLoaded);
-    }
-    if (settings.ShowChance) {
-      const oddsDiv = document.createElement('div');
-      oddsDiv.style.cursor = 'help';
-      oddsDiv.title = t('content.winOddsTitle');
-      const oddsIcon = document.createElement('i');
-      oddsIcon.className = 'fa fa-trophy';
-      const oddsText = document.createTextNode(
-        ` ${calculateWinChance(giveaway, timeLoaded)}%`,
-      );
-      oddsDiv.appendChild(oddsIcon);
-      oddsDiv.appendChild(oddsText);
-      giveaway
-        .querySelector('.giveaway__columns')
-        .insertBefore(
-          oddsDiv,
-          giveaway.querySelector('.giveaway__columns').firstChild,
-        );
-    }
-    const descriptionDiv = document.createElement('div');
-    descriptionDiv.className = 'description descriptionLoad';
-    const descriptionA = document.createElement('a');
-    const descriptionIcon = document.createElement('i');
-    descriptionIcon.className = 'fa fa-file-text descriptionIcon';
-    const descriptionText = document.createElement('span');
-    descriptionText.textContent = t('content.showDescription');
-    descriptionA.appendChild(descriptionIcon);
-    descriptionA.appendChild(document.createTextNode(' '));
-    descriptionA.appendChild(descriptionText);
-    descriptionDiv.appendChild(descriptionA);
-    giveaway.querySelector('.giveaway__links').appendChild(descriptionDiv);
-    if (
-      document.querySelector('.pinned-giveaways__inner-wrap') &&
-      document.querySelector('.pinned-giveaways__inner-wrap').children
-        .length === 0
-    ) {
-      document.querySelector('.pinned-giveaways__inner-wrap').remove();
-    }
-    const timeRemaining =
-      giveaway.querySelector('.fa-clock-o + span').dataset.timestamp -
-      timeLoaded;
-    if (settings.PreciseTime) {
-      giveaway.querySelector('.fa-clock-o + span').textContent =
-        secToTime(timeRemaining);
-    }
-  });
+function ignoreGiveaway(steamGroup, whitelist) {
+  return autoentryGiveaway.ignoreGiveaway(steamGroup, whitelist);
 }
 
 if (document.readyState === 'loading') {
@@ -297,7 +164,7 @@ async function getSettings() {
   }
 
   try {
-    settings = await autoJoinSettingsStore.load({
+    state.settings = await autoJoinSettingsStore.load({
       lastLaunchedVersion: thisVersion,
     });
     autoJoinI18n?.setLocale(settings.Language);
@@ -322,11 +189,11 @@ function loadCache() {
 
   chrome.storage.local.get(async (data) => {
     if (typeof data.Packages != 'undefined') {
-      steamPackageData = data.Packages;
+      state.steamPackageData = data.Packages;
       console.debug('Steam packages cached: ', steamPackageData);
     }
     if (typeof data.Apps != 'undefined') {
-      steamAppData = data.Apps;
+      state.steamAppData = data.Apps;
       console.debug('Steam apps cached: ', steamAppData);
     }
 
@@ -360,88 +227,6 @@ function loadCache() {
   });
 }
 
-async function resolveSteamProfileId(profileUrl) {
-  if (!profileUrl) {
-    return '';
-  }
-
-  const response = await chrome.runtime.sendMessage({
-    task: 'fetch',
-    url: profileUrl,
-  });
-
-  if (response.status !== 200) {
-    return '';
-  }
-
-  return (
-    steamCommunityHelper?.extractSteamIdFromProfileHtml(response.text) || ''
-  );
-}
-
-async function fetchCommunitySteamData(steamProfileID) {
-  const requiresSteamLogin = (html) =>
-    /<title>\s*(Sign In|Wishlist - Error)\s*<\/title>/i.test(html);
-  let steamDataIssueKey = null;
-
-  let url = `https://steamcommunity.com/profiles/${steamProfileID}/games?tab=all`;
-  let response = await chrome.runtime.sendMessage({ task: 'fetch', url });
-  if (response.status === 200) {
-    if (requiresSteamLogin(response.text)) {
-      steamDataIssueKey = 'content.notifications.steamLoginRequired';
-      console.info(t(steamDataIssueKey));
-    } else {
-      const patterns = [
-        /rgGames\s*=\s*(\[.*?\])/s,
-        /var\s+rgGames\s*=\s*(\[.*?\])/s,
-        /RG\.games\s*=\s*(\[.*?\])/s,
-      ];
-      let jsonArrayStr = null;
-      for (const pat of patterns) {
-        const match = pat.exec(response.text);
-        if (match && match[1]) {
-          jsonArrayStr = match[1];
-          break;
-        }
-      }
-      if (jsonArrayStr) {
-        try {
-          const jsonResponse = JSON.parse(jsonArrayStr);
-          ownedSteamApps = jsonResponse.map((g) => g.appid).filter(Boolean);
-        } catch (error) {
-          console.info('Failed to parse owned games JSON');
-        }
-      } else {
-        steamDataIssueKey = 'content.notifications.ownedGamesParseFailed';
-        console.info(t(steamDataIssueKey));
-      }
-    }
-  } else if (response.status === 403) {
-    console.warn(t('content.notifications.skipOwnedGames'));
-    steamDataIssueKey ||= 'content.notifications.skipOwnedGames';
-  }
-
-  url = `https://steamcommunity.com/profiles/${steamProfileID}/wishlist`;
-  response = await chrome.runtime.sendMessage({ task: 'fetch', url });
-  if (response.status === 200) {
-    if (requiresSteamLogin(response.text)) {
-      steamDataIssueKey ||= 'content.notifications.steamLoginRequired';
-    } else {
-      const regex = /steamcommunity\.com\/app\/(\d+)/g;
-      let match;
-      wishList = [];
-      while ((match = regex.exec(response.text)) != null) {
-        wishList.push(parseInt(match[1], 10));
-      }
-    }
-  } else if (response.status === 403) {
-    console.warn(t('content.notifications.skipWishlist'));
-    steamDataIssueKey ||= 'content.notifications.skipWishlist';
-  }
-
-  return steamDataIssueKey;
-}
-
 async function refreshSteamData({ profileUrl = '', steamProfileID = '' } = {}) {
   try {
     let steamDataIssueKey = null;
@@ -450,8 +235,8 @@ async function refreshSteamData({ profileUrl = '', steamProfileID = '' } = {}) {
       task: 'fetchSteamStoreUserData',
     });
     if (storeResponse?.status === 200 && storeResponse.isLoggedIn) {
-      ownedSteamApps = storeResponse.ownedGames || [];
-      wishList = storeResponse.wishlist || [];
+      state.ownedSteamApps = storeResponse.ownedGames || [];
+      state.wishList = storeResponse.wishlist || [];
       saveSteamData(getSteamCacheKeys(profileUrl, steamProfileID));
 
       console.debug('Steam data updated:', {
@@ -511,7 +296,7 @@ async function refreshSteamData({ profileUrl = '', steamProfileID = '' } = {}) {
 }
 
 function onPageLoad() {
-  token = document.querySelector('input[name="xsrf_token"]')?.value;
+  state.token = document.querySelector('input[name="xsrf_token"]')?.value;
   if (!token) {
     console.error('Could not find CSRF token');
     if (window.AutoJoinUtils) {
@@ -757,6 +542,7 @@ function onPageLoad() {
     if (lastPage) {
       return;
     }
+
     const timeLoaded = Math.round(Date.now() / 1000); // when the page was loaded (in seconds)
     if (loadingNextPage === false) {
       loadingNextPage = true;
@@ -1320,422 +1106,4 @@ function onPageLoad() {
       fireAutoJoin();
     }, 3600000 * settings.RepeatHours);
   }
-}
-
-function calculateWinChance(giveaway, timeLoaded) {
-  const timeLeft =
-    parseInt(
-      giveaway.querySelector('.fa.fa-clock-o + span').dataset.timestamp,
-      10,
-    ) - timeLoaded; // time left in seconds
-  const timePassed =
-    timeLoaded -
-    parseInt(
-      giveaway
-        .querySelector('.giveaway__username')
-        .parentElement.querySelector('span').dataset.timestamp,
-      10,
-    ); // time passed in seconds
-  const numberOfEntries = parseInt(
-    giveaway
-      .querySelector('.giveaway__links a[href$="/entries"]')
-      ?.textContent.replace(',', ''),
-    10,
-  );
-  let numberOfCopies = 1;
-  if (
-    giveaway
-      .querySelector('.giveaway__heading__thin')
-      .textContent.replace(',', '')
-      .match(/\(\d+ Copies\)/)
-  ) {
-    // if more than one copy there's a text field "(N Copies)"
-    numberOfCopies = parseInt(
-      giveaway
-        .querySelector('.giveaway__heading__thin')
-        .textContent.replace(',', '')
-        .match(/\d+/)[0],
-      10,
-    );
-  }
-  const predictionOfEntries = (numberOfEntries / timePassed) * timeLeft; // calculate rate of entries and multiply on time left, probably not very accurate as we assume linear rate
-  let chance =
-    (1 / (numberOfEntries + 1 + predictionOfEntries)) * 100 * numberOfCopies;
-  if (chance > 100) chance = 100;
-  return chance.toFixed(3);
-}
-
-function loadDescription(giveaway) {
-  const giveawayToggleText = giveaway.querySelector('.description span');
-  const giveawayURL = giveaway.querySelector('.giveaway__heading__name').href;
-  const giveawayDescriptionEl = giveaway.querySelector('.descriptionLoad');
-  giveawayToggleText.textContent = t('content.hideDescription');
-  giveawayDescriptionEl.className = 'description';
-  const giveawayDescriptionWrapper = document.createElement('div');
-  giveawayDescriptionWrapper.className = 'descriptionContent visible';
-  giveaway.appendChild(giveawayDescriptionWrapper);
-  const descriptionIcon = giveaway.querySelector('.descriptionIcon');
-  descriptionIcon.className = 'fa fa-refresh fa-spin descriptionIcon';
-
-  fetch(giveawayURL, { credentials: 'include' })
-    .then((resp) => resp.text())
-    .then((giveawayContent) => {
-      const parser = new DOMParser();
-      const giveawayDOM = parser.parseFromString(giveawayContent, 'text/html');
-      let giveawayDescription = giveawayDOM.querySelector(
-        '.page__description .markdown',
-      );
-      if (giveawayDescription == null) {
-        giveawayDescription = document.createTextNode(
-          t('content.noDescription'),
-        );
-      }
-      giveawayDescriptionWrapper.appendChild(giveawayDescription);
-      descriptionIcon.className = 'fa fa-file-text descriptionIcon';
-    });
-}
-
-async function checkAppData(giveaway, timeLoaded) {
-  // USING STEAMAPI
-  const appId = getSteamAppId(giveaway);
-
-  if (appId != false) {
-    const cacheData =
-      steamAppData[appId] != undefined ? steamAppData[appId] : undefined;
-    const lastUpdated = cacheData != undefined ? cacheData.lastUpdated : 0;
-
-    if (
-      cacheData != undefined &&
-      filterGiveaway(giveaway, appId, cacheData.type, cacheData.hasTradingCards)
-    ) {
-      removeGiveaway('app', appId, giveaway);
-    }
-    if (
-      cacheData == undefined ||
-      timeLoaded - lastUpdated >= 604800 ||
-      cacheData.version != thisVersion
-    ) {
-      const url = `https://store.steampowered.com/api/appdetails?appids=${appId}&filters=basic,categories`;
-      const response = await chrome.runtime.sendMessage({
-        task: 'fetch',
-        url,
-      });
-      if (response.status === 200) {
-        const jsonResponse = JSON.parse(response.text);
-        if (jsonResponse[appId].success == true) {
-          const tradingCards =
-            jsonResponse[appId].data.categories != undefined
-              ? jsonResponse[appId].data.categories.some(function (data) {
-                  return data.id == 29;
-                })
-              : false;
-          cacheSteamAppData(
-            appId,
-            jsonResponse[appId].data.type,
-            tradingCards,
-            lastUpdated,
-            timeLoaded,
-          );
-          if (
-            filterGiveaway(
-              giveaway,
-              appId,
-              jsonResponse[appId].data.type,
-              tradingCards,
-            )
-          ) {
-            removeGiveaway('app', appId, giveaway);
-          }
-        }
-      }
-    }
-  } else {
-    checkSteamPackageData(giveaway, timeLoaded);
-  }
-}
-
-async function checkSteamPackageData(giveaway, timeLoaded) {
-  const packageId = getSteamPackageId(giveaway);
-  if (packageId == false) {
-    return;
-  }
-  let appIds = [];
-  const cacheData =
-    steamPackageData[packageId] != undefined
-      ? steamPackageData[packageId]
-      : undefined;
-  const lastUpdated = cacheData != undefined ? cacheData.lastUpdated : 0;
-
-  if (cacheData != undefined) {
-    appIds = steamPackageData[packageId].appIds;
-    // console.log('Steam package already cached: ', steamPackageData[packageId]);
-    checkSteamPackageApps(appIds, packageId, giveaway, timeLoaded);
-  }
-  if (
-    cacheData == undefined ||
-    timeLoaded - lastUpdated >= 604800 ||
-    cacheData.version != thisVersion
-  ) {
-    const url = `https://store.steampowered.com/api/packagedetails?packageids=${packageId}`;
-    const response = await chrome.runtime.sendMessage({
-      task: 'fetch',
-      url,
-    });
-    if (response.status === 200) {
-      const jsonResponse = JSON.parse(response.text);
-      if (jsonResponse[packageId].success == true) {
-        const jsonIds = jsonResponse[packageId].data.apps;
-        for (
-          let i = 0, numIds = jsonIds != null ? jsonIds.length : 0;
-          i < numIds;
-          i++
-        ) {
-          appIds[i] = jsonIds[i].id;
-        }
-        cacheSteamPackageData(packageId, appIds, lastUpdated, timeLoaded);
-      }
-      checkSteamPackageApps(appIds, packageId, giveaway, timeLoaded);
-    }
-  }
-}
-
-async function checkSteamPackageApps(appIds, packageId, giveaway, timeLoaded) {
-  let removePackage = true;
-  for (const appId of appIds) {
-    const cacheData =
-      steamAppData[appId] != undefined ? steamAppData[appId] : undefined;
-    const lastUpdated = cacheData != undefined ? cacheData.lastUpdated : 0;
-
-    if (cacheData != undefined) {
-      if (
-        cacheData != undefined &&
-        !filterGiveaway(
-          giveaway,
-          appId,
-          cacheData.appType,
-          cacheData.hasTradingCards,
-        )
-      ) {
-        removePackage = false;
-      }
-    }
-    if (
-      cacheData == undefined ||
-      timeLoaded - lastUpdated >= 604800 ||
-      cacheData.version != thisVersion
-    ) {
-      const url = `https://store.steampowered.com/api/packagedetails?packageids=${packageId}`;
-      const response = await chrome.runtime.sendMessage({
-        task: 'fetch',
-        url,
-      });
-      if (response.status === 200) {
-        // Fetch app details for this specific app to get type and categories
-        const appUrl = `https://store.steampowered.com/api/appdetails?appids=${appId}&filters=basic,categories`;
-        const appResp = await chrome.runtime.sendMessage({
-          task: 'fetch',
-          url: appUrl,
-        });
-        if (appResp.status === 200) {
-          const appJson = JSON.parse(appResp.text);
-          if (appJson[appId]?.success === true) {
-            const data = appJson[appId].data;
-            const hasCats = Array.isArray(data.categories);
-            const tradingCards = hasCats
-              ? data.categories.some((c) => c && c.id == 29)
-              : false;
-            cacheSteamAppData(
-              appId,
-              data.type,
-              tradingCards,
-              lastUpdated,
-              timeLoaded,
-            );
-            if (!filterGiveaway(giveaway, appId, data.type, tradingCards)) {
-              removePackage = false;
-            }
-          }
-        }
-      }
-    }
-    if (!removePackage) {
-      break;
-    }
-  }
-  if (removePackage) {
-    removeGiveaway('package', packageId, giveaway);
-  }
-}
-
-function cacheSteamAppData(
-  appId,
-  appType,
-  tradingCards,
-  lastUpdated,
-  timeLoaded,
-) {
-  if (
-    steamAppData[appId] === undefined ||
-    timeLoaded - lastUpdated >= 604800 ||
-    steamAppData[appId].version != thisVersion
-  ) {
-    steamAppData[appId] = {
-      appId,
-      type: appType,
-      hasTradingCards: tradingCards,
-      lastUpdated: timeLoaded,
-      version: thisVersion,
-    };
-
-    const cacheAppData = {};
-    cacheAppData.Apps = steamAppData;
-    chrome.storage.local.set(cacheAppData, () => {
-      if (chrome.runtime.lastError) {
-        console.warn(chrome.runtime.lastError.message);
-      } else {
-        console.debug('Cached', steamAppData[appId]);
-      }
-    });
-  }
-}
-
-function cacheSteamPackageData(packageId, appIds, lastUpdated, timeLoaded) {
-  if (
-    steamPackageData[packageId] === undefined ||
-    timeLoaded - lastUpdated >= 604800 ||
-    steamPackageData[packageId].version != thisVersion
-  ) {
-    steamPackageData[packageId] = {
-      packageId,
-      appIds,
-      lastUpdated: timeLoaded,
-      version: thisVersion,
-    };
-
-    const cachePackageData = {};
-    cachePackageData.Packages = steamPackageData;
-    chrome.storage.local.set(cachePackageData, () => {
-      if (chrome.runtime.lastError) {
-        console.warn(chrome.runtime.lastError.message);
-      } else {
-        console.debug('Cached', steamPackageData[packageId]);
-      }
-    });
-  }
-}
-
-function getSteamAppId(giveaway) {
-  const steamLink = giveaway.querySelector('.fa-steam')?.parentElement?.href;
-  if (!steamLink) {
-    console.debug('error retrieving app id');
-    return false;
-  }
-  const appmatch = steamLink.match(/.+app\/(\d+)\//);
-  if (appmatch == null) {
-    return false;
-  }
-  return parseInt(appmatch[1], 10);
-}
-
-function getSteamPackageId(giveaway) {
-  const iconEl = giveaway.querySelector(
-    '.giveaway__summary .giveaway__heading .giveaway__icon',
-  );
-  const steamLink = iconEl?.href || null;
-  if (!steamLink) {
-    console.debug('error retrieving package id');
-    return false;
-  }
-  const packagematch = steamLink.match(/.+sub\/(\d+)\//);
-  if (packagematch == null) {
-    return false;
-  }
-  return parseInt(packagematch[1], 10);
-}
-
-function removeGiveaway(type, id, giveaway) {
-  if (
-    !giveaway.parentElement?.classList.contains('pinned-giveaways__inner-wrap')
-  ) {
-    console.debug(`hidden ${type}: ${id}`);
-    giveaway.remove();
-  }
-}
-
-function priorityGiveaway(giveaway, steamGroup, regionLocked, whitelist) {
-  if (settings.PriorityWishlist && inWishlist(getSteamAppId(giveaway))) {
-    return true;
-  } else if (settings.PriorityGroup && steamGroup) {
-    return true;
-  } else if (settings.PriorityRegion && regionLocked) {
-    return true;
-  } else if (settings.PriorityWhitelist && whitelist) {
-    return true;
-  }
-  return false;
-}
-
-function ignoreGiveaway(steamGroup, whitelist) {
-  if (settings.IgnoreGroups && steamGroup) {
-    return true;
-  } else if (settings.IgnoreWhitelist && whitelist) {
-    return true;
-  }
-  return false;
-}
-
-function filterGiveaway(giveaway, appID, appType, hasTradingCards) {
-  const steamGroupGiveaway = Boolean(
-    giveaway.querySelector('.giveaway__column--group'),
-  );
-  const whiteListGiveaway = Boolean(
-    giveaway.querySelector('.giveaway__column--whitelist'),
-  );
-
-  if (hasGame(appID)) {
-    return true;
-  } else if (inWishlist(appID)) {
-    return false;
-  } else if (settings.HideNonTradingCards && !hasTradingCards) {
-    return true;
-  } else if (settings.HideDlc && appType == 'dlc' && appType != 'game') {
-    return true;
-  } else if (settings.HideGroups && steamGroupGiveaway) {
-    return true;
-  } else if (settings.HideWhitelist && whiteListGiveaway) {
-    return true;
-  }
-  return false;
-}
-
-function hasGame(id) {
-  return ownedSteamApps.indexOf(id) > -1;
-}
-
-function inWishlist(id) {
-  return wishList.indexOf(id) > -1;
-}
-
-function secToTime(x) {
-  let sec = x;
-  const days = Math.floor(sec / (24 * 60 * 60));
-  sec %= 86400;
-  const hours = Math.floor(sec / (60 * 60));
-  sec %= 3600;
-  const minutes = Math.floor(sec / 60);
-  sec %= 60;
-  if (days !== 0) {
-    return `${days}d ${hours}:${minutes.toString().padStart(2, '0')}:${sec
-      .toString()
-      .padStart(2, '0')}`;
-  } else if (hours !== 0) {
-    return `${hours}:${minutes.toString().padStart(2, '0')}:${sec
-      .toString()
-      .padStart(2, '0')}`;
-  } else if (minutes !== 0) {
-    return `${minutes.toString().padStart(2, '0')}:${sec
-      .toString()
-      .padStart(2, '0')}`;
-  }
-  return `${sec} s`;
 }

@@ -101,8 +101,17 @@
       'settings.links.github': 'GitHub Page',
       'settings.actions.save': 'Save Settings',
       'settings.actions.cancel': 'Cancel',
+      'settings.actions.reset': 'Reset to defaults',
       'settings.actions.saving': 'Saving...',
       'settings.actions.saved': 'Settings Saved!',
+      'settings.actions.resetDone':
+        'Defaults restored. Review and save when ready.',
+      'settings.actions.resetConfirm':
+        'Reset all settings to their default values? This will update the form, but only becomes permanent after saving.',
+      'settings.status.ready': 'Settings are up to date.',
+      'settings.status.unsaved': 'You have unsaved changes.',
+      'settings.status.validation':
+        'Please review the highlighted fields before saving.',
       'content.settingsButton': 'AutoJoin Settings',
       'content.autoJoin': 'AutoJoin',
       'content.loadingPages': 'Loading Pages...',
@@ -358,8 +367,17 @@
       'settings.links.github': 'Página no GitHub',
       'settings.actions.save': 'Salvar configurações',
       'settings.actions.cancel': 'Cancelar',
+      'settings.actions.reset': 'Restaurar padrões',
       'settings.actions.saving': 'Salvando...',
       'settings.actions.saved': 'Configurações salvas!',
+      'settings.actions.resetDone':
+        'Os padrões foram restaurados. Revise os campos e salve quando estiver pronto.',
+      'settings.actions.resetConfirm':
+        'Deseja restaurar todas as configurações para os valores padrão? Isso atualiza o formulário agora, mas só fica permanente depois de salvar.',
+      'settings.status.ready': 'As configurações estão em dia.',
+      'settings.status.unsaved': 'Você tem alterações não salvas.',
+      'settings.status.validation':
+        'Revise os campos destacados antes de salvar.',
       'content.settingsButton': 'Configurações do AutoJoin',
       'content.autoJoin': 'AutoJoin',
       'content.loadingPages': 'Carregando páginas...',
@@ -593,6 +611,10 @@
   };
 
   const getLocale = () => currentLocale;
+  const listLocales = () => Object.keys(TRANSLATIONS);
+  const getCatalog = (locale = currentLocale) => ({
+    ...TRANSLATIONS[resolveLocale(locale)],
+  });
 
   const api = {
     AUTO_LOCALE,
@@ -601,6 +623,8 @@
     resolveLocale,
     setLocale,
     getLocale,
+    listLocales,
+    getCatalog,
     t,
     apply,
   };

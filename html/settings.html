@@ -28,13 +28,6 @@
         aria-labelledby="settings-title"
       >
         <div class="settings-header">
-          <h1 id="settings-title">
-            <i class="fas fa-cog" aria-hidden="true"></i>
-            <span data-i18n="settings.title">AutoJoin Settings</span>
-          </h1>
-          <p data-i18n="settings.subtitle">
-            Configure the AutoJoin extension to match your preferences
-          </p>
           <button
             type="button"
             class="settingsCancel settings-close"
@@ -43,6 +36,23 @@
           >
             &times;
           </button>
+          <div class="settings-brand">
+            <div class="settings-brand-mark" aria-hidden="true">
+              <img
+                class="settings-brand-logo"
+                src="../media/autologo.svg"
+                alt=""
+              />
+            </div>
+            <div class="settings-brand-copy">
+              <h1 id="settings-title">
+                <span data-i18n="settings.title">AutoJoin Settings</span>
+              </h1>
+              <p data-i18n="settings.subtitle">
+                Configure the AutoJoin extension to match your preferences
+              </p>
+            </div>
+          </div>
         </div>
 
         <div
@@ -1189,7 +1199,7 @@
           <div class="link-item">
             <a
               target="_blank"
-              href="https://github.com/ge-ku/AutoJoin-for-SteamGifts"
+              href="https://github.com/bernardopg/AutoJoin-for-SteamGifts"
             >
               <i class="fab fa-github"></i>
               <span data-i18n="settings.links.github">Github Page</span>
@@ -1197,10 +1207,22 @@
           </div>
         </div>
 
+        <div
+          id="settingsStatusMessage"
+          class="settings-status-message"
+          role="status"
+          aria-live="polite"
+          hidden
+        ></div>
+
         <div id="SaveCancelContainer">
           <button id="btnSetSave" class="btn-primary" type="button">
             <i class="fas fa-save"></i>
             <span data-i18n="settings.actions.save">Save Settings</span>
+          </button>
+          <button id="btnSetReset" class="btn-secondary" type="button">
+            <i class="fas fa-rotate-left"></i>
+            <span data-i18n="settings.actions.reset">Reset to defaults</span>
           </button>
           <button
             id="btnSetCancel"

@@ -1,4 +1,9 @@
-importScripts('core/i18n.js', 'core/settings-store.js', 'core/steam-store.js');
+importScripts(
+  'core/background-helpers.js',
+  'core/i18n.js',
+  'core/settings-store.js',
+  'core/steam-store.js',
+);
 
 /*
   This script page is the background script. autoentry.js is the autojoin button and other page
@@ -162,25 +167,9 @@ const waitForTabComplete = (tabId, timeoutMs = 15000) =>
       .catch(fail);
   });
 
-const looksLikeSteamSessionBlocked = (url, html) => {
-  if (!html) return false;
-
-  if (
-    url.includes('steamcommunity.com') &&
-    /<title>\s*Sign In\s*<\/title>/i.test(html)
-  ) {
-    return true;
-  }
-
-  if (
-    url.includes('store.steampowered.com/wishlist') &&
-    /<title>\s*Wishlist - Error\s*<\/title>/i.test(html)
-  ) {
-    return true;
-  }
-
-  return false;
-};
+const backgroundHelpers = globalThis.AutoJoinBackgroundHelpers;
+const looksLikeSteamSessionBlocked =
+  backgroundHelpers.looksLikeSteamSessionBlocked;
 
 const fetchPageWithBrowserSession = async (url) => {
   let tab;
@@ -589,21 +578,7 @@ class BGGiveaway {
 const compareLevel = (a, b) => b.level - a.level;
 const compareOdds = (a, b) => b.odds - a.odds;
 
-const calculateWinChance = (
-  timeLeft,
-  timeStart,
-  numberOfEntries,
-  numberOfCopies,
-  timeLoaded,
-) => {
-  const timePassed = timeLoaded - timeStart; // time passed in seconds
-  // calculate rate of entries and multiply by time left,
-  // probably not very accurate as we assume linear rate
-  const predictionOfEntries = (numberOfEntries / timePassed) * timeLeft;
-  const chance =
-    (1 / (numberOfEntries + 1 + predictionOfEntries)) * 100 * numberOfCopies;
-  return chance;
-};
+const calculateWinChance = backgroundHelpers.calculateWinChance;
 
 const notify = async (type, msg) => {
   switch (type) {

@@ -1,13 +1,19 @@
 {
   "name": "autojoin-for-steamgifts",
-  "version": "1.0.0",
-  "description": "A browser extension to automatically join SteamGifts giveaways",
+  "version": "2.0.1",
+  "description": "Enhanced AutoJoin for SteamGifts with modern UI, improved accessibility, and optimized performance",
   "main": "js/backgroundpage.js",
   "scripts": {
     "lint": "eslint js tests --ext .js",
     "format": "prettier --check \"**/*.{js,css,html,json}\" --ignore-path .gitignore",
     "check": "npm run lint && npm run format",
-    "test": "node --test tests/*.test.js"
+    "test": "node --test tests/*.test.js",
+    "metadata:check": "node scripts/check-metadata.mjs",
+    "i18n:check": "node scripts/check-i18n.mjs",
+    "verify": "npm run metadata:check && npm run i18n:check && npm test",
+    "build": "npm run check && npm run verify && node scripts/build-extension.mjs",
+    "package": "npm run build && node scripts/package-extension.mjs",
+    "release": "npm run package"
   },
   "keywords": [
     "steamgifts",
@@ -25,9 +31,9 @@
   },
   "homepage": "https://github.com/bernardopg/AutoJoin-for-SteamGifts#readme",
   "devDependencies": {
-    "eslint": "^8.57.0",
+    "eslint": "^8.57.1",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.29.1",
-    "prettier": "^3.1.0"
+    "prettier": "^3.8.3"
   }
 }

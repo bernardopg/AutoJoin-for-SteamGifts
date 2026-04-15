@@ -25,6 +25,8 @@ const specialSettingKeys = new Map(
 
 const i18n = globalThis.AutoJoinI18n;
 const translate = (key, params = {}) => (i18n ? i18n.t(key, params) : key);
+let initialSettingsSnapshot = '';
+let settingsEventsBound = false;
 
 const setSaveButtonState = (button, state) => {
   if (!button) return;
@@ -81,6 +83,106 @@ const deriveSettingKey = (element) => {
   }
 
   return element.id || element.name || '';
+};
+
+const getSettingsFormElements = () =>
+  document.querySelectorAll(
+    '#settingsDiv input, #settingsDiv select, #settingsDiv textarea',
+  );
+
+const clearFieldError = (element) => {
+  if (!element) return;
+  element.style.borderColor = '';
+  element.classList.remove('setting-input-error');
+  element.removeAttribute('aria-invalid');
+};
+
+const clearSettingsValidationState = () => {
+  getSettingsFormElements().forEach((element) => {
+    clearFieldError(element);
+  });
+};
+
+const setSettingsStatus = (message, tone = 'info') => {
+  const statusElement = document.getElementById('settingsStatusMessage');
+  if (!statusElement) return;
+  statusElement.hidden = !message;
+  statusElement.textContent = message || '';
+  statusElement.dataset.tone = tone;
+};
+
+function collectSettingsFormValues() {
+  const updates = {};
+  const formElements = getSettingsFormElements();
+
+  formElements.forEach((element) => {
+    if (element.type === 'radio' && element.name === 'BGpriority') {
+      if (!element.checked) return;
+      if (element.id === 'chkNoPriorityBG') {
+        updates.LevelPriorityBG = false;
+        updates.OddsPriorityBG = false;
+      } else if (element.id === 'chkLevelPriorityBG') {
+        updates.LevelPriorityBG = true;
+        updates.OddsPriorityBG = false;
+      } else if (element.id === 'chkOddsPriorityBG') {
+        updates.LevelPriorityBG = false;
+        updates.OddsPriorityBG = true;
+      }
+      return;
+    }
+
+    const key = deriveSettingKey(element);
+    if (!key) return;
+
+    let value;
+    switch (element.type) {
+      case 'checkbox':
+        value = element.checked;
+        break;
+      case 'number':
+      case 'range':
+        value = element.value === '' ? '' : Number(element.value);
+        break;
+      default:
+        value = element.value;
+    }
+
+    if (key === 'RepeatHoursBG' && Number(element.value) === 0.5) {
+      value = 0;
+    }
+
+    updates[key] = value;
+  });
+
+  return updates;
+}
+
+const syncDirtyState = ({ statusKey, tone } = {}) => {
+  const saveButtonEl = document.getElementById('btnSetSave');
+  const resetButtonEl = document.getElementById('btnSetReset');
+  if (!saveButtonEl) return false;
+
+  const currentSnapshot = JSON.stringify(collectSettingsFormValues());
+  const isDirty = currentSnapshot !== initialSettingsSnapshot;
+
+  saveButtonEl.disabled = !isDirty;
+  if (resetButtonEl) {
+    resetButtonEl.disabled = !isDirty;
+  }
+
+  if (statusKey) {
+    setSettingsStatus(
+      translate(statusKey),
+      tone || (statusKey === 'settings.status.validation' ? 'error' : 'info'),
+    );
+    return isDirty;
+  }
+
+  setSettingsStatus(
+    translate(isDirty ? 'settings.status.unsaved' : 'settings.status.ready'),
+    isDirty ? 'warning' : 'success',
+  );
+  return isDirty;
 };
 
 function initializeTabs() {
@@ -199,7 +301,7 @@ async function loadSettings() {
   }
 }
 
-function fillSettingsDiv(settings) {
+function fillSettingsDiv(settings, { persisted = true } = {}) {
   document.getElementById('selLanguage').value = settings.Language || 'auto';
   document.getElementById('chkAutoJoinButton').checked =
     settings.AutoJoinButton;
@@ -277,7 +379,17 @@ function fillSettingsDiv(settings) {
   }
   document.getElementById('chkAutoRedeemKey').checked = settings.AutoRedeemKey;
 
-  settingsAttachEventListeners();
+  clearSettingsValidationState();
+  if (!settingsEventsBound) {
+    settingsAttachEventListeners();
+    settingsEventsBound = true;
+  }
+
+  if (persisted) {
+    initialSettingsSnapshot = JSON.stringify(collectSettingsFormValues());
+  }
+
+  syncDirtyState();
 }
 
 function applyOptionsTheme(night) {

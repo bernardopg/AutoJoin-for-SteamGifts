@@ -171,58 +171,7 @@ class Giveaway {
    * @returns {boolean} True if should be filtered (hidden)
    */
   shouldFilter(settings, ownedGames = [], wishlist = []) {
-    // Level filtering
-    if (
-      this.level < settings.HideLevelsBelow ||
-      this.level > settings.HideLevelsAbove
-    ) {
-      return true;
-    }
-
-    // Cost filtering
-    if (
-      this.cost < settings.HideCostsBelow ||
-      this.cost > settings.HideCostsAbove
-    ) {
-      return true;
-    }
-
-    // Entered filtering
-    if (settings.HideEntered && this.status.Entered) {
-      return true;
-    }
-
-    // DLC filtering
-    if (settings.HideDlc && this.isDLC) {
-      return true;
-    }
-
-    // Trading cards filtering
-    if (settings.HideNonTradingCards && !this.hasTradingCards) {
-      return true;
-    }
-
-    // Group filtering
-    if (settings.HideGroups && this.isGroupGA) {
-      return true;
-    }
-
-    // Whitelist filtering
-    if (settings.HideWhitelist && this.isWhitelistGA) {
-      return true;
-    }
-
-    // Owned games filtering
-    if (ownedGames.includes(this.appid)) {
-      return true;
-    }
-
-    // Wishlist priority (don't filter if in wishlist)
-    if (wishlist.includes(this.appid)) {
-      return false;
-    }
-
-    return false;
+    return shouldFilterGiveaway(this, settings, ownedGames, wishlist);
   }
 
   /**
@@ -232,39 +181,12 @@ class Giveaway {
    * @returns {number} Priority score (higher = more priority)
    */
   getPriorityScore(settings, wishlist = []) {
-    let score = 0;
-
-    // Wishlist priority
-    if (settings.PriorityWishlist && wishlist.includes(this.appid)) {
-      score += 1000;
-    }
-
-    // Group priority
-    if (settings.PriorityGroup && this.isGroupGA) {
-      score += 100;
-    }
-
-    // Region priority
-    if (settings.PriorityRegion && this.isRegionLocked) {
-      score += 50;
-    }
-
-    // Whitelist priority
-    if (settings.PriorityWhitelist && this.isWhitelistGA) {
-      score += 25;
-    }
-
-    // Level priority (higher level = higher priority)
-    if (settings.LevelPriority) {
-      score += this.level * 10;
-    }
-
-    // Odds priority (higher odds = higher priority)
-    if (settings.OddsPriority) {
-      score += this.calculateWinChance(Date.now() / 1000);
-    }
-
-    return score;
+    return getPriorityScore(
+      this,
+      settings,
+      wishlist,
+      settings.OddsPriority ? this.calculateWinChance(Date.now() / 1000) : 0,
+    );
   }
 
   /**
@@ -717,9 +639,96 @@ class GiveawayManager {
   }
 }
 
+function shouldFilterGiveaway(
+  giveaway,
+  settings,
+  ownedGames = [],
+  wishlist = [],
+) {
+  if (
+    giveaway.level < settings.HideLevelsBelow ||
+    giveaway.level > settings.HideLevelsAbove
+  ) {
+    return true;
+  }
+
+  if (
+    giveaway.cost < settings.HideCostsBelow ||
+    giveaway.cost > settings.HideCostsAbove
+  ) {
+    return true;
+  }
+
+  if (settings.HideEntered && giveaway.status.Entered) {
+    return true;
+  }
+
+  if (settings.HideDlc && giveaway.isDLC) {
+    return true;
+  }
+
+  if (settings.HideNonTradingCards && !giveaway.hasTradingCards) {
+    return true;
+  }
+
+  if (settings.HideGroups && giveaway.isGroupGA) {
+    return true;
+  }
+
+  if (settings.HideWhitelist && giveaway.isWhitelistGA) {
+    return true;
+  }
+
+  if (ownedGames.includes(giveaway.appid)) {
+    return true;
+  }
+
+  if (wishlist.includes(giveaway.appid)) {
+    return false;
+  }
+
+  return false;
+}
+
+function getPriorityScore(giveaway, settings, wishlist = [], odds = 0) {
+  let score = 0;
+
+  if (settings.PriorityWishlist && wishlist.includes(giveaway.appid)) {
+    score += 1000;
+  }
+
+  if (settings.PriorityGroup && giveaway.isGroupGA) {
+    score += 100;
+  }
+
+  if (settings.PriorityRegion && giveaway.isRegionLocked) {
+    score += 50;
+  }
+
+  if (settings.PriorityWhitelist && giveaway.isWhitelistGA) {
+    score += 25;
+  }
+
+  if (settings.LevelPriority) {
+    score += giveaway.level * 10;
+  }
+
+  if (settings.OddsPriority) {
+    score += odds;
+  }
+
+  return score;
+}
+
 // Export classes
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { Giveaway, GiveawayParser, GiveawayManager };
+  module.exports = {
+    Giveaway,
+    GiveawayParser,
+    GiveawayManager,
+    shouldFilterGiveaway,
+    getPriorityScore,
+  };
 } else {
   window.Giveaway = Giveaway;
   window.GiveawayParser = GiveawayParser;
