@@ -18,6 +18,7 @@ test('SteamGifts homepage fixture still exposes parser-facing selectors', () => 
   const giveawayRows = homepageHtml.match(/giveaway__row-outer-wrap/g) || [];
 
   assert.ok(giveawayRows.length > 0, 'fixture should contain giveaway rows');
+  assert.doesNotMatch(homepageHtml, /pagead2\.googlesyndication/);
   assert.match(homepageHtml, /giveaway__heading__name/);
   assert.match(homepageHtml, /giveaway__links/);
   assert.match(homepageHtml, /fa-clock-o/);

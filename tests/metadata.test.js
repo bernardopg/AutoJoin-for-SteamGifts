@@ -52,6 +52,7 @@ test('development workflow scripts exist and point to real files', () => {
     'scripts/check-i18n.mjs',
     'scripts/build-extension.mjs',
     'scripts/package-extension.mjs',
+    'js/core/settings-actions.js',
   ].forEach((scriptPath) => {
     assert.ok(
       fileExists(scriptPath),

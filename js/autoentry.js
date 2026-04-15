@@ -461,25 +461,66 @@ function onPageLoad() {
       htmlEl.dataset.ajSettingsInjecting = 'true';
       fetch(chrome.runtime.getURL('/html/settings.html'))
         .then((resp) => resp.text())
-        .then((settingsHTML) => {
+        .then(async (settingsHTML) => {
           const parser = new DOMParser();
           const settingsDOM = parser.parseFromString(settingsHTML, 'text/html');
           const settingsDiv = settingsDOM.getElementById('bodyWrapper');
+
+          const resolveExtensionAssetUrl = (value) => {
+            if (!value || !value.startsWith('../')) {
+              return value;
+            }
+
+            return chrome.runtime.getURL(value.slice(3));
+          };
+
+          const ensureFontAwesomeStylesheet = async () => {
+            const stylesheetId = 'aj-fontawesome-stylesheet';
+            if (document.getElementById(stylesheetId)) return;
+
+            const response = await fetch(
+              chrome.runtime.getURL('css/fontawesome/fontawesome.min.css'),
+            );
+            if (!response.ok) {
+              throw new Error(
+                `Failed to load Font Awesome CSS (${response.status})`,
+              );
+            }
+
+            const cssText = await response.text();
+            const rewrittenCss = cssText.replace(
+              /url\((['"]?)\.\/webfonts\/([^)'"]+)\1\)/g,
+              (_, __quote, fileName) =>
+                `url("${chrome.runtime.getURL(
+                  `css/fontawesome/webfonts/${fileName}`,
+                )}")`,
+            );
+
+            const style = document.createElement('style');
+            style.id = stylesheetId;
+            style.textContent = rewrittenCss;
+            document.head.appendChild(style);
+          };
+
+          settingsDiv?.querySelectorAll('[src], [href]').forEach((element) => {
+            const attributeName = element.hasAttribute('src') ? 'src' : 'href';
+            const currentValue = element.getAttribute(attributeName);
+
+            if (currentValue?.startsWith('../')) {
+              element.setAttribute(
+                attributeName,
+                resolveExtensionAssetUrl(currentValue),
+              );
+            }
+          });
+
           document.querySelector('body').appendChild(settingsDiv);
           htmlEl.dataset.ajSettingsInjected = 'true';
           htmlEl.dataset.ajSettingsInjecting = 'false';
-          // Make sure Font Awesome is loaded when injecting inline
-          if (
-            !document.querySelector(
-              'link[href*="font-awesome"], link[href*="fontawesome"]',
-            )
-          ) {
-            const fa = document.createElement('link');
-            fa.rel = 'stylesheet';
-            fa.href =
-              'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css';
-            document.head.appendChild(fa);
-          }
+          // Inline the Font Awesome stylesheet with extension-resolved font URLs
+          // so the modal can keep using the icons even when SteamGifts ships an
+          // older / incompatible FA bundle on the page.
+          await ensureFontAwesomeStylesheet();
           loadSettings();
           document.getElementById('settingsShade').classList.add('fadeIn');
           document.getElementById('settingsDiv').classList.add('fadeIn');

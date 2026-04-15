@@ -1,5 +1,6 @@
 // Initialize tabs functionality
 const optionsSettingsStore = globalThis.AutoJoinSettingsStore;
+const settingsActionsFactory = globalThis.AutoJoinSettingsActions;
 const lowercaseSettingsMap = optionsSettingsStore
   ? new Map(
       Object.keys(optionsSettingsStore.defaults).map((key) => [
@@ -27,6 +28,7 @@ const i18n = globalThis.AutoJoinI18n;
 const translate = (key, params = {}) => (i18n ? i18n.t(key, params) : key);
 let initialSettingsSnapshot = '';
 let settingsEventsBound = false;
+let settingsActions = null;
 
 const setSaveButtonState = (button, state) => {
   if (!button) return;
@@ -184,6 +186,14 @@ const syncDirtyState = ({ statusKey, tone } = {}) => {
   );
   return isDirty;
 };
+
+settingsActions = settingsActionsFactory?.createSettingsActions({
+  settingsStore: optionsSettingsStore,
+  confirm: globalThis.confirm?.bind(globalThis),
+  translate,
+  fillSettingsDiv,
+  syncDirtyState,
+});
 
 function initializeTabs() {
   const tabButtons = document.querySelectorAll('.tab-button');
@@ -398,6 +408,7 @@ function applyOptionsTheme(night) {
 
 function settingsAttachEventListeners() {
   const saveButtonEl = document.getElementById('btnSetSave');
+  const resetButtonEl = document.getElementById('btnSetReset');
   const languageSelectEl = document.getElementById('selLanguage');
 
   languageSelectEl?.addEventListener('change', () => {
@@ -497,6 +508,38 @@ function settingsAttachEventListeners() {
       if (window.AutoJoinUtils) {
         window.AutoJoinUtils.showNotification(
           translate('content.notifications.settingsSaveFailed'),
+          'error',
+        );
+      }
+    }
+  });
+
+  resetButtonEl?.addEventListener('click', async () => {
+    if (!settingsActions) return;
+
+    try {
+      await settingsActions.resetSettingsToDefaults();
+    } catch (error) {
+      console.error('Error resetting settings:', error);
+      if (window.AutoJoinUtils) {
+        window.AutoJoinUtils.showNotification(
+          translate('content.notifications.settingsLoadFailed'),
+          'error',
+        );
+      }
+    }
+  });
+
+  resetButtonEl?.addEventListener('click', async () => {
+    if (!settingsActions) return;
+
+    try {
+      await settingsActions.resetSettingsToDefaults();
+    } catch (error) {
+      console.error('Error resetting settings:', error);
+      if (window.AutoJoinUtils) {
+        window.AutoJoinUtils.showNotification(
+          translate('content.notifications.settingsLoadFailed'),
           'error',
         );
       }

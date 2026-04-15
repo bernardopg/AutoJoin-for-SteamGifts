@@ -60,6 +60,34 @@ test('icon assets are available', () => {
   });
 });
 
+test('settings logo asset is available', () => {
+  assert.ok(fileExists('media/autologo.png'), 'Missing settings logo asset');
+});
+
+test('font awesome assets are web accessible', () => {
+  const resources = manifest.web_accessible_resources || [];
+  const allResources = resources.flatMap((entry) => entry.resources || []);
+  const expectedResources = [
+    'css/fontawesome/fontawesome.min.css',
+    'css/fontawesome/webfonts/fa-brands-400.woff2',
+    'css/fontawesome/webfonts/fa-brands-400.ttf',
+    'css/fontawesome/webfonts/fa-regular-400.woff2',
+    'css/fontawesome/webfonts/fa-regular-400.ttf',
+    'css/fontawesome/webfonts/fa-solid-900.woff2',
+    'css/fontawesome/webfonts/fa-solid-900.ttf',
+    'css/fontawesome/webfonts/fa-v4compatibility.woff2',
+    'css/fontawesome/webfonts/fa-v4compatibility.ttf',
+    'media/autologo.png',
+  ];
+
+  expectedResources.forEach((resourcePath) => {
+    assert.ok(
+      allResources.includes(resourcePath),
+      `${resourcePath} must be web accessible`,
+    );
+  });
+});
+
 test('host permissions include SteamGifts domains', () => {
   const hostPermissions = manifest.host_permissions || [];
   const optionalHosts = manifest.optional_host_permissions || [];

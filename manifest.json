@@ -6,12 +6,17 @@
   "content_scripts": [
     {
       "run_at": "document_start",
-      "css": ["css/general.css", "css/night.css"],
+      "css": [
+        "css/fontawesome/fontawesome.min.css",
+        "css/general.css",
+        "css/night.css"
+      ],
       "js": [
         "js/utils-enhanced.js",
         "js/core/i18n.js",
         "js/core/steam-community.js",
         "js/core/settings-store.js",
+        "js/core/settings-actions.js",
         "js/core/giveaway.js",
         "js/core/page-enhancements.js",
         "js/core/autoentry-steam-data.js",
@@ -30,7 +35,11 @@
       ]
     },
     {
-      "css": ["css/general.css", "css/night.css"],
+      "css": [
+        "css/fontawesome/fontawesome.min.css",
+        "css/general.css",
+        "css/night.css"
+      ],
       "js": ["js/utils-enhanced.js", "js/core/page-enhancements.js"],
       "matches": [
         "*://steamgifts.com/giveaways/created/*",
@@ -95,7 +104,21 @@
   "web_accessible_resources": [
     {
       "use_dynamic_url": true,
-      "resources": ["html/settings.html", "css/night.css", "media/audio.mp3"],
+      "resources": [
+        "html/settings.html",
+        "css/night.css",
+        "css/fontawesome/fontawesome.min.css",
+        "css/fontawesome/webfonts/fa-brands-400.woff2",
+        "css/fontawesome/webfonts/fa-brands-400.ttf",
+        "css/fontawesome/webfonts/fa-regular-400.woff2",
+        "css/fontawesome/webfonts/fa-regular-400.ttf",
+        "css/fontawesome/webfonts/fa-solid-900.woff2",
+        "css/fontawesome/webfonts/fa-solid-900.ttf",
+        "css/fontawesome/webfonts/fa-v4compatibility.woff2",
+        "css/fontawesome/webfonts/fa-v4compatibility.ttf",
+        "media/autologo.png",
+        "media/audio.mp3"
+      ],
       "matches": ["*://steamgifts.com/*", "*://www.steamgifts.com/*"],
       "extension_ids": []
     }

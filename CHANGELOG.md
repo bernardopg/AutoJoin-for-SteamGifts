@@ -1,6 +1,6 @@
 # 📝 Changelog
 
-Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
+Todas as mudanças notáveis neste projeto são documentadas aqui.
 
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto segue [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
@@ -9,22 +9,28 @@ e este projeto segue [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### 🚀 Adicionado
 
-- Documentação completa do projeto reformulada
-- GitHub Actions CI/CD pipeline
-- Templates para issues e pull requests
-- Política de segurança abrangente
-- Guias para agentes automatizados e Warp.dev
+- Testes para `settings-store`, regras de giveaway, helpers do background, metadata e regressões de fixtures.
+- Verificação de uso de chaves i18n na fonte e paridade entre idiomas.
+- Helpers puros compartilhados para cálculo de win chance, bloqueio de sessão Steam e regras de giveaway.
+- Trava no snapshot de SteamGifts para evitar carregamento de scripts externos de ads.
 
 ### ✨ Melhorado
 
-- README.md com design moderno e informações completas
-- Estrutura de arquivos mais organizada
-- Licença atualizada para MIT
+- README alinhado com defaults reais, scripts disponíveis e convenção de locale.
+- Documentação do locale esclarecida: a app usa `pt-BR` e os messages da extensão ficam em `_locales/pt_BR`.
+- `html/settings.html` passou a usar `media/autologo.png` para evitar 404 do logo.
 
 ### 🔧 Alterado
 
-- Migração de GPL v2 para MIT License
-- .gitignore expandido e organizado
+- `js/autoentry.js`, `js/core/autoentry-giveaway.js`, `js/core/autoentry-steam-data.js` e `js/settings.js` foram corrigidos e reestruturados.
+- `js/backgroundpage.js` e `js/core/giveaway.js` agora delegam lógica pura para helpers testáveis.
+- `TO-DO.md` foi sincronizado com as entregas concluídas.
+
+### 🐛 Corrigido
+
+- Erros de sintaxe e wiring que quebravam o fluxo principal da extensão.
+- 404 do logo no settings.
+- Carregamento externo de `adsbygoogle` no snapshot de SteamGifts.
 
 ## [2.0.1] - 2024-12-17
 
