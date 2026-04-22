@@ -4,9 +4,9 @@
 
 [![Version](https://img.shields.io/badge/version-2.0.1-blue.svg)](https://github.com/bernardopg/AutoJoin-for-SteamGifts/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
-[![Chrome Web Store](https://img.shields.io/badge/Chrome-Extension-red.svg)](https://chrome.google.com/webstore)
-[![Firefox Add-ons](https://img.shields.io/badge/Firefox-Add--on-orange.svg)](https://addons.mozilla.org/)
-[![Build Status](https://github.com/bernardopg/AutoJoin-for-SteamGifts/workflows/CI/badge.svg)](https://github.com/bernardopg/AutoJoin-for-SteamGifts/actions)
+[![Chrome Web Store](https://img.shields.io/badge/Chrome-Extention-red?logo=chromewebstore&logoColor=red)](https://chrome.google.com/webstore)
+[![Firefox Add-ons](https://img.shields.io/badge/Firefox-Add--on-orange?logo=firefox&logoColor=red)](https://addons.mozilla.org/)
+[![🚀 CI/CD Pipeline](https://github.com/bernardopg/AutoJoin-for-SteamGifts/actions/workflows/ci.yml/badge.svg)](https://github.com/bernardopg/AutoJoin-for-SteamGifts/actions/workflows/ci.yml)
 
 **Extensão inteligente que automatiza sua participação em sorteios do SteamGifts com segurança, elegância e total controle.**
 
@@ -18,18 +18,22 @@
 
 ## 🇧🇷 Português (Brasil)
 
-### 📋 Índice
-
+<details>
+  <summary>📋 Índice</summary>
+  
 - [🎯 Visão Geral](#-visão-geral)
 - [✨ Recursos Principais](#-recursos-principais)
 - [📦 Instalação Rápida](#-instalação-rápida)
 - [🎮 Como Usar](#-como-usar)
-- [⚙️ Configuração Avançada](#-configuração-avançada)
+- [⚙️ Configuração Básica](#%EF%B8%8F-configuração-básica)
+- [⚙️ Configuração Avançada](#%EF%B8%8F-configuração-avançada)
 - [🛠️ Scripts de Desenvolvimento](#-scripts-de-desenvolvimento)
 - [🏗️ Arquitetura](#-arquitetura)
 - [🔒 Segurança e Privacidade](#-segurança-e-privacidade)
 - [🤝 Contribuindo](#-contribuindo)
 - [📄 Licença](#-licença)
+  
+</details>
 
 ### 🎯 Visão Geral
 
