@@ -418,13 +418,9 @@ class AutoJoinUtils {
    * @returns {Object} URL parameters
    */
   static getUrlParams(url = window.location.href) {
-    const urlObj = new URL(url);
-    // Null prototype: a `?__proto__=x` query string must not reach Object.prototype.
-    const params = Object.create(null);
-    for (const [key, value] of urlObj.searchParams) {
-      params[key] = value;
-    }
-    return params;
+    // fromEntries defines own data properties, so `?__proto__=x` lands as a
+    // plain key instead of reaching Object.prototype. Duplicate keys: last wins.
+    return Object.fromEntries(new URL(url).searchParams);
   }
 
   /**
