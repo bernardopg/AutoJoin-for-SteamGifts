@@ -170,6 +170,7 @@ const waitForTabComplete = (tabId, timeoutMs = 15000) =>
 const backgroundHelpers = globalThis.AutoJoinBackgroundHelpers;
 const looksLikeSteamSessionBlocked =
   backgroundHelpers.looksLikeSteamSessionBlocked;
+const matchesHost = backgroundHelpers.matchesHost;
 
 const fetchPageWithBrowserSession = async (url) => {
   let tab;
@@ -1176,7 +1177,7 @@ const fetchHelper = async (url) => {
     text: '',
   };
 
-  if (url.includes('steamcommunity.com')) {
+  if (matchesHost(url, 'steamcommunity.com')) {
     const havePermissions = await chrome.permissions.contains({
       origins: ['*://steamcommunity.com/profiles/*'],
     });

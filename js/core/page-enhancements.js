@@ -520,7 +520,10 @@ class PageEnhancer {
               name: gameName || this.t('page.aria.viewGiveawayFallback'),
             }),
           );
-        } else if (link.href.includes('store.steampowered.com')) {
+        } else if (
+          link.hostname === 'store.steampowered.com' ||
+          link.hostname.endsWith('.store.steampowered.com')
+        ) {
           link.setAttribute('aria-label', this.t('page.aria.viewSteamStore'));
         }
       }

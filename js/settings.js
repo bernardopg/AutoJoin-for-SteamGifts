@@ -704,7 +704,7 @@ function validateSettings() {
     el.classList.remove('setting-input-error');
   });
 
-  // Validate and sanitize comment input
+  // Validate comment input
   const commentField = document.getElementById('txtAutoComment');
   if (commentField?.value?.trim()) {
     const comment = commentField.value.trim();
@@ -713,8 +713,12 @@ function validateSettings() {
       commentField.style.borderColor = '#dc3545';
       commentField.classList.add('setting-input-error');
     }
-    // Sanitize comment (remove script tags, etc.)
-    commentField.value = comment.replace(/<script[^>]*>.*?<\/script>/gi, '');
+    // The comment is the user's own text and is only ever sent as a FormData
+    // field (see js/autoentry.js), never written to innerHTML. A regex script
+    // tag strip was removed here: it is trivially bypassable (`</script >`,
+    // nested tags) and gave a false sense of sanitization for a sink that does
+    // not parse HTML.
+    commentField.value = comment;
   }
 
   // Validate number inputs

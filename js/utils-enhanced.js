@@ -419,7 +419,8 @@ class AutoJoinUtils {
    */
   static getUrlParams(url = window.location.href) {
     const urlObj = new URL(url);
-    const params = {};
+    // Null prototype: a `?__proto__=x` query string must not reach Object.prototype.
+    const params = Object.create(null);
     for (const [key, value] of urlObj.searchParams) {
       params[key] = value;
     }

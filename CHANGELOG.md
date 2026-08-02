@@ -41,6 +41,11 @@ e este projeto segue [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### 🐛 Corrigido
 
+- Os 8 alertas da primeira análise do CodeQL:
+  - `js/incomplete-url-substring-sanitization` (4x): checagens de host por `String.includes` em `background-helpers.js`, `backgroundpage.js`, `page-enhancements.js` e `tests/manifest.test.js` aceitavam hosts como `steamcommunity.com.evil.tld`. Agora comparam o hostname parseado via novo helper `matchesHost`.
+  - `js/bad-tag-filter` e `js/incomplete-multi-character-sanitization`: removido o strip de `<script>` por regex em `settings.js`. O comentário do usuário só é enviado como campo de `FormData`, nunca vai para `innerHTML`, e o regex era contornável (`</script >`).
+  - `js/remote-property-injection`: `AutoJoinUtils.getUrlParams` acumulava chaves da query string em `{}`, permitindo `?__proto__=`. Passou a usar `Object.create(null)`.
+  - `js/comparison-between-incompatible-types`: guarda duplicada de `cacheData` em `autoentry-giveaway.js`.
 - Alertas abertos do Dependabot (`js-yaml` e `brace-expansion`, ambos `high`) resolvidos via atualização do `package-lock.json`; era essa a causa da falha recorrente do job `🔒 Security Audit` no CI.
 - `js/core/page-enhancements.js`: declaração `let` sem bloco dentro de `case` do atalho `Alt+S` (vazava o binding para os demais `case`).
 - `js/backgroundpage.js`: atribuições iniciais mortas em `latestSteamKeyRedeemResponse` e `linkToUse`.

@@ -96,8 +96,15 @@ test('host permissions include SteamGifts domains', () => {
   );
   const combined = [...contentMatches, ...hostPermissions, ...optionalHosts];
 
+  // Match patterns are `<scheme>://<host><path>`; assert on the host component
+  // so `*://evil.com/?x=steamgifts.com` could never satisfy this test.
+  const patternHost = (pattern) => pattern.split('://')[1]?.split('/')[0] ?? '';
+
   assert.ok(
-    combined.some((pattern) => pattern.includes('steamgifts.com')),
+    combined.some((pattern) => {
+      const host = patternHost(pattern);
+      return host === 'steamgifts.com' || host.endsWith('.steamgifts.com');
+    }),
     'Expect SteamGifts host permissions in manifest',
   );
 });

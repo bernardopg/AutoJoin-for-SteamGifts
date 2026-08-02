@@ -275,24 +275,19 @@
     ) {
       let removePackage = true;
       for (const appId of appIds) {
-        const cacheData =
-          state.steamAppData[appId] != undefined
-            ? state.steamAppData[appId]
-            : undefined;
+        const cacheData = state.steamAppData[appId];
         const lastUpdated = cacheData != undefined ? cacheData.lastUpdated : 0;
 
-        if (cacheData != undefined) {
-          if (
-            cacheData != undefined &&
-            !filterGiveaway(
-              giveaway,
-              appId,
-              cacheData.appType,
-              cacheData.hasTradingCards,
-            )
-          ) {
-            removePackage = false;
-          }
+        if (
+          cacheData != undefined &&
+          !filterGiveaway(
+            giveaway,
+            appId,
+            cacheData.appType,
+            cacheData.hasTradingCards,
+          )
+        ) {
+          removePackage = false;
         }
         if (
           cacheData == undefined ||

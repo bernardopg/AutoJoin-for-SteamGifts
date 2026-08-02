@@ -1,16 +1,33 @@
 (() => {
+  const parseUrl = (url) => {
+    try {
+      return new URL(url);
+    } catch {
+      return null;
+    }
+  };
+
+  // `url.includes('steamcommunity.com')` also matches hosts such as
+  // steamcommunity.com.evil.tld, so compare the parsed hostname instead.
+  const matchesHost = (url, host) => {
+    const hostname = parseUrl(url)?.hostname;
+    if (!hostname) return false;
+    return hostname === host || hostname.endsWith(`.${host}`);
+  };
+
   const looksLikeSteamSessionBlocked = (url, html) => {
     if (!html) return false;
 
     if (
-      url.includes('steamcommunity.com') &&
+      matchesHost(url, 'steamcommunity.com') &&
       /<title>\s*Sign In\s*<\/title>/i.test(html)
     ) {
       return true;
     }
 
     if (
-      url.includes('store.steampowered.com/wishlist') &&
+      matchesHost(url, 'store.steampowered.com') &&
+      parseUrl(url)?.pathname.startsWith('/wishlist') &&
       /<title>\s*Wishlist - Error\s*<\/title>/i.test(html)
     ) {
       return true;
@@ -34,6 +51,7 @@
   };
 
   const api = {
+    matchesHost,
     looksLikeSteamSessionBlocked,
     calculateWinChance,
   };
