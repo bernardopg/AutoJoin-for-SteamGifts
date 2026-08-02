@@ -108,7 +108,7 @@ class PageEnhancer {
     // Mark that we've bound the navbar settings button to avoid duplicate bindings elsewhere
     try {
       window.__AJ_SettingsNavBound = true;
-    } catch (e) {}
+    } catch {}
   }
 
   /// Apply theme based on settings
@@ -311,7 +311,7 @@ class PageEnhancer {
     // Mark global inf-scroll flag to avoid double registration from legacy code
     try {
       window.__AJ_InfScrollActivated = true;
-    } catch (e) {
+    } catch {
       // no-op in non-window contexts
     }
 
@@ -613,13 +613,14 @@ class PageEnhancer {
       // Global keyboard shortcuts
       if (e.altKey) {
         switch (e.key) {
-          case 's':
+          case 's': {
             e.preventDefault();
             const pref =
               document.getElementById('btnSettings') ||
               document.getElementById('ajSettingsNavBtn');
             pref?.click();
             break;
+          }
           case 'j':
             e.preventDefault();
             this.focusNextGiveaway();

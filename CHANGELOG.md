@@ -9,6 +9,11 @@ e este projeto segue [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### 🚀 Adicionado
 
+- Workflow `codeql.yml` (CodeQL `security-and-quality`) habilitando o code scanning do GitHub, que até então não tinha nenhuma análise.
+- Workflow `dependency-review.yml` bloqueando PRs que introduzam dependências com vulnerabilidade `high` ou superior.
+- `.github/CODEOWNERS` substituindo a chave `reviewers` (descontinuada) do Dependabot.
+- Scripts `lint:fix` e `format:fix` para correção automática.
+- Node 24 na matriz de testes e campo `engines` no `package.json`.
 - Testes para `settings-store`, regras de giveaway, helpers do background, metadata e regressões de fixtures.
 - Verificação de uso de chaves i18n na fonte e paridade entre idiomas.
 - Helpers puros compartilhados para cálculo de win chance, bloqueio de sessão Steam e regras de giveaway.
@@ -16,6 +21,14 @@ e este projeto segue [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### ✨ Melhorado
 
+- ESLint migrado da v8 (fim de vida) para a v10 com flat config (`eslint.config.mjs`); `eslint-config-airbnb-base` e `eslint-plugin-import`, ambos sem manutenção e travando o upgrade, foram removidos.
+- `scripts/*.mjs` passaram a ser cobertos por lint e format check.
+- Job de build do CI passou a usar `npm run package`, gerando o mesmo `.zip` do build local em vez de um zip ad-hoc que incluía arquivos internos do repositório.
+- Job de release passou a pular a publicação quando a tag da versão já existe.
+- Auditoria de segurança do CI separada: dependências de runtime bloqueiam o pipeline, dependências de desenvolvimento apenas reportam.
+- Actions com pins consistentes entre todos os workflows (`checkout@v7`, `setup-node@v7`, `upload-artifact@v7`, `download-artifact@v8`).
+- `concurrency` adicionado aos workflows e `permissions` reduzidas ao mínimo por job.
+- Dependabot com agrupamento de updates minor/patch para reduzir ruído de PRs.
 - README alinhado com defaults reais, scripts disponíveis e convenção de locale.
 - Documentação do locale esclarecida: a app usa `pt-BR` e os messages da extensão ficam em `_locales/pt_BR`.
 - `html/settings.html` passou a usar `media/autologo.png` para evitar 404 do logo.
@@ -28,6 +41,10 @@ e este projeto segue [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### 🐛 Corrigido
 
+- Alertas abertos do Dependabot (`js-yaml` e `brace-expansion`, ambos `high`) resolvidos via atualização do `package-lock.json`; era essa a causa da falha recorrente do job `🔒 Security Audit` no CI.
+- `js/core/page-enhancements.js`: declaração `let` sem bloco dentro de `case` do atalho `Alt+S` (vazava o binding para os demais `case`).
+- `js/backgroundpage.js`: atribuições iniciais mortas em `latestSteamKeyRedeemResponse` e `linkToUse`.
+- Bindings de `catch` não utilizados substituídos por optional catch binding.
 - Erros de sintaxe e wiring que quebravam o fluxo principal da extensão.
 - 404 do logo no settings.
 - Carregamento externo de `adsbygoogle` no snapshot de SteamGifts.

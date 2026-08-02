@@ -214,7 +214,9 @@ npm install
 
 # Qualidade de código
 npm run lint            # ESLint
+npm run lint:fix        # ESLint (--fix)
 npm run format          # Prettier (check)
+npm run format:fix      # Prettier (write)
 npm run check           # lint + format
 
 # Validações automatizadas
@@ -504,7 +506,9 @@ npm install
 
 # Code quality
 npm run lint            # ESLint
+npm run lint:fix        # ESLint (--fix)
 npm run format          # Prettier (check)
+npm run format:fix      # Prettier (write)
 npm run check           # lint + format
 
 # Automated validation

@@ -171,7 +171,7 @@
               state.ownedSteamApps = jsonResponse
                 .map((g) => g.appid)
                 .filter(Boolean);
-            } catch (error) {
+            } catch {
               console.info('Failed to parse owned games JSON');
             }
           } else {

@@ -32,7 +32,9 @@ const result = spawnSync('zip', ['-qr', archivePath, '.'], {
 });
 
 if (result.status !== 0) {
-  console.error(result.stderr || result.stdout || 'Failed to create extension archive.');
+  console.error(
+    result.stderr || result.stdout || 'Failed to create extension archive.',
+  );
   process.exit(result.status || 1);
 }
 

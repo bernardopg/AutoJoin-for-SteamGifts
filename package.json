@@ -4,8 +4,10 @@
   "description": "Enhanced AutoJoin for SteamGifts with modern UI, improved accessibility, and optimized performance",
   "main": "js/backgroundpage.js",
   "scripts": {
-    "lint": "eslint js tests --ext .js",
-    "format": "prettier --check \"**/*.{js,css,html,json}\" --ignore-path .gitignore",
+    "lint": "eslint js tests scripts",
+    "lint:fix": "eslint js tests scripts --fix",
+    "format": "prettier --check \"**/*.{js,mjs,css,html,json}\" --ignore-path .gitignore",
+    "format:fix": "prettier --write \"**/*.{js,mjs,css,html,json}\" --ignore-path .gitignore",
     "check": "npm run lint && npm run format",
     "test": "node --test tests/*.test.js",
     "metadata:check": "node scripts/check-metadata.mjs",
@@ -30,10 +32,13 @@
     "url": "https://github.com/bernardopg/AutoJoin-for-SteamGifts/issues"
   },
   "homepage": "https://github.com/bernardopg/AutoJoin-for-SteamGifts#readme",
+  "engines": {
+    "node": "^20.19.0 || ^22.13.0 || >=24"
+  },
   "devDependencies": {
-    "eslint": "^8.57.1",
-    "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-plugin-import": "^2.29.1",
-    "prettier": "^3.8.3"
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.8.0",
+    "globals": "^17.9.0",
+    "prettier": "^3.9.6"
   }
 }

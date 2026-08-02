@@ -2,15 +2,19 @@ name: 🚀 CI/CD Pipeline
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [main, develop]
   pull_request:
-    branches: [ main, develop ]
+    branches: [main, develop]
   schedule:
     - cron: '0 3 * * 0'
+  workflow_dispatch:
 
 permissions:
-  actions: read
   contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 env:
   NODE_VERSION: '22'
@@ -45,8 +49,9 @@ jobs:
     needs: lint
 
     strategy:
+      fail-fast: false
       matrix:
-        node-version: [20, 22]
+        node-version: [20, 22, 24]
 
     steps:
       - name: 📥 Checkout Code
@@ -61,8 +66,8 @@ jobs:
       - name: 📦 Install Dependencies
         run: npm ci --prefer-offline --no-audit
 
-      - name: 🧪 Run Tests
-        run: npm test
+      - name: ✅ Verify Metadata, i18n and Tests
+        run: npm run verify
 
   security:
     name: 🔒 Security Audit
@@ -82,7 +87,15 @@ jobs:
       - name: 📦 Install Dependencies
         run: npm ci --prefer-offline --no-audit
 
-      - name: 🛡️ NPM Security Audit
+      # The extension ships zero runtime dependencies, so anything reported here
+      # would actually reach users. Blocking is correct.
+      - name: 🛡️ Runtime Dependency Audit
+        run: npm audit --omit=dev --audit-level=moderate
+
+      # Dev tooling never ships. Report it as a warning so a fresh advisory does
+      # not break the scheduled run before Dependabot lands the bump.
+      - name: 🧰 Dev Dependency Audit (report only)
+        continue-on-error: true
         run: npm audit --audit-level=high
 
   build:
@@ -104,22 +117,14 @@ jobs:
         run: npm ci --prefer-offline --no-audit
 
       - name: 🏗️ Build Extension Package
-        run: |
-          zip -r AutoJoin-SteamGifts-${{ github.sha }}.zip . \
-            -x "node_modules/*" \
-            -x ".git/*" \
-            -x ".github/*" \
-            -x "tests/*" \
-            -x "*.test.js" \
-            -x ".eslintrc.json" \
-            -x ".prettierrc.json" \
-            -x "package*.json"
+        run: npm run package
 
       - name: 📤 Upload Build Artifact
         uses: actions/upload-artifact@v7
         with:
           name: extension-build-${{ github.sha }}
-          path: AutoJoin-SteamGifts-${{ github.sha }}.zip
+          path: dist/*.zip
+          if-no-files-found: error
           retention-days: 30
 
   release:
@@ -130,6 +135,7 @@ jobs:
 
     permissions:
       contents: write
+      actions: read
 
     steps:
       - name: 📥 Checkout Code
@@ -137,41 +143,43 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: 🏷️ Resolve Release Tag
+        id: tag
+        run: |
+          VERSION="v$(node -p "require('./manifest.json').version")"
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+          echo "release_name=AutoJoin for SteamGifts ${VERSION}" >> "$GITHUB_OUTPUT"
+          if git rev-parse -q --verify "refs/tags/${VERSION}" >/dev/null; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+            echo "::notice::Tag ${VERSION} already published, skipping release."
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: 📥 Download Build Artifact
+        if: steps.tag.outputs.exists == 'false'
         uses: actions/download-artifact@v8
         with:
           name: extension-build-${{ github.sha }}
-
-      - name: 🏷️ Generate Release Tag
-        id: tag
-        run: |
-          VERSION=$(node -p "require('./manifest.json').version")
-          echo "version=v${VERSION}" >> $GITHUB_OUTPUT
-          echo "release_name=AutoJoin for SteamGifts v${VERSION}" >> $GITHUB_OUTPUT
-
-      - name: 📝 Generate Release Notes
-        id: notes
-        run: |
-          echo "notes<<EOF" >> $GITHUB_OUTPUT
-          echo "## 🎮 AutoJoin for SteamGifts ${{ steps.tag.outputs.version }}" >> $GITHUB_OUTPUT
-          echo "" >> $GITHUB_OUTPUT
-          echo "### 📦 Installation" >> $GITHUB_OUTPUT
-          echo "1. Download the \`AutoJoin-SteamGifts-${{ github.sha }}.zip\` file" >> $GITHUB_OUTPUT
-          echo "2. Extract and load as unpacked extension in Chrome/Firefox" >> $GITHUB_OUTPUT
-          echo "3. Visit [SteamGifts.com](https://www.steamgifts.com) and enjoy!" >> $GITHUB_OUTPUT
-          echo "" >> $GITHUB_OUTPUT
-          echo "### 🔧 Changes in this version" >> $GITHUB_OUTPUT
-          echo "See commit history for detailed changes." >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+          path: dist
 
       - name: 🚀 Create Release
+        if: steps.tag.outputs.exists == 'false'
         uses: softprops/action-gh-release@v3.0.2
         with:
           tag_name: ${{ steps.tag.outputs.version }}
           name: ${{ steps.tag.outputs.release_name }}
-          body: ${{ steps.notes.outputs.notes }}
-          files: AutoJoin-SteamGifts-${{ github.sha }}.zip
+          body: |
+            ## 🎮 AutoJoin for SteamGifts ${{ steps.tag.outputs.version }}
+
+            ### 📦 Installation
+            1. Download the `.zip` attached to this release
+            2. Extract and load as unpacked extension in Chrome/Firefox
+            3. Visit [SteamGifts.com](https://www.steamgifts.com) and enjoy!
+
+            ### 🔧 Changes in this version
+            See [CHANGELOG.md](https://github.com/bernardopg/AutoJoin-for-SteamGifts/blob/main/CHANGELOG.md).
+          generate_release_notes: true
+          files: dist/*.zip
           draft: false
           prerelease: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

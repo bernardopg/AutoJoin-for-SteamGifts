@@ -243,7 +243,7 @@ const fetchSteamStoreUserDataWithBrowserSession = async () => {
 
           try {
             data = JSON.parse(text);
-          } catch (error) {
+          } catch {
             data = null;
           }
 
@@ -395,7 +395,7 @@ const findAndRedeemKeys = async (wonPage) => {
       keyBtn.parentElement.nextElementSibling.querySelector('form');
     const winnerId = dataForm.querySelector("input[name='winner_id']").value;
     const xsrfToken = dataForm.querySelector("input[name='xsrf_token']").value;
-    let latestSteamKeyRedeemResponse = ''; // for debugging
+    let latestSteamKeyRedeemResponse; // for debugging
 
     // Request the won key
     const formData = new FormData();
@@ -898,9 +898,7 @@ const settingsloaded = async () => {
     timepassed = 0; // reset timepassed
     const link = `https://www.steamgifts.com/giveaways/search?type=${settings.PageForBG}&level_min=${settings.MinLevelBG}&level_max=${settings.LastKnownLevel}&page=`;
     const wishLink = `https://www.steamgifts.com/giveaways/search?type=wishlist&level_min=${settings.MinLevelBG}&level_max=${settings.LastKnownLevel}&page=`;
-    let linkToUse = '';
-    if (useWishlistPriorityForMainBG) linkToUse = wishLink;
-    else linkToUse = link;
+    let linkToUse = useWishlistPriorityForMainBG ? wishLink : link;
     arr.length = 0;
 
     const res = await fetch(linkToUse + 1);

@@ -148,18 +148,21 @@ npm test
 
 ```bash
 # Linting e formatação
-npm run lint          # ESLint
-npm run format        # Prettier
+npm run lint          # ESLint (flat config em eslint.config.mjs)
+npm run lint:fix      # ESLint com --fix
+npm run format        # Prettier (check)
+npm run format:fix    # Prettier (write)
 npm run check         # Lint + Format
 
-# Testes
-npm test              # Testes unitários
-npm run test:watch    # Testes em modo watch
+# Testes e validações
+npm test              # Testes unitários (node --test)
+npm run metadata:check # Versão/README/repositório
+npm run i18n:check    # Paridade de traduções
+npm run verify        # metadata + i18n + testes
 
 # Utilidades
-npm run dev           # Modo desenvolvimento
-npm run build         # Build para produção
-npm run package       # Criar .zip para distribuição
+npm run build         # Build para produção (build/extension)
+npm run package       # Criar .zip para distribuição (dist/)
 ```
 
 ### 📝 Padrões de Código

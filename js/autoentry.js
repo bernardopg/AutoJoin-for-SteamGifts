@@ -656,8 +656,8 @@ function onPageLoad() {
         const steamGroupGiveaway = Boolean(
           current.querySelector('.giveaway__column--group'),
         );
-        const giveawayLevel = Boolean(
-          current.querySelector('.giveaway__column--contributor-level'),
+        const giveawayLevel = current.querySelector(
+          '.giveaway__column--contributor-level',
         )
           ? parseInt(
               current

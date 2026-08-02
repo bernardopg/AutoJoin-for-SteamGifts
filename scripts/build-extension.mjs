@@ -61,4 +61,6 @@ fs.writeFileSync(
   ) + '\n',
 );
 
-console.log(`Build ready at ${path.relative(rootDir, buildDir)} (version ${manifest.version}).`);
+console.log(
+  `Build ready at ${path.relative(rootDir, buildDir)} (version ${manifest.version}).`,
+);

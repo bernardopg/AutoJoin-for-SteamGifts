@@ -114,7 +114,7 @@ git diff                     # Ver alterações
 | **📦 Dependências** | Atualização de packages | Apenas patches de segurança |
 | **🏗️ Build** | Geração de .zip para distribuição | Sem upload para lojas |
 | **🔄 Git Operations** | Commits, branches | Sem force push |
-| **⚙️ Configuração** | Alterações em .eslintrc, etc. | Validação humana necessária |
+| **⚙️ Configuração** | Alterações em eslint.config.mjs, etc. | Validação humana necessária |
 
 #### ❌ **Tarefas Proibidas (Alto Risco)**
 
@@ -251,7 +251,7 @@ Configure e use.
 
    ```bash
    # ⚠️ Validar antes de modificar
-   vim .eslintrc.json
+   vim eslint.config.mjs
    ```
 
 ### 🧪 Testing & Validation
