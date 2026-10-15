@@ -1,7 +1,7 @@
 /* General Styles for AutoJoin Extension */
 /* Note: CSS Variables are defined in variables.css */
 
-.btnSingle {
+.sgxEntryBtn {
   cursor: pointer;
   width: 130px;
   height: 80px;
@@ -15,59 +15,59 @@
   overflow: hidden;
 }
 
-.btnSingle:hover {
+.sgxEntryBtn:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-.btnSingle:active {
+.sgxEntryBtn:active {
   transform: translateY(0);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.btnSingle:disabled {
+.sgxEntryBtn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
   transform: none;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
-.btnSingle[walkState='join'] {
+.sgxEntryBtn[walkState='join'] {
   background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
   color: white;
 }
 
-.btnSingle[walkState='join']:hover:not(:disabled) {
+.sgxEntryBtn[walkState='join']:hover:not(:disabled) {
   background: linear-gradient(135deg, #45a049 0%, #3d8b40 100%);
 }
 
-.btnSingle[walkState='leave'] {
+.sgxEntryBtn[walkState='leave'] {
   background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
   color: white;
 }
 
-.btnSingle[walkState='leave']:hover:not(:disabled) {
+.sgxEntryBtn[walkState='leave']:hover:not(:disabled) {
   background: linear-gradient(135deg, #d32f2f 0%, #b71c1c 100%);
 }
 
-.btnSingle[walkState|='no'] {
+.sgxEntryBtn[walkState|='no'] {
   background: linear-gradient(135deg, #9e9e9e 0%, #757575 100%);
   color: white;
   cursor: not-allowed;
 }
 
-.btnSingle[walkState|='no']:hover {
+.sgxEntryBtn[walkState|='no']:hover {
   background: linear-gradient(135deg, #757575 0%, #616161 100%);
 }
 
 /* Loading spinner animation for buttons */
-.btnSingle.loading {
+.sgxEntryBtn.loading {
   position: relative;
   color: transparent !important;
   pointer-events: none;
 }
 
-.btnSingle.loading::after {
+.sgxEntryBtn.loading::after {
   content: '';
   position: absolute;
   top: 50%;
@@ -88,7 +88,7 @@
 }
 
 /* Success state for buttons */
-.btnSingle.success {
+.sgxEntryBtn.success {
   background: linear-gradient(135deg, #28a745 0%, #20c997 100%) !important;
   animation: successPulse 0.6s ease-in-out;
 }
@@ -150,7 +150,7 @@
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
-#btnSettings.AutoJoinButtonEnabled {
+#btnSettings.sgxEntryEnabled {
   width: 50px;
   height: 50px;
   cursor: pointer;
@@ -164,13 +164,13 @@
   justify-content: center;
 }
 
-#btnSettings.AutoJoinButtonEnabled:hover {
+#btnSettings.sgxEntryEnabled:hover {
   background: linear-gradient(135deg, #f57c00 0%, #ef6c00 100%);
   transform: scale(1.05);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-#btnSettings.AutoJoinButtonEnabled i {
+#btnSettings.sgxEntryEnabled i {
   color: white;
   font-size: 1.5rem;
 }
@@ -191,7 +191,7 @@
   /* hidden until we have a message to show */
 }
 
-#buttonsAJ {
+#sgxActions {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -199,17 +199,17 @@
   margin: 8px 0 4px;
 }
 
-#buttonsAJ #btnAutoJoin {
+#sgxActions #btnAutoJoin {
   margin-right: 4px;
 }
 
 /* Make the warning take a new line under the buttons */
-#buttonsAJ #suspensionNotice {
+#sgxActions #suspensionNotice {
   flex-basis: 100%;
 }
 
 /* Optional helper banner to guide permission/profile visibility */
-.aj-permission-banner {
+.sgx-perm-banner {
   display: none;
   /* shown by JS only when needed */
   background: #fff3cd;
@@ -221,12 +221,12 @@
   font-size: 0.95rem;
 }
 
-.aj-permission-banner a {
+.sgx-perm-banner a {
   color: #6b4f00;
   text-decoration: underline;
 }
 
-.pointsFloating {
+.sgxPointsFloater {
   position: fixed;
   opacity: 0;
   background: rgba(0, 0, 0, 0.9);
@@ -718,7 +718,7 @@
 }
 
 /* Prevent page scrolling when settings modal is open */
-body.aj-modal-open {
+body.sgx-modal-open {
   overflow: hidden !important;
 }
 
@@ -759,7 +759,7 @@ body.aj-modal-open {
   }
 }
 
-#buttonsAJ:hover #suspensionNotice {
+#sgxActions:hover #suspensionNotice {
   animation: pulse 3s infinite;
 }
 

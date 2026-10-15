@@ -322,11 +322,11 @@ function onPageLoad() {
     document.body.appendChild(info);
   }
   if (settings.AutoJoinButton) {
-    const buttonsAJ = document.createElement('div');
-    buttonsAJ.id = 'buttonsAJ';
+    const sgxActions = document.createElement('div');
+    sgxActions.id = 'sgxActions';
     const btnSettings = document.createElement('button');
     btnSettings.id = 'btnSettings';
-    btnSettings.className = 'AutoJoinButtonEnabled';
+    btnSettings.className = 'sgxEntryEnabled';
     const cog = document.createElement('i');
     cog.className = 'fa fa-cog fa-4x fa-inverse';
     btnSettings.appendChild(cog);
@@ -382,14 +382,14 @@ function onPageLoad() {
     linkToAnnouncement.append(riskLine, readMoreLine);
     suspensionNotice.appendChild(linkToAnnouncement);
 
-    buttonsAJ.appendChild(btnAutoJoin);
-    buttonsAJ.appendChild(btnSettings);
-    buttonsAJ.appendChild(suspensionNotice);
+    sgxActions.appendChild(btnAutoJoin);
+    sgxActions.appendChild(btnSettings);
+    sgxActions.appendChild(suspensionNotice);
     const featuredSummary = document.querySelector('.featured__summary');
     if (featuredSummary) {
-      featuredSummary.prepend(buttonsAJ);
+      featuredSummary.prepend(sgxActions);
     } else {
-      document.body.appendChild(buttonsAJ);
+      document.body.appendChild(sgxActions);
     }
   } else {
     // Add a Settings button to the navbar if not already present
@@ -424,7 +424,7 @@ function onPageLoad() {
       if (existing) {
         document.getElementById('settingsShade')?.classList.add('fadeIn');
         existing.classList.add('fadeIn');
-        document.body.classList.add('aj-modal-open');
+        document.body.classList.add('sgx-modal-open');
         setTimeout(() => {
           existing.querySelector('button, input, select, textarea, a')?.focus();
         }, 0);
@@ -444,7 +444,7 @@ function onPageLoad() {
             clearInterval(wait);
             document.getElementById('settingsShade')?.classList.add('fadeIn');
             modal.classList.add('fadeIn');
-            document.body.classList.add('aj-modal-open');
+            document.body.classList.add('sgx-modal-open');
             setTimeout(() => {
               modal
                 .querySelector('button, input, select, textarea, a')
@@ -524,7 +524,7 @@ function onPageLoad() {
           loadSettings();
           document.getElementById('settingsShade').classList.add('fadeIn');
           document.getElementById('settingsDiv').classList.add('fadeIn');
-          document.body.classList.add('aj-modal-open');
+          document.body.classList.add('sgx-modal-open');
           setTimeout(() => {
             document
               .querySelector(
@@ -557,7 +557,7 @@ function onPageLoad() {
   let accountInfo = null;
   if (settings.ShowPoints) {
     accountInfo = document.querySelector('a[href="/account"]').cloneNode(true);
-    accountInfo.classList.add('pointsFloating');
+    accountInfo.classList.add('sgxPointsFloater');
     accountInfo.style.position = 'fixed';
     accountInfo.style.opacity = '0';
     accountInfo.style.top = '4em';
@@ -721,7 +721,7 @@ function onPageLoad() {
                         '',
                       );
                       entered++;
-                      const btnEl = current.querySelector('.btnSingle');
+                      const btnEl = current.querySelector('.sgxEntryBtn');
                       btnEl.setAttribute('walkState', 'leave');
                       btnEl.disabled = false;
                       btnEl.textContent = t('content.leave');
@@ -839,7 +839,7 @@ function onPageLoad() {
     // }
     loadingNextPage = false;
     // Avoid double infinite-scroll when PageEnhancer already set it up
-    const enhancerActivated = Boolean(window.__AJ_InfScrollActivated);
+    const enhancerActivated = Boolean(window.__sgxInfScroll);
     if (settings.InfiniteScrolling && !enhancerActivated) {
       const spinnerEl = document.createElement('div');
       spinnerEl.style.marginLeft = 'auto';
@@ -883,7 +883,7 @@ function onPageLoad() {
   function updateButtons() {
     if (settings.ShowButtons) {
       document
-        .querySelectorAll('.btnSingle:not([walkState="no-level"])')
+        .querySelectorAll('.sgxEntryBtn:not([walkState="no-level"])')
         .forEach((el) => {
           if (!el.parentElement.classList.contains('is-faded')) {
             const pointsNeededRaw = el.parentElement
@@ -965,7 +965,7 @@ function onPageLoad() {
     });
 
   document.addEventListener('click', async (event) => {
-    const clickedEl = event.target.closest('.btnSingle');
+    const clickedEl = event.target.closest('.sgxEntryBtn');
     if (clickedEl) {
       // Prevent multiple clicks during processing
       if (

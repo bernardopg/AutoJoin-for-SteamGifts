@@ -2,7 +2,7 @@
 /* Buttons, Forms, and Interactive Elements */
 
 /* Base Button Styles */
-.btnSingle {
+.sgxEntryBtn {
   cursor: pointer;
   width: 130px;
   height: 80px;
@@ -17,65 +17,65 @@
   will-change: transform, box-shadow;
 }
 
-.btnSingle:hover {
+.sgxEntryBtn:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
 }
 
-.btnSingle:active {
+.sgxEntryBtn:active {
   transform: translateY(0);
   box-shadow: var(--shadow-sm);
 }
 
-.btnSingle:disabled {
+.sgxEntryBtn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
   transform: none;
   box-shadow: var(--shadow-sm);
 }
 
-.btnSingle:focus-visible {
+.sgxEntryBtn:focus-visible {
   outline: 2px solid var(--primary-color);
   outline-offset: 2px;
 }
 
 /* Button States */
-.btnSingle[walkState='join'] {
+.sgxEntryBtn[walkState='join'] {
   background: var(--gradient-success);
   color: var(--white);
 }
 
-.btnSingle[walkState='join']:hover:not(:disabled) {
+.sgxEntryBtn[walkState='join']:hover:not(:disabled) {
   background: linear-gradient(135deg, #45a049 0%, #3d8b40 100%);
 }
 
-.btnSingle[walkState='leave'] {
+.sgxEntryBtn[walkState='leave'] {
   background: var(--gradient-danger);
   color: var(--white);
 }
 
-.btnSingle[walkState='leave']:hover:not(:disabled) {
+.sgxEntryBtn[walkState='leave']:hover:not(:disabled) {
   background: linear-gradient(135deg, #d32f2f 0%, #b71c1c 100%);
 }
 
-.btnSingle[walkState|='no'] {
+.sgxEntryBtn[walkState|='no'] {
   background: var(--gradient-secondary);
   color: var(--white);
   cursor: not-allowed;
 }
 
-.btnSingle[walkState|='no']:hover {
+.sgxEntryBtn[walkState|='no']:hover {
   background: linear-gradient(135deg, #757575 0%, #616161 100%);
 }
 
 /* Loading State */
-.btnSingle.loading {
+.sgxEntryBtn.loading {
   position: relative;
   color: transparent !important;
   pointer-events: none;
 }
 
-.btnSingle.loading::after {
+.sgxEntryBtn.loading::after {
   content: '';
   position: absolute;
   top: 50%;
@@ -130,7 +130,7 @@
 }
 
 /* Settings Toggle Button */
-#btnSettings.AutoJoinButtonEnabled {
+#btnSettings.sgxEntryEnabled {
   width: 50px;
   height: 50px;
   cursor: pointer;
@@ -145,18 +145,18 @@
   will-change: transform, box-shadow;
 }
 
-#btnSettings.AutoJoinButtonEnabled:hover {
+#btnSettings.sgxEntryEnabled:hover {
   background: linear-gradient(135deg, #f57c00 0%, #ef6c00 100%);
   transform: scale(1.05);
   box-shadow: var(--shadow-md);
 }
 
-#btnSettings.AutoJoinButtonEnabled i {
+#btnSettings.sgxEntryEnabled i {
   color: var(--white);
   font-size: 1.5rem;
 }
 
-#btnSettings.AutoJoinButtonEnabled:focus-visible {
+#btnSettings.sgxEntryEnabled:focus-visible {
   outline: 2px solid var(--warning-color);
   outline-offset: 2px;
 }
@@ -167,7 +167,7 @@
   box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
 }
 
-.btnSingle.success {
+.sgxEntryBtn.success {
   background: linear-gradient(
     135deg,
     var(--success-color) 0%,

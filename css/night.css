@@ -174,7 +174,7 @@ body.night-theme .sidebar__navigation__item {
 /* Do not invert site images; preserve original colors to avoid negative-looking thumbnails */
 
 /* AutoJoin specific elements */
-body.night-theme .pointsFloating {
+body.night-theme .sgxPointsFloater {
   z-index: var(--z-fixed);
   color: var(--text-secondary) !important;
   background: rgba(0, 0, 0, 0.95);
@@ -195,11 +195,11 @@ body.night-theme #info {
   color: var(--text-primary);
 }
 
-body.night-theme .btnSingle {
+body.night-theme .sgxEntryBtn {
   box-shadow: var(--shadow-md);
 }
 
-body.night-theme .btnSingle:hover:not(:disabled) {
+body.night-theme .sgxEntryBtn:hover:not(:disabled) {
   box-shadow: var(--shadow-lg);
 }
 
@@ -538,7 +538,7 @@ body.night-theme #suspensionNotice {
    ================================= */
 
 /* Permission banner - Clean and modern */
-body.night-theme .aj-permission-banner {
+body.night-theme .sgx-perm-banner {
   background: linear-gradient(
     135deg,
     rgba(59, 130, 246, 0.08) 0%,
@@ -558,12 +558,12 @@ body.night-theme .aj-permission-banner {
   backdrop-filter: blur(8px);
 }
 
-body.night-theme .aj-permission-banner strong {
+body.night-theme .sgx-perm-banner strong {
   color: #f1f5f9 !important;
   font-weight: 500 !important;
 }
 
-body.night-theme .aj-permission-banner a {
+body.night-theme .sgx-perm-banner a {
   color: #60a5fa !important;
   font-weight: 500 !important;
   text-decoration: none !important;
@@ -572,7 +572,7 @@ body.night-theme .aj-permission-banner a {
   transition: all 0.2s ease !important;
 }
 
-body.night-theme .aj-permission-banner a:hover {
+body.night-theme .sgx-perm-banner a:hover {
   color: #93c5fd !important;
   background: rgba(59, 130, 246, 0.1) !important;
 }
@@ -620,7 +620,7 @@ body.night-theme #btnAutoJoin:disabled {
 }
 
 /* Settings button - Minimal and elegant */
-body.night-theme #btnSettings.AutoJoinButtonEnabled {
+body.night-theme #btnSettings.sgxEntryEnabled {
   background: rgba(71, 85, 105, 0.8) !important;
   border: 1px solid rgba(148, 163, 184, 0.3) !important;
   border-radius: 8px !important;
@@ -635,19 +635,19 @@ body.night-theme #btnSettings.AutoJoinButtonEnabled {
   justify-content: center !important;
 }
 
-body.night-theme #btnSettings.AutoJoinButtonEnabled:hover {
+body.night-theme #btnSettings.sgxEntryEnabled:hover {
   background: rgba(100, 116, 139, 0.9) !important;
   border-color: rgba(148, 163, 184, 0.5) !important;
   transform: translateY(-1px) !important;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
 }
 
-body.night-theme #btnSettings.AutoJoinButtonEnabled i {
+body.night-theme #btnSettings.sgxEntryEnabled i {
   color: #cbd5e1 !important;
   font-size: 18px !important; /* Reduzido de fa-4x */
 }
 
-body.night-theme #btnSettings.AutoJoinButtonEnabled:hover i {
+body.night-theme #btnSettings.sgxEntryEnabled:hover i {
   color: #e2e8f0 !important;
 }
 
@@ -698,7 +698,7 @@ body.night-theme #suspensionNotice::after:hover {
 }
 
 /* Hidden state for suspension notice */
-body.night-theme #suspensionNotice.aj-hidden {
+body.night-theme #suspensionNotice.sgx-hidden {
   opacity: 0 !important;
   transform: translateY(-10px) !important;
   pointer-events: none !important;
@@ -709,12 +709,12 @@ body.night-theme #suspensionNotice.aj-hidden {
 }
 
 /* Alternative: Completely hide suspension notice option */
-body.night-theme #suspensionNotice.aj-permanently-hidden {
+body.night-theme #suspensionNotice.sgx-hidden-perm {
   display: none !important;
 }
 
 /* Minimized state - shows just a tiny indicator */
-body.night-theme #suspensionNotice.aj-minimized {
+body.night-theme #suspensionNotice.sgx-minimized {
   padding: 6px 12px !important;
   margin: 8px 0 !important;
   background: rgba(239, 68, 68, 0.05) !important;
@@ -722,11 +722,11 @@ body.night-theme #suspensionNotice.aj-minimized {
   cursor: pointer !important;
 }
 
-body.night-theme #suspensionNotice.aj-minimized a {
+body.night-theme #suspensionNotice.sgx-minimized a {
   display: none !important;
 }
 
-body.night-theme #suspensionNotice.aj-minimized::before {
+body.night-theme #suspensionNotice.sgx-minimized::before {
   content: '⚠️ Click to view suspension warning' !important;
   color: #94a3b8 !important;
   font-size: 12px !important;
@@ -735,7 +735,7 @@ body.night-theme #suspensionNotice.aj-minimized::before {
     -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
 }
 
-body.night-theme #suspensionNotice.aj-minimized::after {
+body.night-theme #suspensionNotice.sgx-minimized::after {
   display: none !important;
 }
 
@@ -779,7 +779,7 @@ body.night-theme #suspensionNotice:hover {
 }
 
 /* Button container layout - Clean spacing */
-body.night-theme #buttonsAJ {
+body.night-theme #sgxActions {
   display: flex !important;
   align-items: center !important;
   gap: 12px !important;
@@ -812,7 +812,7 @@ body.night-theme #info {
 }
 
 /* Remove animations and pulse effects for cleaner look */
-body.night-theme #buttonsAJ:hover #suspensionNotice {
+body.night-theme #sgxActions:hover #suspensionNotice {
   animation: none !important;
 }
 
@@ -837,7 +837,7 @@ body.night-theme #btnSettings:focus {
 body,
 #pageFooterDock #pageFooterDockToggle,
 #pageFooterDock footer,
-.pointsFloating,
+.sgxPointsFloater,
 #info,
 #settingsDiv,
 .settings-section,

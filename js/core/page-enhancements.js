@@ -107,7 +107,7 @@ class PageEnhancer {
 
     // Mark that we've bound the navbar settings button to avoid duplicate bindings elsewhere
     try {
-      window.__AJ_SettingsNavBound = true;
+      window.__sgxNavBound = true;
     } catch {}
   }
 
@@ -312,7 +312,7 @@ class PageEnhancer {
 
     // Mark global inf-scroll flag to avoid double registration from legacy code
     try {
-      window.__AJ_InfScrollActivated = true;
+      window.__sgxInfScroll = true;
     } catch {
       // no-op in non-window contexts
     }

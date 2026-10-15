@@ -18,7 +18,7 @@
 }
 
 /* Button Container */
-#buttonsAJ {
+#sgxActions {
   display: flex;
   align-items: center;
   gap: var(--spacing-lg);
@@ -26,12 +26,12 @@
   margin: var(--spacing-sm) 0 var(--spacing-xs);
 }
 
-#buttonsAJ #btnAutoJoin {
+#sgxActions #btnAutoJoin {
   margin-right: var(--spacing-xs);
 }
 
 /* Suspension Notice */
-#buttonsAJ #suspensionNotice {
+#sgxActions #suspensionNotice {
   flex-basis: 100%;
 }
 
@@ -45,7 +45,7 @@
 }
 
 /* Permission Banner */
-.aj-permission-banner {
+.sgx-perm-banner {
   display: none;
   background: var(--warning-light);
   border: 1px solid var(--warning-border);
@@ -56,13 +56,13 @@
   font-size: 0.95rem;
 }
 
-.aj-permission-banner a {
+.sgx-perm-banner a {
   color: #6b4f00;
   text-decoration: underline;
 }
 
 /* Floating Points Display */
-.pointsFloating {
+.sgxPointsFloater {
   position: fixed;
   opacity: 0;
   background: rgba(0, 0, 0, 0.9);

@@ -67,7 +67,7 @@
       event.preventDefault();
       event.stopPropagation();
       showDismissOptions();
-    } else if (noticeElement.classList.contains('aj-minimized')) {
+    } else if (noticeElement.classList.contains('sgx-minimized')) {
       // Expand if minimized
       expandNotice();
     }
@@ -81,7 +81,7 @@
       event.preventDefault();
       showDismissOptions();
     } else if (event.key === 'Enter' || event.key === ' ') {
-      if (noticeElement.classList.contains('aj-minimized')) {
+      if (noticeElement.classList.contains('sgx-minimized')) {
         event.preventDefault();
         expandNotice();
       }
@@ -113,7 +113,7 @@
    */
   function createDismissModal(options) {
     const modal = document.createElement('div');
-    modal.className = 'aj-dismiss-modal';
+    modal.className = 'sgx-modal-dismiss';
     modal.style.cssText = `
             position: fixed;
             top: 0;
@@ -259,21 +259,21 @@
   function handleDismissAction(action) {
     switch (action) {
       case 'permanent':
-        noticeElement.classList.add('aj-permanently-hidden');
+        noticeElement.classList.add('sgx-hidden-perm');
         localStorage.setItem(STORAGE_KEY, 'true');
         localStorage.removeItem(MINIMIZED_KEY);
         break;
 
       case 'minimize':
-        noticeElement.classList.add('aj-minimized');
-        noticeElement.classList.remove('aj-hidden');
+        noticeElement.classList.add('sgx-minimized');
+        noticeElement.classList.remove('sgx-hidden');
         localStorage.setItem(MINIMIZED_KEY, 'true');
         localStorage.removeItem(STORAGE_KEY);
         break;
 
       case 'session':
-        noticeElement.classList.add('aj-hidden');
-        noticeElement.classList.remove('aj-minimized');
+        noticeElement.classList.add('sgx-hidden');
+        noticeElement.classList.remove('sgx-minimized');
         // Don't save to localStorage - only for this session
         break;
 
@@ -287,7 +287,7 @@
    * Expand minimized notice
    */
   function expandNotice() {
-    noticeElement.classList.remove('aj-minimized');
+    noticeElement.classList.remove('sgx-minimized');
     localStorage.removeItem(MINIMIZED_KEY);
   }
 
@@ -299,9 +299,9 @@
     const isMinimized = localStorage.getItem(MINIMIZED_KEY) === 'true';
 
     if (isPermanentlyHidden) {
-      noticeElement.classList.add('aj-permanently-hidden');
+      noticeElement.classList.add('sgx-hidden-perm');
     } else if (isMinimized) {
-      noticeElement.classList.add('aj-minimized');
+      noticeElement.classList.add('sgx-minimized');
     }
   }
 
@@ -314,15 +314,15 @@
     hidePermanently: () => handleDismissAction('permanent'),
     show: () => {
       noticeElement.classList.remove(
-        'aj-hidden',
-        'aj-minimized',
-        'aj-permanently-hidden',
+        'sgx-hidden',
+        'sgx-minimized',
+        'sgx-hidden-perm',
       );
       localStorage.removeItem(STORAGE_KEY);
       localStorage.removeItem(MINIMIZED_KEY);
     },
     toggle: () => {
-      if (noticeElement.classList.contains('aj-minimized')) {
+      if (noticeElement.classList.contains('sgx-minimized')) {
         expandNotice();
       } else {
         handleDismissAction('minimize');

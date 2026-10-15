@@ -7,6 +7,73 @@ importScripts(
 );
 
 /*
+  Service-worker fetches would otherwise carry `Origin: chrome-extension://<id>`
+  and no Referer at all, while genuine page requests always carry the site's own
+  Origin/Referer — an easy server-side automation tell. These session rules
+  rewrite the headers for requests initiated by this extension so background
+  joins look identical to page-originated traffic. Only requests initiated by
+  this extension are touched; the site's own page requests keep their headers.
+*/
+const setupRequestHeaderRules = async () => {
+  if (!chrome.declarativeNetRequest?.updateSessionRules) return;
+  try {
+    await chrome.declarativeNetRequest.updateSessionRules({
+      removeRuleIds: [1, 2],
+      addRules: [
+        {
+          // Entry/leave POSTs: match the page's own ajax.php requests exactly
+          id: 1,
+          priority: 1,
+          action: {
+            type: 'modifyHeaders',
+            requestHeaders: [
+              {
+                header: 'origin',
+                operation: 'set',
+                value: 'https://www.steamgifts.com',
+              },
+              {
+                header: 'referer',
+                operation: 'set',
+                value: 'https://www.steamgifts.com/',
+              },
+            ],
+          },
+          condition: {
+            urlFilter: '||www.steamgifts.com/ajax.php',
+            initiatorDomains: [chrome.runtime.id],
+            resourceTypes: ['xmlhttprequest'],
+          },
+        },
+        {
+          // Page-scan GETs: same Referer a logged-in browsing session would send
+          id: 2,
+          priority: 1,
+          action: {
+            type: 'modifyHeaders',
+            requestHeaders: [
+              {
+                header: 'referer',
+                operation: 'set',
+                value: 'https://www.steamgifts.com/',
+              },
+            ],
+          },
+          condition: {
+            requestDomains: ['www.steamgifts.com', 'steamgifts.com'],
+            initiatorDomains: [chrome.runtime.id],
+            resourceTypes: ['xmlhttprequest'],
+          },
+        },
+      ],
+    });
+  } catch (error) {
+    console.debug('declarativeNetRequest header rules unavailable:', error);
+  }
+};
+setupRequestHeaderRules();
+
+/*
   This script page is the background script. autoentry.js is the autojoin button and other page
   modifications
 */

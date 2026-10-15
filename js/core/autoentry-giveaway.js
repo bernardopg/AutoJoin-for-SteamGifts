@@ -508,14 +508,14 @@
               const leaveBtn = document.createElement('input');
               leaveBtn.type = 'button';
               leaveBtn.value = t('content.leave');
-              leaveBtn.className = 'btnSingle';
+              leaveBtn.className = 'sgxEntryBtn';
               leaveBtn.setAttribute('walkState', 'leave');
               giveawayInnerWrap.appendChild(leaveBtn);
             }
           } else if (settings.ShowButtons) {
             const joinBtn = document.createElement('input');
             joinBtn.type = 'button';
-            joinBtn.className = 'btnSingle';
+            joinBtn.className = 'sgxEntryBtn';
             if (
               giveawayInnerWrap.querySelector(
                 '.giveaway__column--contributor-level--negative',

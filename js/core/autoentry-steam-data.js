@@ -72,7 +72,7 @@
     function updateSteamDataBanner(steamDataIssueKey, retryContext = {}) {
       const featuredSummary = document.querySelector('.featured__summary');
       const anchor = featuredSummary || document.body;
-      let banner = document.getElementById('aj-permission-banner');
+      let banner = document.getElementById('sgx-perm-banner');
 
       if (!steamDataIssueKey) {
         if (banner) {
@@ -83,8 +83,8 @@
 
       if (!banner) {
         banner = document.createElement('div');
-        banner.id = 'aj-permission-banner';
-        banner.className = 'aj-permission-banner';
+        banner.id = 'sgx-perm-banner';
+        banner.className = 'sgx-perm-banner';
 
         if (featuredSummary) {
           anchor.prepend(banner);

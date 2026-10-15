@@ -7,6 +7,14 @@ e este projeto segue [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [2.1.0] - 2026-10-15
+
+### 🔒 Segurança (anti-detecção)
+
+- **Normalização de headers do service worker**: nova permissão `declarativeNetRequest` e regras de sessão que reescrevem `Origin` e `Referer` das requisições feitas pelo service worker para `https://www.steamgifts.com`. Antes, os fetches de background saíam com `Origin: chrome-extension://<id>` (ou sem `Referer`), um indicador trivial de automação no lado do servidor. Somente requisições iniciadas pela própria extensão são afetadas; o tráfego da página permanece intacto.
+- **Fingerprints de DOM removidos**: classes e globals com assinatura reconhecível de script de autojoin (`btnSingle`, `buttonsAJ`, `AutoJoinButtonEnabled`, `pointsFloating`, `aj-hidden`, `aj-modal-open`, `aj-minimized`, `aj-permanently-hidden`, `aj-permission-banner`, `aj-dismiss-modal`, `__AJ_*`) foram renomeados para identificadores neutros com prefixo `sgx`/`sgx-`, sem nenhuma referência a "autojoin" no DOM injetado.
+- `tests/stealth.test.js` ampliado: além dos canários de id, agora varre os content scripts e o CSS injetado procurando tokens de fingerprint, exige a permissão `declarativeNetRequest` no manifest e garante que o background instala as regras de header.
+
 ## [2.0.3] - 2026-10-15
 
 ### 🔒 Segurança (anti-detecção)

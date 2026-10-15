@@ -123,3 +123,81 @@ test('legacy canary ids are gone from the codebase', () => {
     );
   }
 });
+
+// Identifiers historically used by this (and similar) extensions that make
+// injected DOM state trivially attributable to "an autojoin script".
+// Scans only what SteamGifts pages can actually observe: the content scripts
+// and the CSS injected into steamgifts.com (options-page files are excluded).
+const FINGERPRINT_TOKENS = [
+  'btnSingle',
+  'buttonsAJ',
+  'AutoJoinButtonEnabled',
+  'pointsFloating',
+  'aj-hidden',
+  'aj-modal-open',
+  'aj-minimized',
+  'aj-permanently-hidden',
+  'aj-permission-banner',
+  'aj-dismiss-modal',
+  '__AJ_',
+];
+
+const CONTENT_SCRIPT_FILES = [
+  'js/autoentry.js',
+  'js/suspension-notice.js',
+  'js/utils-enhanced.js',
+  'js/core/autoentry-giveaway.js',
+  'js/core/autoentry-steam-data.js',
+  'js/core/giveaway.js',
+  'js/core/i18n.js',
+  'js/core/page-enhancements.js',
+  'js/core/settings-actions.js',
+  'js/core/settings-store.js',
+  'js/core/steam-community.js',
+  'js/core/timing.js',
+  'css/general.css',
+  'css/night.css',
+];
+
+test('no extension fingerprint tokens in content scripts or injected CSS', () => {
+  const offenders = [];
+  for (const rel of CONTENT_SCRIPT_FILES) {
+    const source = fs.readFileSync(path.join(rootDir, rel), 'utf8');
+    for (const token of FINGERPRINT_TOKENS) {
+      if (source.includes(token)) {
+        offenders.push(`${rel}: contains "${token}"`);
+      }
+    }
+  }
+  assert.deepEqual(
+    offenders,
+    [],
+    `Fingerprint tokens must not appear in injected code:\n${offenders.join('\n')}`,
+  );
+});
+
+test('manifest requests declarativeNetRequest for header normalization', () => {
+  const manifest = JSON.parse(
+    fs.readFileSync(path.join(rootDir, 'manifest.json'), 'utf8'),
+  );
+  assert.ok(
+    manifest.permissions.includes('declarativeNetRequest'),
+    'declarativeNetRequest permission is required to normalize Origin/Referer ' +
+      'headers on service-worker requests',
+  );
+});
+
+test('background script installs session header rules', () => {
+  const source = fs.readFileSync(
+    path.join(rootDir, 'js/backgroundpage.js'),
+    'utf8',
+  );
+  assert.ok(
+    source.includes('declarativeNetRequest.updateSessionRules'),
+    'backgroundpage.js must install declarativeNetRequest session rules',
+  );
+  assert.ok(
+    source.includes('modifyHeaders'),
+    'backgroundpage.js must rewrite Origin/Referer via modifyHeaders',
+  );
+});

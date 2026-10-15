@@ -560,7 +560,7 @@ function settingsAttachEventListeners() {
     // Close on Escape even without modifiers when modal is open
     if (
       e.key === 'Escape' &&
-      document.body.classList.contains('aj-modal-open')
+      document.body.classList.contains('sgx-modal-open')
     ) {
       e.preventDefault();
       document.querySelector('.settingsCancel')?.click();
@@ -568,7 +568,7 @@ function settingsAttachEventListeners() {
     }
 
     // Trap focus within modal while open
-    if (e.key === 'Tab' && document.body.classList.contains('aj-modal-open')) {
+    if (e.key === 'Tab' && document.body.classList.contains('sgx-modal-open')) {
       const modal = document.getElementById('settingsDiv');
       if (!modal) return;
       const focusable = modal.querySelectorAll(
@@ -643,7 +643,7 @@ function settingsAttachEventListeners() {
       settingsDivEl.classList.remove('fadeIn');
       settingsDivEl.classList.add('fadeOut');
       // Re-enable page scrolling when modal closes
-      document.body.classList.remove('aj-modal-open');
+      document.body.classList.remove('sgx-modal-open');
     });
   });
 
