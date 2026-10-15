@@ -468,3 +468,6 @@ ga-debug.js
 
 .claude
 .serena
+
+# Playwright MCP artifacts
+.playwright-mcp/
