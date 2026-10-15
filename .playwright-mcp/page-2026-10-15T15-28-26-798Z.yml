@@ -1,0 +1,20 @@
+- generic [active] [ref=e1]:
+  - main [ref=e2]:
+    - generic [ref=e3]:
+      - heading "www.steamgifts.com" [level=1] [ref=e5]
+      - heading "Executando verificação de segurança" [level=2] [ref=e6]
+      - paragraph [ref=e7]: Este site utiliza um serviço de segurança para proteção contra bots maliciosos. Esta página é exibida enquanto o site verifica se você não é um bot.
+  - contentinfo [ref=e14]:
+    - generic [ref=e16]:
+      - generic [ref=e18]:
+        - text: "Ray ID:"
+        - code [ref=e19]: a4afda855adebe74
+      - generic [ref=e20]:
+        - generic [ref=e21]:
+          - text: Desempenho e segurança da
+          - link "Cloudflare, abre em uma nova aba" [ref=e22] [cursor=pointer]:
+            - /url: https://www.cloudflare.com?utm_source=challenge&utm_campaign=m
+            - text: Cloudflare
+        - link "Privacidade, abre em uma nova aba" [ref=e24] [cursor=pointer]:
+          - /url: https://www.cloudflare.com/pt-br/privacypolicy/
+          - text: Privacidade

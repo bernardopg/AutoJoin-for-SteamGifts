@@ -3,6 +3,7 @@ importScripts(
   'core/i18n.js',
   'core/settings-store.js',
   'core/steam-store.js',
+  'core/timing.js',
 );
 
 /*
@@ -753,6 +754,10 @@ function pagesloaded() {
   }
 
   let timeouts = [];
+  // Humanized pacing: jittered, non-uniform delays instead of fixed intervals
+  const scheduler = globalThis.AutoJoinTiming?.createScheduler(
+    settings.DelayBG,
+  );
 
   for (const ga of arr) {
     if (ga.level < settings.MinLevelBG) {
@@ -803,6 +808,7 @@ function pagesloaded() {
 
           const res = await fetch('https://www.steamgifts.com/ajax.php', {
             method: 'post',
+            credentials: 'include',
             body: formData,
           });
           const jsonResponse = await res.json();
@@ -835,8 +841,10 @@ function pagesloaded() {
             console.debug('^Entered');
           }
         },
-        (timeouts.length + 1) * settings.DelayBG * 1000 +
-          Math.floor(Math.random() * 2001),
+        scheduler
+          ? scheduler.next()
+          : (timeouts.length + 1) * settings.DelayBG * 1000 +
+              Math.floor(Math.random() * 2001),
       ),
     );
   }

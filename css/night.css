@@ -183,8 +183,8 @@ body.night-theme .pointsFloating {
 }
 
 /* Scope dark backgrounds to our footer elements only */
-body.night-theme #ajFooter #ajFooterArrowWrap,
-body.night-theme #ajFooter footer {
+body.night-theme #pageFooterDock #pageFooterDockToggle,
+body.night-theme #pageFooterDock footer {
   background-color: var(--bg-primary);
 }
 
@@ -835,8 +835,8 @@ body.night-theme #btnSettings:focus {
 
 /* Smooth transitions for theme switching */
 body,
-#ajFooter #ajFooterArrowWrap,
-#ajFooter footer,
+#pageFooterDock #pageFooterDockToggle,
+#pageFooterDock footer,
 .pointsFloating,
 #info,
 #settingsDiv,

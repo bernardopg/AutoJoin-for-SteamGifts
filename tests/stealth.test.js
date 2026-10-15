@@ -1,0 +1,125 @@
+const fs = require('node:fs');
+const path = require('node:path');
+const test = require('node:test');
+const assert = require('node:assert/strict');
+
+const rootDir = path.resolve(__dirname, '..');
+
+// SteamGifts ships an anti-extension canary in its JS bundle (bundle-v18.js):
+// on window load it looks for elements whose ids match specific patterns
+// historically injected by autojoin extensions and, when ALL of them are
+// present, reports the account to the server (ajax.php?do=dbb8ff).
+//
+// The known patterns (base64-encoded in the bundle) are:
+//   1. id starts with "ajFo", ends with "oter",      length 8  (was: ajFooter)
+//   2. id starts with "navb", ends with "arPin",     length 9  (was: navbarPin)
+//   3. id starts with "ajFo", ends with "oterArrow", length 13 (was: ajFooterArrow)
+//
+// This test scans every id the extension can inject (JS assignments,
+// createElement configs, HTML attributes and CSS selectors) and fails if any
+// of them matches a known canary pattern.
+const CANARIES = [
+  {
+    name: 'ajFooter',
+    matches: (id) =>
+      id.startsWith('ajFo') && id.endsWith('oter') && id.length === 8,
+  },
+  {
+    name: 'navbarPin',
+    matches: (id) =>
+      id.startsWith('navb') && id.endsWith('arPin') && id.length === 9,
+  },
+  {
+    name: 'ajFooterArrow',
+    matches: (id) =>
+      id.startsWith('ajFo') && id.endsWith('oterArrow') && id.length === 13,
+  },
+];
+
+const walk = (dir, exts, files = []) => {
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      walk(full, exts, files);
+    } else if (exts.includes(path.extname(entry.name))) {
+      files.push(full);
+    }
+  }
+  return files;
+};
+
+const collectIds = () => {
+  const ids = new Map(); // id -> [sources]
+
+  const add = (id, source) => {
+    if (!ids.has(id)) ids.set(id, []);
+    ids.get(id).push(source);
+  };
+
+  const jsFiles = [
+    ...walk(path.join(rootDir, 'js'), ['.js']),
+    ...walk(path.join(rootDir, 'html'), ['.html']),
+  ];
+  for (const file of jsFiles) {
+    const source = fs.readFileSync(file, 'utf8');
+    const rel = path.relative(rootDir, file);
+    const patterns = [
+      /\bid:\s*'([^']+)'/g,
+      /\bid:\s*"([^"]+)"/g,
+      /\.id\s*=\s*'([^']+)'/g,
+      /\.id\s*=\s*"([^"]+)"/g,
+      /getElementById\(\s*'([^']+)'/g,
+      /getElementById\(\s*"([^"]+)"/g,
+      /\bid="([^"]+)"/g,
+    ];
+    for (const pattern of patterns) {
+      for (const match of source.matchAll(pattern)) {
+        add(match[1], rel);
+      }
+    }
+  }
+
+  for (const file of walk(path.join(rootDir, 'css'), ['.css'])) {
+    const source = fs.readFileSync(file, 'utf8');
+    const rel = path.relative(rootDir, file);
+    for (const match of source.matchAll(/#([A-Za-z][\w-]*)/g)) {
+      add(match[1], rel);
+    }
+  }
+
+  return ids;
+};
+
+test('no injected element id matches a SteamGifts anti-extension canary', () => {
+  const ids = collectIds();
+  const offenders = [];
+  for (const [id, sources] of ids) {
+    for (const canary of CANARIES) {
+      if (canary.matches(id)) {
+        offenders.push(
+          `${id} (matches "${canary.name}" canary) in ${sources.join(', ')}`,
+        );
+      }
+    }
+  }
+  assert.deepEqual(
+    offenders,
+    [],
+    `Ids matching SteamGifts canary patterns must be renamed:\n${offenders.join('\n')}`,
+  );
+});
+
+test('legacy canary ids are gone from the codebase', () => {
+  const ids = collectIds();
+  for (const legacy of [
+    'ajFooter',
+    'ajFooterArrow',
+    'ajFooterArrowWrap',
+    'navbarPin',
+  ]) {
+    assert.ok(
+      !ids.has(legacy),
+      `Legacy canary id "${legacy}" still present in: ${(ids.get(legacy) || []).join(', ')}`,
+    );
+  }
+});

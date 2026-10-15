@@ -1,0 +1,1110 @@
+- generic [active] [ref=f12e1]:
+  - text:       
+  - banner [ref=f12e2]:
+    - navigation [ref=f12e3]:
+      - generic [ref=f12e4]:
+        - generic [ref=f12e5]:
+          - text: 
+          - link "Giveaways" [ref=f12e6] [cursor=pointer]:
+            - /url: /
+          - generic [ref=f12e7] [cursor=pointer]: 
+        - link "Deals" [ref=f12e10] [cursor=pointer]:
+          - /url: /discussions/deals
+        - link "Discussions" [ref=f12e12] [cursor=pointer]:
+          - /url: /discussions
+        - generic [ref=f12e13]:
+          - text:   
+          - link "Help" [ref=f12e14] [cursor=pointer]:
+            - /url: /about/faq
+          - generic [ref=f12e15] [cursor=pointer]: 
+      - link " Sign in through STEAM" [ref=f12e19] [cursor=pointer]:
+        - /url: https://steamcommunity.com/openid/login?openid.identity=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.claimed_id=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.ns=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0&openid.mode=checkid_setup&openid.return_to=https%3A%2F%2Fwww.steamgifts.com%2F
+        - generic [ref=f12e20]: 
+        - text: Sign in through STEAM
+  - generic [ref=f12e23]:
+    - link [ref=f12e24] [cursor=pointer]:
+      - /url: /giveaway/e6VQI/rent-a-car-simulator-24
+    - generic [ref=f12e26]:
+      - generic [ref=f12e27]: Win free Steam gifts
+      - generic [ref=f12e28]: Or create a giveaway to share with your friends or online gaming community!
+      - link "Sign in through Steam " [ref=f12e29] [cursor=pointer]:
+        - /url: https://steamcommunity.com/openid/login?openid.identity=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.claimed_id=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.ns=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0&openid.mode=checkid_setup&openid.return_to=https%3A%2F%2Fwww.steamgifts.com%2F
+        - generic [ref=f12e30]:
+          - generic [ref=f12e31]: Sign in through Steam
+          - generic [ref=f12e32]: 
+  - generic [ref=f12e35]:
+    - generic [ref=f12e36]:
+      - generic [ref=f12e37]:
+        - textbox "Search..." [ref=f12e38]
+        - generic [ref=f12e39]: 
+      - generic [ref=f12e40]: Browse
+      - list [ref=f12e41]:
+        - listitem [ref=f12e42]:
+          - link " All" [ref=f12e43] [cursor=pointer]:
+            - /url: /
+            - generic [ref=f12e44]: 
+            - generic [ref=f12e45]: All
+        - listitem [ref=f12e47]:
+          - link "Recommended" [ref=f12e48] [cursor=pointer]:
+            - /url: /giveaways/search?type=recommended
+        - listitem [ref=f12e51]:
+          - link "Multiple Copies" [ref=f12e52] [cursor=pointer]:
+            - /url: /giveaways/search?copy_min=2
+        - listitem [ref=f12e55]:
+          - link "DLC" [ref=f12e56] [cursor=pointer]:
+            - /url: /giveaways/search?dlc=true
+        - listitem [ref=f12e59]:
+          - link "New" [ref=f12e60] [cursor=pointer]:
+            - /url: /giveaways/search?type=new
+      - generic [ref=f12e63]:
+        - text: 
+        - generic [ref=f12e64]:
+          - insertion:
+            - iframe [ref=f12e66]
+    - generic [ref=f12e67]:
+      - generic [ref=f12e68]:
+        - generic [ref=f12e69]: Featured
+        - generic [ref=f12e70] [cursor=pointer]: Show 1 More
+      - generic [ref=f12e71]:
+        - generic [ref=f12e73]:
+          - generic [ref=f12e74]:
+            - 'heading "Mai: Child of Ages (124 Copies) (15P)   " [level=2] [ref=f12e75]':
+              - 'link "Mai: Child of Ages" [ref=f12e76] [cursor=pointer]':
+                - /url: /giveaway/PPMap/mai-child-of-ages
+              - generic [ref=f12e77]: (124 Copies)
+              - generic [ref=f12e78]: (15P)
+              - link "" [ref=f12e79] [cursor=pointer]:
+                - /url: https://store.steampowered.com/app/3499550?utm_source=SteamGifts
+              - generic [ref=f12e81] [cursor=pointer]: 
+              - link "" [ref=f12e82] [cursor=pointer]:
+                - /url: /game/z0L05/mai-child-of-ages
+            - generic [ref=f12e84]:
+              - generic [ref=f12e85]:
+                - generic [ref=f12e86]: 
+                - text: 1 day remaining
+              - generic [ref=f12e87]:
+                - text: 19 hours ago by
+                - link "MalboM" [ref=f12e88] [cursor=pointer]:
+                  - /url: /user/MalboM
+            - generic [ref=f12e89]:
+              - link "2,990 entries" [ref=f12e90] [cursor=pointer]:
+                - /url: /giveaway/PPMap/mai-child-of-ages/entries
+              - link "13 comments" [ref=f12e91] [cursor=pointer]:
+                - /url: /giveaway/PPMap/mai-child-of-ages
+          - generic [ref=f12e92]: 
+          - link [ref=f12e95] [cursor=pointer]:
+            - /url: /user/MalboM
+          - link [ref=f12e96] [cursor=pointer]:
+            - /url: /giveaway/PPMap/mai-child-of-ages
+        - generic [ref=f12e98]:
+          - generic [ref=f12e99]:
+            - 'heading "Puzzles: Space Cats Soundtrack (50 Copies) (1P)   " [level=2] [ref=f12e100]':
+              - 'link "Puzzles: Space Cats Soundtrack" [ref=f12e101] [cursor=pointer]':
+                - /url: /giveaway/ToGnC/puzzles-space-cats-soundtrack
+              - generic [ref=f12e102]: (50 Copies)
+              - generic [ref=f12e103]: (1P)
+              - link "" [ref=f12e104] [cursor=pointer]:
+                - /url: https://store.steampowered.com/app/4902000?utm_source=SteamGifts
+              - generic [ref=f12e106] [cursor=pointer]: 
+              - link "" [ref=f12e107] [cursor=pointer]:
+                - /url: /game/kbXBg/puzzles-space-cats-soundtrack
+            - generic [ref=f12e109]:
+              - generic [ref=f12e110]:
+                - generic [ref=f12e111]: 
+                - text: 1 hour remaining
+              - generic [ref=f12e112]:
+                - text: 2 weeks ago by
+                - link "SilentMortir" [ref=f12e113] [cursor=pointer]:
+                  - /url: /user/SilentMortir
+            - generic [ref=f12e114]:
+              - link "19 entries" [ref=f12e115] [cursor=pointer]:
+                - /url: /giveaway/ToGnC/puzzles-space-cats-soundtrack/entries
+              - link "0 comments" [ref=f12e116] [cursor=pointer]:
+                - /url: /giveaway/ToGnC/puzzles-space-cats-soundtrack
+          - generic [ref=f12e117]: 
+          - link [ref=f12e120] [cursor=pointer]:
+            - /url: /user/SilentMortir
+          - link [ref=f12e121] [cursor=pointer]:
+            - /url: /giveaway/ToGnC/puzzles-space-cats-soundtrack
+        - text:     
+      - link "Giveaways" [ref=f12e124] [cursor=pointer]:
+        - /url: /
+      - generic [ref=f12e125]:
+        - generic [ref=f12e127]:
+          - generic [ref=f12e128]:
+            - heading "Rent A Car Simulator 24 (5 Copies) (13P)   " [level=2] [ref=f12e129]:
+              - link "Rent A Car Simulator 24" [ref=f12e130] [cursor=pointer]:
+                - /url: /giveaway/e6VQI/rent-a-car-simulator-24
+              - generic [ref=f12e131]: (5 Copies)
+              - generic [ref=f12e132]: (13P)
+              - link "" [ref=f12e133] [cursor=pointer]:
+                - /url: https://store.steampowered.com/app/2099680?utm_source=SteamGifts
+              - generic [ref=f12e135] [cursor=pointer]: 
+              - link "" [ref=f12e136] [cursor=pointer]:
+                - /url: /game/5rYF1/rent-a-car-simulator-24
+            - generic [ref=f12e138]:
+              - generic [ref=f12e139]:
+                - generic [ref=f12e140]: 
+                - text: 1 minute remaining
+              - generic [ref=f12e141]:
+                - text: 2 days ago by
+                - link "Raxert" [ref=f12e142] [cursor=pointer]:
+                  - /url: /user/Raxert
+            - generic [ref=f12e143]:
+              - link "2,350 entries" [ref=f12e144] [cursor=pointer]:
+                - /url: /giveaway/e6VQI/rent-a-car-simulator-24/entries
+              - link "3 comments" [ref=f12e145] [cursor=pointer]:
+                - /url: /giveaway/e6VQI/rent-a-car-simulator-24
+          - generic [ref=f12e146]: 
+          - link [ref=f12e149] [cursor=pointer]:
+            - /url: /user/Raxert
+          - link [ref=f12e150] [cursor=pointer]:
+            - /url: /giveaway/e6VQI/rent-a-car-simulator-24
+        - generic [ref=f12e152]:
+          - generic [ref=f12e153]:
+            - heading "Viewfinder (25P)   " [level=2] [ref=f12e154]:
+              - link "Viewfinder" [ref=f12e155] [cursor=pointer]:
+                - /url: /giveaway/I7AvO/viewfinder
+              - generic [ref=f12e156]: (25P)
+              - link "" [ref=f12e157] [cursor=pointer]:
+                - /url: https://store.steampowered.com/app/1382070?utm_source=SteamGifts
+              - generic [ref=f12e159] [cursor=pointer]: 
+              - link "" [ref=f12e160] [cursor=pointer]:
+                - /url: /game/oMnpp/viewfinder
+            - generic [ref=f12e162]:
+              - generic [ref=f12e163]:
+                - generic [ref=f12e164]: 
+                - text: 3 minutes remaining
+              - generic [ref=f12e165]:
+                - text: 1 week ago by
+                - link "LazyD" [ref=f12e166] [cursor=pointer]:
+                  - /url: /user/LazyD
+            - generic [ref=f12e167]:
+              - link "4,578 entries" [ref=f12e168] [cursor=pointer]:
+                - /url: /giveaway/I7AvO/viewfinder/entries
+              - link "11 comments" [ref=f12e169] [cursor=pointer]:
+                - /url: /giveaway/I7AvO/viewfinder
+          - link [ref=f12e170] [cursor=pointer]:
+            - /url: /user/LazyD
+          - link [ref=f12e171] [cursor=pointer]:
+            - /url: /giveaway/I7AvO/viewfinder
+        - generic [ref=f12e173]:
+          - generic [ref=f12e174]:
+            - heading "Puzzle Soundtrack (1P)   " [level=2] [ref=f12e175]:
+              - link "Puzzle Soundtrack" [ref=f12e176] [cursor=pointer]:
+                - /url: /giveaway/bw0su/puzzle-soundtrack
+              - generic [ref=f12e177]: (1P)
+              - link "" [ref=f12e178] [cursor=pointer]:
+                - /url: https://store.steampowered.com/app/4884040?utm_source=SteamGifts
+              - generic [ref=f12e180] [cursor=pointer]: 
+              - link "" [ref=f12e181] [cursor=pointer]:
+                - /url: /game/74yDv/puzzle-soundtrack
+            - generic [ref=f12e183]:
+              - generic [ref=f12e184]:
+                - generic [ref=f12e185]: 
+                - text: 5 minutes remaining
+              - generic [ref=f12e186]:
+                - text: 53 minutes ago by
+                - link "Theanyelpes" [ref=f12e187] [cursor=pointer]:
+                  - /url: /user/Theanyelpes
+              - generic "Contributor Level" [ref=f12e188]: Level 6+
+            - generic [ref=f12e189]:
+              - link "0 entries" [ref=f12e190] [cursor=pointer]:
+                - /url: /giveaway/bw0su/puzzle-soundtrack/entries
+              - link "0 comments" [ref=f12e191] [cursor=pointer]:
+                - /url: /giveaway/bw0su/puzzle-soundtrack
+          - link [ref=f12e192] [cursor=pointer]:
+            - /url: /user/Theanyelpes
+          - link [ref=f12e193] [cursor=pointer]:
+            - /url: /giveaway/bw0su/puzzle-soundtrack
+        - generic [ref=f12e195]:
+          - generic [ref=f12e196]:
+            - heading "Rogue Trooper Redux (25P)   " [level=2] [ref=f12e197]:
+              - link "Rogue Trooper Redux" [ref=f12e198] [cursor=pointer]:
+                - /url: /giveaway/NzQNP/rogue-trooper-redux
+              - generic [ref=f12e199]: (25P)
+              - link "" [ref=f12e200] [cursor=pointer]:
+                - /url: https://store.steampowered.com/app/529490?utm_source=SteamGifts
+              - generic [ref=f12e202] [cursor=pointer]: 
+              - link "" [ref=f12e203] [cursor=pointer]:
+                - /url: /game/YnJ66/rogue-trooper-redux
+            - generic [ref=f12e205]:
+              - generic [ref=f12e206]:
+                - generic [ref=f12e207]: 
+                - text: 8 minutes remaining
+              - generic [ref=f12e208]:
+                - text: 1 day ago by
+                - link "yiuc27" [ref=f12e209] [cursor=pointer]:
+                  - /url: /user/yiuc27
+            - generic [ref=f12e210]:
+              - link "2,588 entries" [ref=f12e211] [cursor=pointer]:
+                - /url: /giveaway/NzQNP/rogue-trooper-redux/entries
+              - link "4 comments" [ref=f12e212] [cursor=pointer]:
+                - /url: /giveaway/NzQNP/rogue-trooper-redux
+          - link [ref=f12e213] [cursor=pointer]:
+            - /url: /user/yiuc27
+          - link [ref=f12e214] [cursor=pointer]:
+            - /url: /giveaway/NzQNP/rogue-trooper-redux
+        - generic [ref=f12e216]:
+          - generic [ref=f12e217]:
+            - heading "Rain World (25P)   " [level=2] [ref=f12e218]:
+              - link "Rain World" [ref=f12e219] [cursor=pointer]:
+                - /url: /giveaway/rWwA7/rain-world
+              - generic [ref=f12e220]: (25P)
+              - link "" [ref=f12e221] [cursor=pointer]:
+                - /url: https://store.steampowered.com/app/312520?utm_source=SteamGifts
+              - generic [ref=f12e223] [cursor=pointer]: 
+              - link "" [ref=f12e224] [cursor=pointer]:
+                - /url: /game/7T0Gr/rain-world
+            - generic [ref=f12e226]:
+              - generic [ref=f12e227]:
+                - generic [ref=f12e228]: 
+                - text: 18 minutes remaining
+              - generic [ref=f12e229]:
+                - text: 1 day ago by
+                - link "yiuc27" [ref=f12e230] [cursor=pointer]:
+                  - /url: /user/yiuc27
+            - generic [ref=f12e231]:
+              - link "3,535 entries" [ref=f12e232] [cursor=pointer]:
+                - /url: /giveaway/rWwA7/rain-world/entries
+              - link "9 comments" [ref=f12e233] [cursor=pointer]:
+                - /url: /giveaway/rWwA7/rain-world
+          - link [ref=f12e234] [cursor=pointer]:
+            - /url: /user/yiuc27
+          - link [ref=f12e235] [cursor=pointer]:
+            - /url: /giveaway/rWwA7/rain-world
+        - generic [ref=f12e237]:
+          - generic [ref=f12e238]:
+            - heading "Initial Drift Online (5P)   " [level=2] [ref=f12e239]:
+              - link "Initial Drift Online" [ref=f12e240] [cursor=pointer]:
+                - /url: /giveaway/Gqsxu/initial-drift-online
+              - generic [ref=f12e241]: (5P)
+              - link "" [ref=f12e242] [cursor=pointer]:
+                - /url: https://store.steampowered.com/app/1456200?utm_source=SteamGifts
+              - generic [ref=f12e244] [cursor=pointer]: 
+              - link "" [ref=f12e245] [cursor=pointer]:
+                - /url: /game/Nrgr2/initial-drift-online
+            - generic [ref=f12e247]:
+              - generic [ref=f12e248]:
+                - generic [ref=f12e249]: 
+                - text: 30 minutes remaining
+              - generic [ref=f12e250]:
+                - text: 2 days ago by
+                - link "Yggdrasil1989" [ref=f12e251] [cursor=pointer]:
+                  - /url: /user/Yggdrasil1989
+            - generic [ref=f12e252]:
+              - link "672 entries" [ref=f12e253] [cursor=pointer]:
+                - /url: /giveaway/Gqsxu/initial-drift-online/entries
+              - link "1 comment" [ref=f12e254] [cursor=pointer]:
+                - /url: /giveaway/Gqsxu/initial-drift-online
+          - link [ref=f12e255] [cursor=pointer]:
+            - /url: /user/Yggdrasil1989
+          - link [ref=f12e256] [cursor=pointer]:
+            - /url: /giveaway/Gqsxu/initial-drift-online
+        - generic [ref=f12e258]:
+          - generic [ref=f12e259]:
+            - heading "Cat Cafe Manager (20P)   " [level=2] [ref=f12e260]:
+              - link "Cat Cafe Manager" [ref=f12e261] [cursor=pointer]:
+                - /url: /giveaway/NKD0K/cat-cafe-manager
+              - generic [ref=f12e262]: (20P)
+              - link "" [ref=f12e263] [cursor=pointer]:
+                - /url: https://store.steampowered.com/app/1354830?utm_source=SteamGifts
+              - generic [ref=f12e265] [cursor=pointer]: 
+              - link "" [ref=f12e266] [cursor=pointer]:
+                - /url: /game/38BI8/cat-cafe-manager
+            - generic [ref=f12e268]:
+              - generic [ref=f12e269]:
+                - generic [ref=f12e270]: 
+                - text: 30 minutes remaining
+              - generic [ref=f12e271]:
+                - text: 16 hours ago by
+                - link "CrabdaddyLonglegs" [ref=f12e272] [cursor=pointer]:
+                  - /url: /user/CrabdaddyLonglegs
+              - link "" [ref=f12e273] [cursor=pointer]:
+                - /url: /giveaway/NKD0K/cat-cafe-manager/region-restrictions
+              - generic "Contributor Level" [ref=f12e275]: Level 2+
+            - generic [ref=f12e276]:
+              - link "565 entries" [ref=f12e277] [cursor=pointer]:
+                - /url: /giveaway/NKD0K/cat-cafe-manager/entries
+              - link "0 comments" [ref=f12e278] [cursor=pointer]:
+                - /url: /giveaway/NKD0K/cat-cafe-manager
+          - generic [ref=f12e279]: 
+          - link [ref=f12e282] [cursor=pointer]:
+            - /url: /user/CrabdaddyLonglegs
+          - link [ref=f12e283] [cursor=pointer]:
+            - /url: /giveaway/NKD0K/cat-cafe-manager
+        - generic [ref=f12e284]:
+          - link "New The Factory Must Grow  Started 21 hours ago $6.00" [ref=f12e285] [cursor=pointer]:
+            - /url: https://www.steamgifts.com/redirect?url=https%3A%2F%2Fwww.humblebundle.com%2Fgames%2Ffactory-must-grow
+            - generic [ref=f12e287]:
+              - generic [ref=f12e288]: New The Factory Must Grow
+              - generic [ref=f12e289]:
+                - generic [ref=f12e290]: 
+                - generic [ref=f12e291]: Started 21 hours ago
+            - generic [ref=f12e292]: $6.00
+          - generic:
+            - insertion:
+              - generic:
+                - iframe
+        - generic [ref=f12e297]:
+          - generic [ref=f12e298]:
+            - heading "PC Tycoon 2 (8P)   " [level=2] [ref=f12e299]:
+              - link "PC Tycoon 2" [ref=f12e300] [cursor=pointer]:
+                - /url: /giveaway/wKTzh/pc-tycoon-2
+              - generic [ref=f12e301]: (8P)
+              - link "" [ref=f12e302] [cursor=pointer]:
+                - /url: https://store.steampowered.com/app/2832320?utm_source=SteamGifts
+              - generic [ref=f12e304] [cursor=pointer]: 
+              - link "" [ref=f12e305] [cursor=pointer]:
+                - /url: /game/XOcvR/pc-tycoon-2
+            - generic [ref=f12e307]:
+              - generic [ref=f12e308]:
+                - generic [ref=f12e309]: 
+                - text: 30 minutes remaining
+              - generic [ref=f12e310]:
+                - text: 16 hours ago by
+                - link "CrabdaddyLonglegs" [ref=f12e311] [cursor=pointer]:
+                  - /url: /user/CrabdaddyLonglegs
+              - generic "Contributor Level" [ref=f12e312]: Level 2+
+            - generic [ref=f12e313]:
+              - link "638 entries" [ref=f12e314] [cursor=pointer]:
+                - /url: /giveaway/wKTzh/pc-tycoon-2/entries
+              - link "1 comment" [ref=f12e315] [cursor=pointer]:
+                - /url: /giveaway/wKTzh/pc-tycoon-2
+          - generic [ref=f12e316]: 
+          - link [ref=f12e319] [cursor=pointer]:
+            - /url: /user/CrabdaddyLonglegs
+          - link [ref=f12e320] [cursor=pointer]:
+            - /url: /giveaway/wKTzh/pc-tycoon-2
+        - generic [ref=f12e322]:
+          - generic [ref=f12e323]:
+            - heading "Replicube (10P)   " [level=2] [ref=f12e324]:
+              - link "Replicube" [ref=f12e325] [cursor=pointer]:
+                - /url: /giveaway/mUn6k/replicube
+              - generic [ref=f12e326]: (10P)
+              - link "" [ref=f12e327] [cursor=pointer]:
+                - /url: https://store.steampowered.com/app/3401490?utm_source=SteamGifts
+              - generic [ref=f12e329] [cursor=pointer]: 
+              - link "" [ref=f12e330] [cursor=pointer]:
+                - /url: /game/1Ntvo/replicube
+            - generic [ref=f12e332]:
+              - generic [ref=f12e333]:
+                - generic [ref=f12e334]: 
+                - text: 30 minutes remaining
+              - generic [ref=f12e335]:
+                - text: 16 hours ago by
+                - link "CrabdaddyLonglegs" [ref=f12e336] [cursor=pointer]:
+                  - /url: /user/CrabdaddyLonglegs
+              - generic "Contributor Level" [ref=f12e337]: Level 2+
+            - generic [ref=f12e338]:
+              - link "635 entries" [ref=f12e339] [cursor=pointer]:
+                - /url: /giveaway/mUn6k/replicube/entries
+              - link "1 comment" [ref=f12e340] [cursor=pointer]:
+                - /url: /giveaway/mUn6k/replicube
+          - generic [ref=f12e341]: 
+          - link [ref=f12e344] [cursor=pointer]:
+            - /url: /user/CrabdaddyLonglegs
+          - link [ref=f12e345] [cursor=pointer]:
+            - /url: /giveaway/mUn6k/replicube
+        - generic [ref=f12e347]:
+          - generic [ref=f12e348]:
+            - heading "Talk to Strangers (5P)   " [level=2] [ref=f12e349]:
+              - link "Talk to Strangers" [ref=f12e350] [cursor=pointer]:
+                - /url: /giveaway/4sjCf/talk-to-strangers
+              - generic [ref=f12e351]: (5P)
+              - link "" [ref=f12e352] [cursor=pointer]:
+                - /url: https://store.steampowered.com/app/963280?utm_source=SteamGifts
+              - generic [ref=f12e354] [cursor=pointer]: 
+              - link "" [ref=f12e355] [cursor=pointer]:
+                - /url: /game/3KHvv/talk-to-strangers
+            - generic [ref=f12e357]:
+              - generic [ref=f12e358]:
+                - generic [ref=f12e359]: 
+                - text: 30 minutes remaining
+              - generic [ref=f12e360]:
+                - text: 16 hours ago by
+                - link "CrabdaddyLonglegs" [ref=f12e361] [cursor=pointer]:
+                  - /url: /user/CrabdaddyLonglegs
+              - generic "Contributor Level" [ref=f12e362]: Level 2+
+            - generic [ref=f12e363]:
+              - link "670 entries" [ref=f12e364] [cursor=pointer]:
+                - /url: /giveaway/4sjCf/talk-to-strangers/entries
+              - link "1 comment" [ref=f12e365] [cursor=pointer]:
+                - /url: /giveaway/4sjCf/talk-to-strangers
+          - generic [ref=f12e366]: 
+          - link [ref=f12e369] [cursor=pointer]:
+            - /url: /user/CrabdaddyLonglegs
+          - link [ref=f12e370] [cursor=pointer]:
+            - /url: /giveaway/4sjCf/talk-to-strangers
+        - generic [ref=f12e372]:
+          - generic [ref=f12e373]:
+            - heading "The Gap (20P)   " [level=2] [ref=f12e374]:
+              - link "The Gap" [ref=f12e375] [cursor=pointer]:
+                - /url: /giveaway/tKh7q/the-gap
+              - generic [ref=f12e376]: (20P)
+              - link "" [ref=f12e377] [cursor=pointer]:
+                - /url: https://store.steampowered.com/app/1458300?utm_source=SteamGifts
+              - generic [ref=f12e379] [cursor=pointer]: 
+              - link "" [ref=f12e380] [cursor=pointer]:
+                - /url: /game/QwZBv/the-gap
+            - generic [ref=f12e382]:
+              - generic [ref=f12e383]:
+                - generic [ref=f12e384]: 
+                - text: 30 minutes remaining
+              - generic [ref=f12e385]:
+                - text: 16 hours ago by
+                - link "CrabdaddyLonglegs" [ref=f12e386] [cursor=pointer]:
+                  - /url: /user/CrabdaddyLonglegs
+              - generic "Contributor Level" [ref=f12e387]: Level 2+
+            - generic [ref=f12e388]:
+              - link "1,356 entries" [ref=f12e389] [cursor=pointer]:
+                - /url: /giveaway/tKh7q/the-gap/entries
+              - link "3 comments" [ref=f12e390] [cursor=pointer]:
+                - /url: /giveaway/tKh7q/the-gap
+          - generic [ref=f12e391]: 
+          - link [ref=f12e394] [cursor=pointer]:
+            - /url: /user/CrabdaddyLonglegs
+          - link [ref=f12e395] [cursor=pointer]:
+            - /url: /giveaway/tKh7q/the-gap
+        - generic [ref=f12e397]:
+          - generic [ref=f12e398]:
+            - heading "Arkshot (5P)   " [level=2] [ref=f12e399]:
+              - link "Arkshot" [ref=f12e400] [cursor=pointer]:
+                - /url: /giveaway/Nw0lH/arkshot
+              - generic [ref=f12e401]: (5P)
+              - link "" [ref=f12e402] [cursor=pointer]:
+                - /url: https://store.steampowered.com/app/468800?utm_source=SteamGifts
+              - generic [ref=f12e404] [cursor=pointer]: 
+              - link "" [ref=f12e405] [cursor=pointer]:
+                - /url: /game/hhzfl/arkshot
+            - generic [ref=f12e407]:
+              - generic [ref=f12e408]:
+                - generic [ref=f12e409]: 
+                - text: 30 minutes remaining
+              - generic [ref=f12e410]:
+                - text: 16 hours ago by
+                - link "CrabdaddyLonglegs" [ref=f12e411] [cursor=pointer]:
+                  - /url: /user/CrabdaddyLonglegs
+              - generic "Contributor Level" [ref=f12e412]: Level 2+
+            - generic [ref=f12e413]:
+              - link "423 entries" [ref=f12e414] [cursor=pointer]:
+                - /url: /giveaway/Nw0lH/arkshot/entries
+              - link "1 comment" [ref=f12e415] [cursor=pointer]:
+                - /url: /giveaway/Nw0lH/arkshot
+          - generic [ref=f12e416]: 
+          - link [ref=f12e419] [cursor=pointer]:
+            - /url: /user/CrabdaddyLonglegs
+          - link [ref=f12e420] [cursor=pointer]:
+            - /url: /giveaway/Nw0lH/arkshot
+        - generic [ref=f12e422]:
+          - generic [ref=f12e423]:
+            - heading "Machick (7P)   " [level=2] [ref=f12e424]:
+              - link "Machick" [ref=f12e425] [cursor=pointer]:
+                - /url: /giveaway/IM6i2/machick
+              - generic [ref=f12e426]: (7P)
+              - link "" [ref=f12e427] [cursor=pointer]:
+                - /url: https://store.steampowered.com/app/2811200?utm_source=SteamGifts
+              - generic [ref=f12e429] [cursor=pointer]: 
+              - link "" [ref=f12e430] [cursor=pointer]:
+                - /url: /game/sXzlq/machick
+            - generic [ref=f12e432]:
+              - generic [ref=f12e433]:
+                - generic [ref=f12e434]: 
+                - text: 30 minutes remaining
+              - generic [ref=f12e435]:
+                - text: 16 hours ago by
+                - link "CrabdaddyLonglegs" [ref=f12e436] [cursor=pointer]:
+                  - /url: /user/CrabdaddyLonglegs
+              - generic "Contributor Level" [ref=f12e437]: Level 2+
+            - generic [ref=f12e438]:
+              - link "520 entries" [ref=f12e439] [cursor=pointer]:
+                - /url: /giveaway/IM6i2/machick/entries
+              - link "1 comment" [ref=f12e440] [cursor=pointer]:
+                - /url: /giveaway/IM6i2/machick
+          - generic [ref=f12e441]: 
+          - link [ref=f12e444] [cursor=pointer]:
+            - /url: /user/CrabdaddyLonglegs
+          - link [ref=f12e445] [cursor=pointer]:
+            - /url: /giveaway/IM6i2/machick
+        - generic [ref=f12e447]:
+          - generic [ref=f12e448]:
+            - heading "Memory Games Soundtrack (1P)   " [level=2] [ref=f12e449]:
+              - link "Memory Games Soundtrack" [ref=f12e450] [cursor=pointer]:
+                - /url: /giveaway/tmaU2/memory-games-soundtrack
+              - generic [ref=f12e451]: (1P)
+              - link "" [ref=f12e452] [cursor=pointer]:
+                - /url: https://store.steampowered.com/app/4851940?utm_source=SteamGifts
+              - generic [ref=f12e454] [cursor=pointer]: 
+              - link "" [ref=f12e455] [cursor=pointer]:
+                - /url: /game/oOXZE/memory-games-soundtrack
+            - generic [ref=f12e457]:
+              - generic [ref=f12e458]:
+                - generic [ref=f12e459]: 
+                - text: 31 minutes remaining
+              - generic [ref=f12e460]:
+                - text: 23 hours ago by
+                - link "fkostair" [ref=f12e461] [cursor=pointer]:
+                  - /url: /user/fkostair
+            - generic [ref=f12e462]:
+              - link "0 entries" [ref=f12e463] [cursor=pointer]:
+                - /url: /giveaway/tmaU2/memory-games-soundtrack/entries
+              - link "0 comments" [ref=f12e464] [cursor=pointer]:
+                - /url: /giveaway/tmaU2/memory-games-soundtrack
+          - link [ref=f12e465] [cursor=pointer]:
+            - /url: /user/fkostair
+          - link [ref=f12e466] [cursor=pointer]:
+            - /url: /giveaway/tmaU2/memory-games-soundtrack
+        - generic [ref=f12e468]:
+          - generic [ref=f12e469]:
+            - heading "Memory Games Soundtrack (5 Copies) (1P)   " [level=2] [ref=f12e470]:
+              - link "Memory Games Soundtrack" [ref=f12e471] [cursor=pointer]:
+                - /url: /giveaway/AhO2A/memory-games-soundtrack
+              - generic [ref=f12e472]: (5 Copies)
+              - generic [ref=f12e473]: (1P)
+              - link "" [ref=f12e474] [cursor=pointer]:
+                - /url: https://store.steampowered.com/app/4851940?utm_source=SteamGifts
+              - generic [ref=f12e476] [cursor=pointer]: 
+              - link "" [ref=f12e477] [cursor=pointer]:
+                - /url: /game/oOXZE/memory-games-soundtrack
+            - generic [ref=f12e479]:
+              - generic [ref=f12e480]:
+                - generic [ref=f12e481]: 
+                - text: 31 minutes remaining
+              - generic [ref=f12e482]:
+                - text: 19 hours ago by
+                - link "piginka" [ref=f12e483] [cursor=pointer]:
+                  - /url: /user/piginka
+            - generic [ref=f12e484]:
+              - link "0 entries" [ref=f12e485] [cursor=pointer]:
+                - /url: /giveaway/AhO2A/memory-games-soundtrack/entries
+              - link "0 comments" [ref=f12e486] [cursor=pointer]:
+                - /url: /giveaway/AhO2A/memory-games-soundtrack
+          - link [ref=f12e487] [cursor=pointer]:
+            - /url: /user/piginka
+          - link [ref=f12e488] [cursor=pointer]:
+            - /url: /giveaway/AhO2A/memory-games-soundtrack
+        - generic [ref=f12e490]:
+          - generic [ref=f12e491]:
+            - heading "Puzzle Soundtrack (5 Copies) (1P)   " [level=2] [ref=f12e492]:
+              - link "Puzzle Soundtrack" [ref=f12e493] [cursor=pointer]:
+                - /url: /giveaway/8PWai/puzzle-soundtrack
+              - generic [ref=f12e494]: (5 Copies)
+              - generic [ref=f12e495]: (1P)
+              - link "" [ref=f12e496] [cursor=pointer]:
+                - /url: https://store.steampowered.com/app/4884040?utm_source=SteamGifts
+              - generic [ref=f12e498] [cursor=pointer]: 
+              - link "" [ref=f12e499] [cursor=pointer]:
+                - /url: /game/74yDv/puzzle-soundtrack
+            - generic [ref=f12e501]:
+              - generic [ref=f12e502]:
+                - generic [ref=f12e503]: 
+                - text: 31 minutes remaining
+              - generic [ref=f12e504]:
+                - text: 19 hours ago by
+                - link "piginka" [ref=f12e505] [cursor=pointer]:
+                  - /url: /user/piginka
+            - generic [ref=f12e506]:
+              - link "3 entries" [ref=f12e507] [cursor=pointer]:
+                - /url: /giveaway/8PWai/puzzle-soundtrack/entries
+              - link "0 comments" [ref=f12e508] [cursor=pointer]:
+                - /url: /giveaway/8PWai/puzzle-soundtrack
+          - link [ref=f12e509] [cursor=pointer]:
+            - /url: /user/piginka
+          - link [ref=f12e510] [cursor=pointer]:
+            - /url: /giveaway/8PWai/puzzle-soundtrack
+        - generic [ref=f12e511]:
+          - link "Cozy After Dark Showcase Bundle  Started 2 days ago $8.00" [ref=f12e512] [cursor=pointer]:
+            - /url: https://www.steamgifts.com/redirect?url=https%3A%2F%2Fwww.humblebundle.com%2Fgames%2Fcozy-after-dark-showcase-bundle
+            - generic [ref=f12e514]:
+              - generic [ref=f12e515]: Cozy After Dark Showcase Bundle
+              - generic [ref=f12e516]:
+                - generic [ref=f12e517]: 
+                - generic [ref=f12e518]: Started 2 days ago
+            - generic [ref=f12e519]: $8.00
+          - generic:
+            - insertion:
+              - generic:
+                - iframe
+        - generic [ref=f12e524]:
+          - generic [ref=f12e525]:
+            - heading "This War of Mine (20P)   " [level=2] [ref=f12e526]:
+              - link "This War of Mine" [ref=f12e527] [cursor=pointer]:
+                - /url: /giveaway/muIOx/this-war-of-mine
+              - generic [ref=f12e528]: (20P)
+              - link "" [ref=f12e529] [cursor=pointer]:
+                - /url: https://store.steampowered.com/app/282070?utm_source=SteamGifts
+              - generic [ref=f12e531] [cursor=pointer]: 
+              - link "" [ref=f12e532] [cursor=pointer]:
+                - /url: /game/g528s/this-war-of-mine
+            - generic [ref=f12e534]:
+              - generic [ref=f12e535]:
+                - generic [ref=f12e536]: 
+                - text: 31 minutes remaining
+              - generic [ref=f12e537]:
+                - text: 34 minutes ago by
+                - link "Warning" [ref=f12e538] [cursor=pointer]:
+                  - /url: /user/Warning
+              - generic "Contributor Level" [ref=f12e539]: Level 5+
+            - generic [ref=f12e540]:
+              - link "8 entries" [ref=f12e541] [cursor=pointer]:
+                - /url: /giveaway/muIOx/this-war-of-mine/entries
+              - link "0 comments" [ref=f12e542] [cursor=pointer]:
+                - /url: /giveaway/muIOx/this-war-of-mine
+          - generic [ref=f12e543]: 
+          - link [ref=f12e546] [cursor=pointer]:
+            - /url: /user/Warning
+          - link [ref=f12e547] [cursor=pointer]:
+            - /url: /giveaway/muIOx/this-war-of-mine
+        - generic [ref=f12e549]:
+          - generic [ref=f12e550]:
+            - 'heading "Three Fourths Home: Extended Edition ... (7P)  " [level=2] [ref=f12e551]':
+              - 'link "Three Fourths Home: Extended Edition ..." [ref=f12e552] [cursor=pointer]':
+                - /url: /giveaway/IQaf6/three-fourths-home-extended-edition-deluxe-version
+              - generic [ref=f12e553]: (7P)
+              - link "" [ref=f12e554] [cursor=pointer]:
+                - /url: https://store.steampowered.com/sub/63460?utm_source=SteamGifts
+              - link "" [ref=f12e556] [cursor=pointer]:
+                - /url: /game/YDLrK/three-fourths-home-extended-edition-deluxe-version
+            - generic [ref=f12e558]:
+              - generic [ref=f12e559]:
+                - generic [ref=f12e560]: 
+                - text: 36 minutes remaining
+              - generic [ref=f12e561]:
+                - text: 23 hours ago by
+                - link "badblokebob" [ref=f12e562] [cursor=pointer]:
+                  - /url: /user/badblokebob
+              - generic "Contributor Level" [ref=f12e563]: Level 1+
+            - generic [ref=f12e564]:
+              - link "900 entries" [ref=f12e565] [cursor=pointer]:
+                - /url: /giveaway/IQaf6/three-fourths-home-extended-edition-deluxe-version/entries
+              - link "1 comment" [ref=f12e566] [cursor=pointer]:
+                - /url: /giveaway/IQaf6/three-fourths-home-extended-edition-deluxe-version
+          - link [ref=f12e567] [cursor=pointer]:
+            - /url: /user/badblokebob
+          - link "" [ref=f12e568] [cursor=pointer]:
+            - /url: /giveaway/IQaf6/three-fourths-home-extended-edition-deluxe-version
+        - generic [ref=f12e571]:
+          - generic [ref=f12e572]:
+            - heading "Puzzle Soundtrack (1P)   " [level=2] [ref=f12e573]:
+              - link "Puzzle Soundtrack" [ref=f12e574] [cursor=pointer]:
+                - /url: /giveaway/qcdK7/puzzle-soundtrack
+              - generic [ref=f12e575]: (1P)
+              - link "" [ref=f12e576] [cursor=pointer]:
+                - /url: https://store.steampowered.com/app/4884040?utm_source=SteamGifts
+              - generic [ref=f12e578] [cursor=pointer]: 
+              - link "" [ref=f12e579] [cursor=pointer]:
+                - /url: /game/74yDv/puzzle-soundtrack
+            - generic [ref=f12e581]:
+              - generic [ref=f12e582]:
+                - generic [ref=f12e583]: 
+                - text: 53 minutes remaining
+              - generic [ref=f12e584]:
+                - text: 14 hours ago by
+                - link "sGonee" [ref=f12e585] [cursor=pointer]:
+                  - /url: /user/sGonee
+            - generic [ref=f12e586]:
+              - link "3 entries" [ref=f12e587] [cursor=pointer]:
+                - /url: /giveaway/qcdK7/puzzle-soundtrack/entries
+              - link "0 comments" [ref=f12e588] [cursor=pointer]:
+                - /url: /giveaway/qcdK7/puzzle-soundtrack
+          - generic [ref=f12e589]: 
+          - link [ref=f12e592] [cursor=pointer]:
+            - /url: /user/sGonee
+          - link [ref=f12e593] [cursor=pointer]:
+            - /url: /giveaway/qcdK7/puzzle-soundtrack
+        - generic [ref=f12e595]:
+          - generic [ref=f12e596]:
+            - heading "Memory Games Soundtrack (1P)   " [level=2] [ref=f12e597]:
+              - link "Memory Games Soundtrack" [ref=f12e598] [cursor=pointer]:
+                - /url: /giveaway/IxolJ/memory-games-soundtrack
+              - generic [ref=f12e599]: (1P)
+              - link "" [ref=f12e600] [cursor=pointer]:
+                - /url: https://store.steampowered.com/app/4851940?utm_source=SteamGifts
+              - generic [ref=f12e602] [cursor=pointer]: 
+              - link "" [ref=f12e603] [cursor=pointer]:
+                - /url: /game/oOXZE/memory-games-soundtrack
+            - generic [ref=f12e605]:
+              - generic [ref=f12e606]:
+                - generic [ref=f12e607]: 
+                - text: 54 minutes remaining
+              - generic [ref=f12e608]:
+                - text: 14 hours ago by
+                - link "sGonee" [ref=f12e609] [cursor=pointer]:
+                  - /url: /user/sGonee
+            - generic [ref=f12e610]:
+              - link "0 entries" [ref=f12e611] [cursor=pointer]:
+                - /url: /giveaway/IxolJ/memory-games-soundtrack/entries
+              - link "0 comments" [ref=f12e612] [cursor=pointer]:
+                - /url: /giveaway/IxolJ/memory-games-soundtrack
+          - generic [ref=f12e613]: 
+          - link [ref=f12e616] [cursor=pointer]:
+            - /url: /user/sGonee
+          - link [ref=f12e617] [cursor=pointer]:
+            - /url: /giveaway/IxolJ/memory-games-soundtrack
+      - generic [ref=f12e618]:
+        - generic [ref=f12e619]:
+          - text: Displaying
+          - strong [ref=f12e620]: "1"
+          - text: to
+          - strong [ref=f12e621]: "20"
+        - generic [ref=f12e622]:
+          - link "1" [ref=f12e623] [cursor=pointer]:
+            - /url: /giveaways
+          - link "2" [ref=f12e624] [cursor=pointer]:
+            - /url: /giveaways/search?page=2
+          - text: ...
+          - link "Next " [ref=f12e625] [cursor=pointer]:
+            - /url: /giveaways/search?page=2
+            - text: Next
+            - generic [ref=f12e626]: 
+      - generic [ref=f12e627]:
+        - generic [ref=f12e629]:
+          - generic [ref=f12e630]:
+            - link "Deals" [ref=f12e631] [cursor=pointer]:
+              - /url: /discussions/deals
+            - link "View More" [ref=f12e632] [cursor=pointer]:
+              - /url: /discussions/deals
+          - generic [ref=f12e634]:
+            - generic [ref=f12e636]:
+              - link [ref=f12e638] [cursor=pointer]:
+                - /url: /user/quantr
+              - generic [ref=f12e639]:
+                - heading " Where are those giveaways coming from?" [level=3] [ref=f12e640]:
+                  - generic [ref=f12e641]: 
+                  - link "Where are those giveaways coming from?" [ref=f12e642] [cursor=pointer]:
+                    - /url: /discussion/EhJvw/where-are-those-giveaways-coming-from
+                - paragraph [ref=f12e643]:
+                  - link "18,764 Comments" [ref=f12e644] [cursor=pointer]:
+                    - /url: /discussion/EhJvw/where-are-those-giveaways-coming-from
+                  - text: "- Last post 1 minute ago by"
+                  - link "SkyFudgey" [ref=f12e645] [cursor=pointer]:
+                    - /url: /user/SkyFudgey
+                  - link "" [ref=f12e646] [cursor=pointer]:
+                    - /url: /go/comment/BuYcFdu
+            - generic [ref=f12e649]:
+              - link [ref=f12e651] [cursor=pointer]:
+                - /url: /user/sensualshakti
+              - generic [ref=f12e652]:
+                - heading " New MASTER LIST of ongoing Steam bundles 💚" [level=3] [ref=f12e653]:
+                  - generic [ref=f12e654]: 
+                  - link "New MASTER LIST of ongoing Steam bundles 💚" [ref=f12e655] [cursor=pointer]:
+                    - /url: /discussion/DmBGz/new-master-list-of-ongoing-steam-bundles
+                - paragraph [ref=f12e656]:
+                  - link "2,202 Comments" [ref=f12e657] [cursor=pointer]:
+                    - /url: /discussion/DmBGz/new-master-list-of-ongoing-steam-bundles
+                  - text: "- Last post 9 minutes ago by"
+                  - link "RhoninMagus" [ref=f12e658] [cursor=pointer]:
+                    - /url: /user/RhoninMagus
+                  - link "" [ref=f12e659] [cursor=pointer]:
+                    - /url: /go/comment/LuBs4di
+            - generic [ref=f12e662]:
+              - link [ref=f12e664] [cursor=pointer]:
+                - /url: /user/sylvain
+              - generic [ref=f12e665]:
+                - heading [level=3] [ref=f12e666]:
+                  - link "[Fanatical] Mystery Chest Bundle (oct 2026) - P..." [ref=f12e667] [cursor=pointer]:
+                    - /url: /discussion/TLzHw/fanatical-mystery-chest-bundle-oct-2026-pulls-stats
+                - paragraph [ref=f12e668]:
+                  - link "11 Comments" [ref=f12e669] [cursor=pointer]:
+                    - /url: /discussion/TLzHw/fanatical-mystery-chest-bundle-oct-2026-pulls-stats
+                  - text: "- Last post 19 minutes ago by"
+                  - link "gweedo007" [ref=f12e670] [cursor=pointer]:
+                    - /url: /user/gweedo007
+                  - link "" [ref=f12e671] [cursor=pointer]:
+                    - /url: /go/comment/DDDVvSt
+            - generic [ref=f12e674]:
+              - link [ref=f12e676] [cursor=pointer]:
+                - /url: /user/hallak65
+              - generic [ref=f12e677]:
+                - heading [level=3] [ref=f12e678]:
+                  - 'link "Total War: SHOGUN 2 - Complete Edition will be ..." [ref=f12e679] [cursor=pointer]':
+                    - /url: /discussion/KjU9e/total-war-shogun-2-complete-edition-will-be-releasing-on-october-13th
+                - paragraph [ref=f12e680]:
+                  - link "20 Comments" [ref=f12e681] [cursor=pointer]:
+                    - /url: /discussion/KjU9e/total-war-shogun-2-complete-edition-will-be-releasing-on-october-13th
+                  - text: "- Last post 20 minutes ago by"
+                  - link "SaltyMario" [ref=f12e682] [cursor=pointer]:
+                    - /url: /user/SaltyMario
+                  - link "" [ref=f12e683] [cursor=pointer]:
+                    - /url: /go/comment/NZsjN3c
+            - generic [ref=f12e686]:
+              - link [ref=f12e688] [cursor=pointer]:
+                - /url: /user/Formidolosus
+              - generic [ref=f12e689]:
+                - heading " [Humble Bundle] The Factory must Grow🐶" [level=3] [ref=f12e690]:
+                  - generic [ref=f12e691]: 
+                  - link "[Humble Bundle] The Factory must Grow🐶" [ref=f12e692] [cursor=pointer]:
+                    - /url: /discussion/IyE9s/humble-bundle-the-factory-must-grow
+                - paragraph [ref=f12e693]:
+                  - link "8 Comments" [ref=f12e694] [cursor=pointer]:
+                    - /url: /discussion/IyE9s/humble-bundle-the-factory-must-grow
+                  - text: "- Last post 1 hour ago by"
+                  - link "AKFalcon" [ref=f12e695] [cursor=pointer]:
+                    - /url: /user/AKFalcon
+                  - link "" [ref=f12e696] [cursor=pointer]:
+                    - /url: /go/comment/Yz0YZmK
+            - generic [ref=f12e699]:
+              - link [ref=f12e701] [cursor=pointer]:
+                - /url: /user/DaveQB
+              - generic [ref=f12e702]:
+                - heading [level=3] [ref=f12e703]:
+                  - link "[Indiegala] Still Wakes the Deep - 90% off, €3,..." [ref=f12e704] [cursor=pointer]:
+                    - /url: /discussion/XkCoq/indiegala-still-wakes-the-deep-90-off-349-hl
+                - paragraph [ref=f12e705]:
+                  - link "16 Comments" [ref=f12e706] [cursor=pointer]:
+                    - /url: /discussion/XkCoq/indiegala-still-wakes-the-deep-90-off-349-hl
+                  - text: "- Last post 2 hours ago by"
+                  - link "adam1224" [ref=f12e707] [cursor=pointer]:
+                    - /url: /user/adam1224
+                  - link "" [ref=f12e708] [cursor=pointer]:
+                    - /url: /go/comment/RYAXtfH
+            - generic [ref=f12e711]:
+              - link [ref=f12e713] [cursor=pointer]:
+                - /url: /user/msboring27
+              - generic [ref=f12e714]:
+                - heading [level=3] [ref=f12e715]:
+                  - link "[Indiegala] The Forgotten City - 90% off (HL)" [ref=f12e716] [cursor=pointer]:
+                    - /url: /discussion/PLDFM/indiegala-the-forgotten-city-90-off-hl
+                - paragraph [ref=f12e717]:
+                  - link "6 Comments" [ref=f12e718] [cursor=pointer]:
+                    - /url: /discussion/PLDFM/indiegala-the-forgotten-city-90-off-hl
+                  - text: "- Last post 6 hours ago by"
+                  - link "msboring27" [ref=f12e719] [cursor=pointer]:
+                    - /url: /user/msboring27
+                  - link "" [ref=f12e720] [cursor=pointer]:
+                    - /url: /go/comment/S5nJLU7
+        - generic [ref=f12e723]:
+          - generic [ref=f12e724]:
+            - link "Discussions" [ref=f12e725] [cursor=pointer]:
+              - /url: /discussions
+            - link "View More" [ref=f12e726] [cursor=pointer]:
+              - /url: /discussions
+          - generic [ref=f12e728]:
+            - generic [ref=f12e730]:
+              - link [ref=f12e732] [cursor=pointer]:
+                - /url: /user/ERIIIIKX
+              - generic [ref=f12e733]:
+                - heading [level=3] [ref=f12e734]:
+                  - link "from where do they get keys" [ref=f12e735] [cursor=pointer]:
+                    - /url: /discussion/2pLvs/from-where-do-they-get-keys
+                - paragraph [ref=f12e736]:
+                  - link "5 Comments" [ref=f12e737] [cursor=pointer]:
+                    - /url: /discussion/2pLvs/from-where-do-they-get-keys
+                  - text: "- Last post 12 minutes ago by"
+                  - link "hbarkas" [ref=f12e738] [cursor=pointer]:
+                    - /url: /user/hbarkas
+                  - link "" [ref=f12e739] [cursor=pointer]:
+                    - /url: /go/comment/P5i5nST
+            - generic [ref=f12e742]:
+              - link [ref=f12e744] [cursor=pointer]:
+                - /url: /user/gus09
+              - generic [ref=f12e745]:
+                - heading [level=3] [ref=f12e746]:
+                  - link "The Giveaways Club SG Group" [ref=f12e747] [cursor=pointer]:
+                    - /url: /discussion/KW15e/the-giveaways-club-sg-group
+                - paragraph [ref=f12e748]:
+                  - link "1,252 Comments" [ref=f12e749] [cursor=pointer]:
+                    - /url: /discussion/KW15e/the-giveaways-club-sg-group
+                  - text: "- Last post 38 minutes ago by"
+                  - link "makki" [ref=f12e750] [cursor=pointer]:
+                    - /url: /user/makki
+                  - link "" [ref=f12e751] [cursor=pointer]:
+                    - /url: /go/comment/zxJs1FP
+            - generic [ref=f12e754]:
+              - link [ref=f12e756] [cursor=pointer]:
+                - /url: /user/jiggakills
+              - generic [ref=f12e757]:
+                - heading [level=3] [ref=f12e758]:
+                  - link "SG Pillars - A group for Steamgifts contributors" [ref=f12e759] [cursor=pointer]:
+                    - /url: /discussion/wNLEK/sg-pillars-a-group-for-steamgifts-contributors
+                - paragraph [ref=f12e760]:
+                  - link "1,890 Comments" [ref=f12e761] [cursor=pointer]:
+                    - /url: /discussion/wNLEK/sg-pillars-a-group-for-steamgifts-contributors
+                  - text: "- Last post 1 hour ago by"
+                  - link "jiggakills" [ref=f12e762] [cursor=pointer]:
+                    - /url: /user/jiggakills
+                  - link "" [ref=f12e763] [cursor=pointer]:
+                    - /url: /go/comment/JoyfBBs
+            - generic [ref=f12e766]:
+              - link [ref=f12e768] [cursor=pointer]:
+                - /url: /user/Lugum
+              - generic [ref=f12e769]:
+                - heading [level=3] [ref=f12e770]:
+                  - link "Steam game removal thread | Last update 15/10 T..." [ref=f12e771] [cursor=pointer]:
+                    - /url: /discussion/37s1B/steam-game-removal-thread-last-update-1510-total-war-shogun-2-complete-edition
+                - paragraph [ref=f12e772]:
+                  - link "1,925 Comments" [ref=f12e773] [cursor=pointer]:
+                    - /url: /discussion/37s1B/steam-game-removal-thread-last-update-1510-total-war-shogun-2-complete-edition
+                  - text: "- Last post 1 hour ago by"
+                  - link "jiggakills" [ref=f12e774] [cursor=pointer]:
+                    - /url: /user/jiggakills
+                  - link "" [ref=f12e775] [cursor=pointer]:
+                    - /url: /go/comment/aqctJkV
+            - generic [ref=f12e778]:
+              - link [ref=f12e780] [cursor=pointer]:
+                - /url: /user/quinnix
+              - generic [ref=f12e781]:
+                - heading [level=3] [ref=f12e782]:
+                  - link "[OPEN] Girls Who Game [Play Required Group]" [ref=f12e783] [cursor=pointer]:
+                    - /url: /discussion/vxh1g/open-girls-who-game-play-required-group
+                - paragraph [ref=f12e784]:
+                  - link "440 Comments" [ref=f12e785] [cursor=pointer]:
+                    - /url: /discussion/vxh1g/open-girls-who-game-play-required-group
+                  - text: "- Last post 1 hour ago by"
+                  - link "quinnix" [ref=f12e786] [cursor=pointer]:
+                    - /url: /user/quinnix
+                  - link "" [ref=f12e787] [cursor=pointer]:
+                    - /url: /go/comment/59pHflc
+            - generic [ref=f12e790]:
+              - link [ref=f12e792] [cursor=pointer]:
+                - /url: /user/Moogal
+              - generic [ref=f12e793]:
+                - heading " Current series you are loving?" [level=3] [ref=f12e794]:
+                  - generic [ref=f12e795]: 
+                  - link "Current series you are loving?" [ref=f12e796] [cursor=pointer]:
+                    - /url: /discussion/0nSw3/current-series-you-are-loving
+                - paragraph [ref=f12e797]:
+                  - link "141 Comments" [ref=f12e798] [cursor=pointer]:
+                    - /url: /discussion/0nSw3/current-series-you-are-loving
+                  - text: "- Last post 1 hour ago by"
+                  - link "Chummy" [ref=f12e799] [cursor=pointer]:
+                    - /url: /user/Chummy
+                  - link "" [ref=f12e800] [cursor=pointer]:
+                    - /url: /go/comment/yqqUgff
+            - generic [ref=f12e803]:
+              - link [ref=f12e805] [cursor=pointer]:
+                - /url: /user/Cjcomplex
+              - generic [ref=f12e806]:
+                - heading [level=3] [ref=f12e807]:
+                  - 'link "Monthly in a Month #66: The 00 Edition" [ref=f12e808] [cursor=pointer]':
+                    - /url: /discussion/m80mm/monthly-in-a-month-66-the-00-edition
+                - paragraph [ref=f12e809]:
+                  - link "69 Comments" [ref=f12e810] [cursor=pointer]:
+                    - /url: /discussion/m80mm/monthly-in-a-month-66-the-00-edition
+                  - text: "- Last post 2 hours ago by"
+                  - link "aleluist" [ref=f12e811] [cursor=pointer]:
+                    - /url: /user/aleluist
+                  - link "" [ref=f12e812] [cursor=pointer]:
+                    - /url: /go/comment/pZZs2mJ
+      - generic [ref=f12e815]:
+        - generic [ref=f12e816]: New Bundles
+        - generic [ref=f12e819]:
+          - link "New The Factory Must Grow Started 21 hours ago $6.00" [ref=f12e821] [cursor=pointer]:
+            - /url: https://www.steamgifts.com/redirect?url=https%3A%2F%2Fwww.humblebundle.com%2Fgames%2Ffactory-must-grow&product_id=0ac483c24637df4cd1ed21c3c9a6a67b
+            - generic [ref=f12e826]:
+              - paragraph [ref=f12e827]: New The Factory Must Grow
+              - generic [ref=f12e828]: Started 21 hours ago
+            - generic [ref=f12e829]: $6.00
+          - link "New Hamble's Fright or Fight Halloween Bundle Started 21 hours ago $6.00" [ref=f12e831] [cursor=pointer]:
+            - /url: https://www.steamgifts.com/redirect?url=https%3A%2F%2Fwww.humblebundle.com%2Fgames%2Fhambles-fright-or-fight-halloween-bundle&product_id=724e06257ca76a07ff9d5db1efb8e2b9
+            - generic [ref=f12e836]:
+              - paragraph [ref=f12e837]: New Hamble's Fright or Fight Halloween Bundle
+              - generic [ref=f12e838]: Started 21 hours ago
+            - generic [ref=f12e839]: $6.00
+          - link "Cozy After Dark Showcase Bundle Started 2 days ago $8.00" [ref=f12e841] [cursor=pointer]:
+            - /url: https://www.steamgifts.com/redirect?url=https%3A%2F%2Fwww.humblebundle.com%2Fgames%2Fcozy-after-dark-showcase-bundle&product_id=b813b79ba13dbf9a44e5059567165117
+            - generic [ref=f12e846]:
+              - paragraph [ref=f12e847]: Cozy After Dark Showcase Bundle
+              - generic [ref=f12e848]: Started 2 days ago
+            - generic [ref=f12e849]: $8.00
+          - 'link "Twisted Trilogies and Terrors: Dark Visual Novels Started 5 days ago $12.00" [ref=f12e851] [cursor=pointer]':
+            - /url: https://www.steamgifts.com/redirect?url=https%3A%2F%2Fwww.humblebundle.com%2Fgames%2Ftwisted-trilogies-and-terrors-dark-visual-novels&product_id=285b9944a84216d85e5646d55dc73a8f
+            - generic [ref=f12e856]:
+              - paragraph [ref=f12e857]: "Twisted Trilogies and Terrors: Dark Visual Novels"
+              - generic [ref=f12e858]: Started 5 days ago
+            - generic [ref=f12e859]: $12.00
+          - 'link "Gals and Pals: PQube Japanese Games Started 5 days ago $6.00" [ref=f12e861] [cursor=pointer]':
+            - /url: https://www.steamgifts.com/redirect?url=https%3A%2F%2Fwww.humblebundle.com%2Fgames%2Fgals-and-pals-pqube-japanese-games&product_id=f4969267c1a019cfa2aa576ebeb2cc7b
+            - generic [ref=f12e866]:
+              - paragraph [ref=f12e867]: "Gals and Pals: PQube Japanese Games"
+              - generic [ref=f12e868]: Started 5 days ago
+            - generic [ref=f12e869]: $6.00
+          - link "New Mystery Chest Bundle Started 1 day ago $1.00" [ref=f12e871] [cursor=pointer]:
+            - /url: https://www.steamgifts.com/redirect?url=https%3A%2F%2Fwww.fanatical.com%2Fen%2Fbundle%2Fmystery-chest-bundle&product_id=727d55d58f32dee2f8e65e92592b10b4
+            - generic [ref=f12e876]:
+              - paragraph [ref=f12e877]: New Mystery Chest Bundle
+              - generic [ref=f12e878]: Started 1 day ago
+            - generic [ref=f12e879]: $1.00
+          - link "Creepy & Eerie Archives The Complete Comic Collection Started 2 days ago $1.00" [ref=f12e881] [cursor=pointer]:
+            - /url: https://www.steamgifts.com/redirect?url=https%3A%2F%2Fwww.fanatical.com%2Fen%2Fbundle%2Fcreepy-and-eerie-archives-the-complete-comic-collection&product_id=73bd06aac1a67f3de0e15ba9a5bb0057
+            - generic [ref=f12e886]:
+              - paragraph [ref=f12e887]: Creepy & Eerie Archives The Complete Comic Collection
+              - generic [ref=f12e888]: Started 2 days ago
+            - generic [ref=f12e889]: $1.00
+          - link "Monster Mash Horror Comic Collection Started 2 days ago $1.00" [ref=f12e891] [cursor=pointer]:
+            - /url: https://www.steamgifts.com/redirect?url=https%3A%2F%2Fwww.fanatical.com%2Fen%2Fbundle%2Fmonster-mash-horror-comic-collection&product_id=26bfa6505097141abb697d223167d4a3
+            - generic [ref=f12e896]:
+              - paragraph [ref=f12e897]: Monster Mash Horror Comic Collection
+              - generic [ref=f12e898]: Started 2 days ago
+            - generic [ref=f12e899]: $1.00
+          - link "Build your own All Stars Bundle (Winter) Started 6 days ago $5.99" [ref=f12e901] [cursor=pointer]:
+            - /url: https://www.steamgifts.com/redirect?url=https%3A%2F%2Fwww.fanatical.com%2Fen%2Fpick-and-mix%2Fbuild-your-own-all-stars-bundle&product_id=5f0a4b1a529a32fe84cd91d2a76a394f
+            - generic [ref=f12e906]:
+              - paragraph [ref=f12e907]: Build your own All Stars Bundle (Winter)
+              - generic [ref=f12e908]: Started 6 days ago
+            - generic [ref=f12e909]: $5.99
+          - link "Cozy Mystery Bundle Started 1 week ago $2.49" [ref=f12e911] [cursor=pointer]:
+            - /url: https://www.steamgifts.com/redirect?url=https%3A%2F%2Fwww.fanatical.com%2Fen%2Fbundle%2Fcozy-mystery-bundle&product_id=fcaf96e313d29788f8d730e555a9847d
+            - generic [ref=f12e916]:
+              - paragraph [ref=f12e917]: Cozy Mystery Bundle
+              - generic [ref=f12e918]: Started 1 week ago
+            - generic [ref=f12e919]: $2.49
+  - contentinfo [ref=f12e920]:
+    - generic [ref=f12e921]:
+      - generic [ref=f12e922]:
+        - generic [ref=f12e923]:
+          - generic [ref=f12e924]:
+            - generic [ref=f12e925]: 
+            - generic [ref=f12e926]: SteamGifts
+          - generic [ref=f12e927]:
+            - link "Giveaways" [ref=f12e928] [cursor=pointer]:
+              - /url: /
+            - link "Deals" [ref=f12e929] [cursor=pointer]:
+              - /url: /discussions/deals
+            - link "Discussions" [ref=f12e930] [cursor=pointer]:
+              - /url: /discussions
+        - generic [ref=f12e931]:
+          - generic [ref=f12e932]:
+            - generic [ref=f12e933]: 
+            - generic [ref=f12e934]: Browse
+          - generic [ref=f12e935]:
+            - link "Giveaway Archive" [ref=f12e936] [cursor=pointer]:
+              - /url: /archive
+            - link "User Roles" [ref=f12e937] [cursor=pointer]:
+              - /url: /roles
+            - link "User List" [ref=f12e938] [cursor=pointer]:
+              - /url: /users
+        - generic [ref=f12e939]:
+          - generic [ref=f12e940]:
+            - generic [ref=f12e941]: 
+            - generic [ref=f12e942]: Help
+          - generic [ref=f12e943]:
+            - link "Guidelines" [ref=f12e944] [cursor=pointer]:
+              - /url: /about/guidelines
+            - link "FAQ" [ref=f12e945] [cursor=pointer]:
+              - /url: /about/faq
+            - link "Comment Formatting" [ref=f12e946] [cursor=pointer]:
+              - /url: /about/comment-formatting
+        - generic [ref=f12e947]:
+          - generic [ref=f12e948]:
+            - generic [ref=f12e949]: 
+            - generic [ref=f12e950]: Legal
+          - generic [ref=f12e951]:
+            - link "Privacy Policy" [ref=f12e952] [cursor=pointer]:
+              - /url: /legal/privacy-policy
+            - link "Cookie Policy" [ref=f12e953] [cursor=pointer]:
+              - /url: /legal/cookie-policy
+            - link "Terms of Service" [ref=f12e954] [cursor=pointer]:
+              - /url: /legal/terms-of-service
+      - generic [ref=f12e955]:
+        - generic [ref=f12e956]:
+          - generic [ref=f12e957]: Powered by
+          - link " Steam" [ref=f12e958] [cursor=pointer]:
+            - /url: https://store.steampowered.com
+            - generic [ref=f12e959]: 
+            - generic [ref=f12e960]: Steam
+        - generic [ref=f12e961]:
+          - link "SteamTrades.com" [ref=f12e962] [cursor=pointer]:
+            - /url: https://www.steamtrades.com
+          - link "SteamGifts.com" [ref=f12e963] [cursor=pointer]:
+            - /url: https://www.steamgifts.com

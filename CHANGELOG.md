@@ -7,6 +7,16 @@ e este projeto segue [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [2.0.3] - 2026-10-15
+
+### 🔒 Segurança (anti-detecção)
+
+- **Honeypot do SteamGifts neutralizado**: o bundle oficial do site (`bundle-v18.js`) procura, no `window.load`, por elementos com ids característicos de extensões de autojoin (`ajFooter`, `navbarPin`, `ajFooterArrow` — padrões ofuscados em base64) e, encontrando os três, reporta a conta ao servidor via `ajax.php?do=dbb8ff`. Os ids injetados pela extensão foram renomeados para `pageFooterDock`, `pageFooterDockToggle`, `pageFooterDockArrow`, `navPinToggle` e `navSettingsBtn`, que não casam com nenhum padrão conhecido. Testado em navegador real: zero relatórios `dbb8ff` enviados.
+- Novo módulo `js/core/timing.js` com agendamento humanizado: delays cumulativos com jitter não-uniforme (passos normais, leitura lenta e pausas de "distração" ocasionais) e lead-in aleatório, substituindo o espaçamento fixo `índice × Delay + jitter pequeno`, que é um padrão clássico de bot. Aplicado tanto ao AutoJoin da página (`autoentry.js`) quanto ao background (`backgroundpage.js`).
+- Fetch de entrada do service worker agora envia `credentials: 'include'` explicitamente, alinhando os cookies ao fluxo da página.
+- Novo teste de regressão (`tests/stealth.test.js`) que varre todos os ids injetáveis (JS, HTML e seletores CSS) e falha se algum casar com os padrões canário conhecidos do SteamGifts.
+- Novos testes (`tests/timing.test.js`) cobrindo o agendador, a distribuição dos multiplicadores e a não-uniformidade dos intervalos.
+
 ## [2.0.2] - 2026-10-15
 
 ### 🚀 Adicionado

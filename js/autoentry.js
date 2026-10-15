@@ -393,7 +393,7 @@ function onPageLoad() {
     }
   } else {
     // Add a Settings button to the navbar if not already present
-    if (!document.getElementById('ajSettingsNavBtn')) {
+    if (!document.getElementById('navSettingsBtn')) {
       const navbar = document.querySelector('.nav__left-container');
       if (navbar) {
         const buttonContainer = document.createElement('div');
@@ -401,7 +401,7 @@ function onPageLoad() {
         const button = document.createElement('a');
         button.className = 'nav__button';
         // Use a unique ID distinct from the circular cog button
-        button.id = 'ajSettingsNavBtn';
+        button.id = 'navSettingsBtn';
         button.textContent = t('content.settingsButton');
         buttonContainer.appendChild(button);
         navbar.appendChild(buttonContainer);
@@ -540,7 +540,7 @@ function onPageLoad() {
   };
 
   bindSettingsOpener(document.getElementById('btnSettings'));
-  bindSettingsOpener(document.getElementById('ajSettingsNavBtn'));
+  bindSettingsOpener(document.getElementById('navSettingsBtn'));
 
   const postsElement = document.querySelector(
     ':not(.pinned-giveaways__inner-wrap) > .giveaway__row-outer-wrap',
@@ -627,6 +627,19 @@ function onPageLoad() {
     }
     let entered = 0;
     let timeouts = [];
+    // Humanized pacing: jittered, non-uniform delays instead of fixed
+    // intervals, which are an automation tell. Falls back to the legacy
+    // linear spacing if the timing module is unavailable.
+    const scheduler = globalThis.AutoJoinTiming?.createScheduler(
+      settings.Delay,
+    );
+    const nextDelay = () =>
+      scheduler
+        ? scheduler.next()
+        : timeouts.length * settings.Delay * 1000 +
+          Math.floor(Math.random() * 1000);
+    const totalDelay = () =>
+      scheduler ? scheduler.elapsed() : timeouts.length * settings.Delay * 1000;
 
     let selectItems =
       '.giveaway__row-inner-wrap:not(.is-faded) .giveaway__heading__name';
@@ -686,60 +699,56 @@ function onPageLoad() {
             (settings.MaxCost == -1 || cost <= settings.MaxCost)
           ) {
             timeouts.push(
-              setTimeout(
-                function () {
-                  const code = current
-                    .querySelector('a.giveaway__heading__name')
-                    .href.match(/.+giveaway\/(.+)\//)[1];
-                  const formData = new FormData();
-                  formData.append('xsrf_token', token);
-                  formData.append('do', 'entry_insert');
-                  formData.append('code', code);
-                  fetch(`${window.location.origin}/ajax.php`, {
-                    method: 'post',
-                    credentials: 'include',
-                    body: formData,
-                  })
-                    .then((resp) => resp.json())
-                    .then((jsonResponse) => {
-                      if (jsonResponse.type === 'success') {
-                        current.classList.toggle('is-faded');
-                        currentState.points = jsonResponse.points.replace(
-                          ',',
-                          '',
+              setTimeout(function () {
+                const code = current
+                  .querySelector('a.giveaway__heading__name')
+                  .href.match(/.+giveaway\/(.+)\//)[1];
+                const formData = new FormData();
+                formData.append('xsrf_token', token);
+                formData.append('do', 'entry_insert');
+                formData.append('code', code);
+                fetch(`${window.location.origin}/ajax.php`, {
+                  method: 'post',
+                  credentials: 'include',
+                  body: formData,
+                })
+                  .then((resp) => resp.json())
+                  .then((jsonResponse) => {
+                    if (jsonResponse.type === 'success') {
+                      current.classList.toggle('is-faded');
+                      currentState.points = jsonResponse.points.replace(
+                        ',',
+                        '',
+                      );
+                      entered++;
+                      const btnEl = current.querySelector('.btnSingle');
+                      btnEl.setAttribute('walkState', 'leave');
+                      btnEl.disabled = false;
+                      btnEl.textContent = t('content.leave');
+                      updateButtons();
+                    }
+                    if (jsonResponse.points < 5) {
+                      for (const timeout of timeouts) {
+                        clearTimeout(timeout);
+                      }
+                      timeouts = [];
+                    }
+                    const infoEl = document.querySelector('#info');
+                    if (infoEl) {
+                      if (entered < 1) {
+                        infoEl.textContent = t('content.enteredSummary.none');
+                      } else {
+                        infoEl.textContent = t(
+                          entered === 1
+                            ? 'content.enteredSummary.one'
+                            : 'content.enteredSummary.other',
+                          { count: entered },
                         );
-                        entered++;
-                        const btnEl = current.querySelector('.btnSingle');
-                        btnEl.setAttribute('walkState', 'leave');
-                        btnEl.disabled = false;
-                        btnEl.textContent = t('content.leave');
-                        updateButtons();
                       }
-                      if (jsonResponse.points < 5) {
-                        for (const timeout of timeouts) {
-                          clearTimeout(timeout);
-                        }
-                        timeouts = [];
-                      }
-                      const infoEl = document.querySelector('#info');
-                      if (infoEl) {
-                        if (entered < 1) {
-                          infoEl.textContent = t('content.enteredSummary.none');
-                        } else {
-                          infoEl.textContent = t(
-                            entered === 1
-                              ? 'content.enteredSummary.one'
-                              : 'content.enteredSummary.other',
-                            { count: entered },
-                          );
-                        }
-                        infoEl.style.display = 'block';
-                      }
-                    });
-                },
-                timeouts.length * settings.Delay * 1000 +
-                  Math.floor(Math.random() * 1000),
-              ),
+                      infoEl.style.display = 'block';
+                    }
+                  });
+              }, nextDelay()),
             );
           } else {
             if (cost < settings.MinCost) {
@@ -757,52 +766,49 @@ function onPageLoad() {
     }
 
     // Enhanced completion feedback
-    setTimeout(
-      () => {
-        const btnAutoJoin = document.querySelector('#btnAutoJoin');
-        if (btnAutoJoin) {
-          btnAutoJoin.disabled = false;
-          btnAutoJoin.classList.remove('loading');
-          btnAutoJoin.classList.add('success');
-          btnAutoJoin.value =
-            entered > 0
-              ? t('content.joinedButton', { count: entered })
-              : t('content.noEntries');
+    setTimeout(() => {
+      const btnAutoJoin = document.querySelector('#btnAutoJoin');
+      if (btnAutoJoin) {
+        btnAutoJoin.disabled = false;
+        btnAutoJoin.classList.remove('loading');
+        btnAutoJoin.classList.add('success');
+        btnAutoJoin.value =
+          entered > 0
+            ? t('content.joinedButton', { count: entered })
+            : t('content.noEntries');
 
-          // Show notification
-          if (window.AutoJoinUtils) {
-            if (entered > 0) {
-              AutoJoinUtils.showNotification(
-                t(
-                  entered === 1
-                    ? 'content.notifications.autoJoinSummary.one'
-                    : 'content.notifications.autoJoinSummary.other',
-                  { count: entered },
-                ),
-                'success',
-              );
-            } else {
-              AutoJoinUtils.showNotification(
-                t('content.notifications.noGiveawaysMatched'),
-                'info',
-              );
-            }
+        // Show notification
+        if (window.AutoJoinUtils) {
+          if (entered > 0) {
+            AutoJoinUtils.showNotification(
+              t(
+                entered === 1
+                  ? 'content.notifications.autoJoinSummary.one'
+                  : 'content.notifications.autoJoinSummary.other',
+                { count: entered },
+              ),
+              'success',
+            );
+          } else {
+            AutoJoinUtils.showNotification(
+              t('content.notifications.noGiveawaysMatched'),
+              'info',
+            );
           }
-
-          // Reset button after delay and hide info banner for a clean layout
-          setTimeout(() => {
-            btnAutoJoin.classList.remove('success');
-            btnAutoJoin.value = t('content.autoJoin');
-            const infoEl = document.querySelector('#info');
-            if (infoEl) {
-              infoEl.style.display = 'none';
-              infoEl.textContent = '';
-            }
-          }, 3000);
         }
-      },
-      timeouts.length * settings.Delay * 1000 + 2000,
-    );
+
+        // Reset button after delay and hide info banner for a clean layout
+        setTimeout(() => {
+          btnAutoJoin.classList.remove('success');
+          btnAutoJoin.value = t('content.autoJoin');
+          const infoEl = document.querySelector('#info');
+          if (infoEl) {
+            infoEl.style.display = 'none';
+            infoEl.textContent = '';
+          }
+        }, 3000);
+      }
+    }, totalDelay() + 2000);
 
     document.querySelector('#btnAutoJoin').value = t('content.goodLuck');
   }

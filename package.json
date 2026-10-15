@@ -1,6 +1,6 @@
 {
   "name": "autojoin-for-steamgifts",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Enhanced AutoJoin for SteamGifts with modern UI, improved accessibility, and optimized performance",
   "main": "js/backgroundpage.js",
   "scripts": {

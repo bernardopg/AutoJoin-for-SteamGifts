@@ -827,14 +827,14 @@ li:hover .suspensionWarning {
   border: 0;
 }
 
-#navbarPin {
+#navPinToggle {
   height: 100%;
   width: 19px;
   padding-left: 10px;
   align-items: center;
 }
 
-#navbarPin:hover {
+#navPinToggle:hover {
   cursor: pointer;
 }
 
@@ -854,14 +854,14 @@ nav {
   padding-left: 10px !important;
 }
 
-#ajFooter {
+#pageFooterDock {
   position: fixed;
   bottom: 0;
   right: 0;
   left: 0;
 }
 
-#ajFooterArrowWrap {
+#pageFooterDockToggle {
   cursor: pointer;
   margin-left: 2em;
   font-size: 2em;
@@ -872,23 +872,23 @@ nav {
   background-color: #2f3540;
 }
 
-#ajFooter #ajFooterArrow {
+#pageFooterDock #pageFooterDockArrow {
   transition: transform 0.4s;
   user-select: none;
   color: #ffffff !important;
   /* ensure contrast on dark bg */
 }
 
-#ajFooter.pinned #ajFooterArrow {
+#pageFooterDock.pinned #pageFooterDockArrow {
   transform: rotate(180deg);
 }
 
-#ajFooter.pinned footer {
+#pageFooterDock.pinned footer {
   max-height: 100%;
   padding: 15px 25px;
 }
 
-#ajFooter footer {
+#pageFooterDock footer {
   background-color: #2f3540;
   transition: all 0.2s ease-in;
   max-height: 0px;
@@ -960,13 +960,13 @@ body:not(.night-theme) .page__outer-wrap .footer_column_name {
 
 body:not(.night-theme) .page__outer-wrap .footer__column__link,
 body:not(.night-theme) .page__outer-wrap .footer_column_link,
-#ajFooter footer a {
+#pageFooterDock footer a {
   color: #0a4db3 !important;
   /* accessible blue on light bg */
 }
 
 /* Our footer and toggle arrow: ensure strong contrast on dark bg */
-#ajFooter #ajFooterArrowWrap {
+#pageFooterDock #pageFooterDockToggle {
   background-color: #2f3540;
   /* already set, ensure retained */
   color: #ffffff !important;

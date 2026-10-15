@@ -60,7 +60,7 @@ class PageEnhancer {
 
     // If a button already exists, only (re)bind the handler
     // Use a unique ID here to avoid clashing with the circular cog button in autoentry.js
-    let btn = document.getElementById('ajSettingsNavBtn');
+    let btn = document.getElementById('navSettingsBtn');
     if (!btn) {
       const container = AutoJoinUtils.createElement('div', {
         className: 'nav__button-container',
@@ -69,7 +69,7 @@ class PageEnhancer {
         'a',
         {
           className: 'nav__button',
-          id: 'ajSettingsNavBtn',
+          id: 'navSettingsBtn',
           href: '#',
           role: 'button',
           tabindex: '0',
@@ -130,10 +130,10 @@ class PageEnhancer {
     let navbarPinned = false;
 
     // Create pin button
-    const navbarPin = AutoJoinUtils.createElement('div', {
+    const navPinToggle = AutoJoinUtils.createElement('div', {
       className:
         'nav__button-container nav__button-container--notification nav__button-container--inactive',
-      id: 'navbarPin',
+      id: 'navPinToggle',
       title: this.t('page.nav.pin'),
       role: 'button',
       tabindex: '0',
@@ -145,8 +145,8 @@ class PageEnhancer {
       'aria-hidden': 'true',
     });
 
-    navbarPin.appendChild(pinIcon);
-    navbar.prepend(navbarPin);
+    navPinToggle.appendChild(pinIcon);
+    navbar.prepend(navPinToggle);
 
     // Create buffer element
     const bufferEl = AutoJoinUtils.createElement('div', { id: 'bufferEl' });
@@ -156,12 +156,12 @@ class PageEnhancer {
     const togglePin = () => {
       navbarPinned = !navbarPinned;
       chrome.storage.local.set({ pinnedNavbar: navbarPinned });
-      this.updateNavbarPinState(navbarPinned, navbarPin, bufferEl);
+      this.updateNavbarPinState(navbarPinned, navPinToggle, bufferEl);
     };
 
     // Event listeners
-    navbarPin.addEventListener('click', togglePin);
-    navbarPin.addEventListener('keydown', (e) => {
+    navPinToggle.addEventListener('click', togglePin);
+    navPinToggle.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
         togglePin();
@@ -171,7 +171,7 @@ class PageEnhancer {
     // Load saved state
     chrome.storage.local.get({ pinnedNavbar: true }, (data) => {
       navbarPinned = data.pinnedNavbar;
-      this.updateNavbarPinState(navbarPinned, navbarPin, bufferEl);
+      this.updateNavbarPinState(navbarPinned, navPinToggle, bufferEl);
     });
   }
 
@@ -208,42 +208,44 @@ class PageEnhancer {
     let footerPinned = false;
 
     // Create enhanced footer structure
-    const ajFooter = AutoJoinUtils.createElement('div', { id: 'ajFooter' });
+    const pageFooterDock = AutoJoinUtils.createElement('div', {
+      id: 'pageFooterDock',
+    });
 
-    const ajFooterArrowWrap = AutoJoinUtils.createElement('div', {
-      id: 'ajFooterArrowWrap',
+    const pageFooterDockToggle = AutoJoinUtils.createElement('div', {
+      id: 'pageFooterDockToggle',
       role: 'button',
       tabindex: '0',
       'aria-label': 'Alternar visibilidade do rodapé',
       title: 'Clique para mostrar/ocultar rodapé',
     });
 
-    const ajFooterArrow = AutoJoinUtils.createElement(
+    const pageFooterDockArrow = AutoJoinUtils.createElement(
       'div',
       {
-        id: 'ajFooterArrow',
+        id: 'pageFooterDockArrow',
         'aria-hidden': 'true',
       },
       '▲',
     );
 
-    ajFooterArrowWrap.appendChild(ajFooterArrow);
-    ajFooter.appendChild(ajFooterArrowWrap);
+    pageFooterDockToggle.appendChild(pageFooterDockArrow);
+    pageFooterDock.appendChild(pageFooterDockToggle);
 
     // Move original footer inside our wrapper
-    originalFooter.parentElement.insertBefore(ajFooter, originalFooter);
-    ajFooter.appendChild(originalFooter);
+    originalFooter.parentElement.insertBefore(pageFooterDock, originalFooter);
+    pageFooterDock.appendChild(originalFooter);
 
     // Toggle functionality
     const toggleFooter = () => {
       footerPinned = !footerPinned;
       chrome.storage.local.set({ pinnedFooter: footerPinned });
-      this.updateFooterPinState(footerPinned, ajFooter);
+      this.updateFooterPinState(footerPinned, pageFooterDock);
     };
 
     // Event listeners
-    ajFooterArrowWrap.addEventListener('click', toggleFooter);
-    ajFooterArrowWrap.addEventListener('keydown', (e) => {
+    pageFooterDockToggle.addEventListener('click', toggleFooter);
+    pageFooterDockToggle.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
         toggleFooter();
@@ -253,7 +255,7 @@ class PageEnhancer {
     // Load saved state
     chrome.storage.local.get({ pinnedFooter: true }, (data) => {
       footerPinned = data.pinnedFooter;
-      this.updateFooterPinState(footerPinned, ajFooter);
+      this.updateFooterPinState(footerPinned, pageFooterDock);
     });
   }
 
@@ -578,7 +580,7 @@ class PageEnhancer {
     const skipToSettings = AutoJoinUtils.createElement(
       'a',
       {
-        href: '#ajSettingsNavBtn',
+        href: '#navSettingsBtn',
         style: 'color: var(--primary-color); text-decoration: none;',
       },
       this.t('page.skip.settings'),
@@ -620,7 +622,7 @@ class PageEnhancer {
             e.preventDefault();
             const pref =
               document.getElementById('btnSettings') ||
-              document.getElementById('ajSettingsNavBtn');
+              document.getElementById('navSettingsBtn');
             pref?.click();
             break;
           }
