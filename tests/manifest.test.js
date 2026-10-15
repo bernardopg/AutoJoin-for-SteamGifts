@@ -70,13 +70,9 @@ test('font awesome assets are web accessible', () => {
   const expectedResources = [
     'css/fontawesome/fontawesome.min.css',
     'css/fontawesome/webfonts/fa-brands-400.woff2',
-    'css/fontawesome/webfonts/fa-brands-400.ttf',
     'css/fontawesome/webfonts/fa-regular-400.woff2',
-    'css/fontawesome/webfonts/fa-regular-400.ttf',
     'css/fontawesome/webfonts/fa-solid-900.woff2',
-    'css/fontawesome/webfonts/fa-solid-900.ttf',
     'css/fontawesome/webfonts/fa-v4compatibility.woff2',
-    'css/fontawesome/webfonts/fa-v4compatibility.ttf',
     'media/autologo.png',
   ];
 

@@ -2,7 +2,7 @@
 
 <div align="center">
 
-[![Version](https://img.shields.io/badge/version-2.0.1-blue.svg)](https://github.com/bernardopg/AutoJoin-for-SteamGifts/releases)
+[![Version](https://img.shields.io/badge/version-2.0.2-blue.svg)](https://github.com/bernardopg/AutoJoin-for-SteamGifts/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 [![Chrome Web Store](https://img.shields.io/badge/Chrome-Extention-red?logo=chromewebstore&logoColor=red)](https://chrome.google.com/webstore)
 [![Firefox Add-ons](https://img.shields.io/badge/Firefox-Add--on-orange?logo=firefox&logoColor=red)](https://addons.mozilla.org/)
@@ -101,7 +101,10 @@ cd AutoJoin-for-SteamGifts
 
 2. **Instale as dependências**:
 
+> **Requisito:** Node.js `^22.13.0`, `^24.0.0` ou `>=26` (LTS 24 recomendado, veja `.nvmrc`). O Node 20 chegou ao fim de vida em abril de 2026 e não é mais suportado pelas ferramentas de lint.
+
 ```bash
+nvm use            # opcional: aplica a versão de .nvmrc
 npm install
 ```
 
@@ -208,8 +211,11 @@ const advancedConfig = {
 
 ### 🛠️ Scripts de Desenvolvimento
 
+Requisitos: Node.js `^22.13.0`, `^24.0.0` ou `>=26` (LTS 24 é o padrão do `.nvmrc`) e npm `>=10`. Ambos estão declarados em `engines`/`devEngines` no `package.json`, e `.npmrc` faz o install falhar cedo quando a versão ativa está fora do intervalo suportado.
+
 ```bash
 # Instalar dependências
+nvm use
 npm install
 
 # Qualidade de código

@@ -100,7 +100,7 @@
     "*://store.steampowered.com/*"
   ],
   "optional_host_permissions": ["*://steamcommunity.com/profiles/*"],
-  "version": "2.0.1",
+  "version": "2.0.2",
   "web_accessible_resources": [
     {
       "use_dynamic_url": true,
@@ -109,13 +109,9 @@
         "css/night.css",
         "css/fontawesome/fontawesome.min.css",
         "css/fontawesome/webfonts/fa-brands-400.woff2",
-        "css/fontawesome/webfonts/fa-brands-400.ttf",
         "css/fontawesome/webfonts/fa-regular-400.woff2",
-        "css/fontawesome/webfonts/fa-regular-400.ttf",
         "css/fontawesome/webfonts/fa-solid-900.woff2",
-        "css/fontawesome/webfonts/fa-solid-900.ttf",
         "css/fontawesome/webfonts/fa-v4compatibility.woff2",
-        "css/fontawesome/webfonts/fa-v4compatibility.ttf",
         "media/autologo.png",
         "media/audio.mp3"
       ],

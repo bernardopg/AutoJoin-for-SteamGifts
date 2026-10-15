@@ -133,13 +133,16 @@ Ideias de como implementar (opcional).
 git clone https://github.com/SEU_USERNAME/AutoJoin-for-SteamGifts.git
 cd AutoJoin-for-SteamGifts
 
-# 2. Instale dependências
+# 2. Escolha a versão do Node (use .nvmrc; Node 20 está fora de suporte)
+nvm use
+
+# 3. Instale dependências (o .npmrc falha cedo se o Node estiver fora do intervalo)
 npm install
 
-# 3. Configure git remotes
+# 4. Configure git remotes
 git remote add upstream https://github.com/bernardopg/AutoJoin-for-SteamGifts.git
 
-# 4. Verifique se tudo está funcionando
+# 5. Verifique se tudo está funcionando
 npm run check
 npm test
 ```

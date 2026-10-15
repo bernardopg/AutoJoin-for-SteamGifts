@@ -15,6 +15,7 @@ jobs:
   auto-merge:
     name: 🔄 Enable Auto-merge
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     if: github.event.pull_request.user.login == 'dependabot[bot]'
 
     permissions:
@@ -30,7 +31,7 @@ jobs:
 
       - name: 🔄 Enable auto-merge for patch and minor updates
         if: contains(fromJSON('["version-update:semver-patch","version-update:semver-minor"]'), steps.metadata.outputs.update-type)
-        run: gh pr merge --auto --squash "$PR_URL"
+        run: gh pr merge --auto --squash --delete-branch "$PR_URL"
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

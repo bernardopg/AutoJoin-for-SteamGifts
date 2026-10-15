@@ -1,15 +1,33 @@
 version: 2
 updates:
+  # ---------------------------------------------------------------------------
+  # npm - the extension ships zero runtime dependencies, so this only covers
+  # the lint/format toolchain in devDependencies.
+  # ---------------------------------------------------------------------------
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "America/Sao_Paulo"
     open-pull-requests-limit: 5
     assignees:
       - "bernardopg"
     labels:
       - "dependencies"
+    commit-message:
+      prefix: "chore"
+      prefix-development: "chore"
+      include: "scope"
     versioning-strategy: "increase-if-necessary"
+    # Let a release sit on the registry for a few days before proposing it, so
+    # a compromised or immediately-broken version can be yanked first.
+    cooldown:
+      default-days: 7
+      semver-major-days: 30
+      semver-minor-days: 7
+      semver-patch-days: 3
     groups:
       # One PR per week for the whole lint/format toolchain instead of one each.
       dev-tooling:
@@ -19,16 +37,28 @@ updates:
           - "minor"
           - "patch"
 
+  # ---------------------------------------------------------------------------
+  # GitHub Actions used by the workflows in .github/workflows.
+  # ---------------------------------------------------------------------------
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "America/Sao_Paulo"
     open-pull-requests-limit: 5
     assignees:
       - "bernardopg"
     labels:
       - "dependencies"
       - "github-actions"
+    commit-message:
+      prefix: "ci"
+      include: "scope"
+    # Major/minor/patch specific cooldowns are not supported for this ecosystem.
+    cooldown:
+      default-days: 7
     groups:
       actions:
         patterns:

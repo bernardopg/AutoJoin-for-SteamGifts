@@ -7,6 +7,8 @@ e este projeto segue [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+## [2.0.2] - 2026-10-15
+
 ### 🚀 Adicionado
 
 - Workflow `codeql.yml` (CodeQL `security-and-quality`) habilitando o code scanning do GitHub, que até então não tinha nenhuma análise.
@@ -18,9 +20,17 @@ e este projeto segue [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - Verificação de uso de chaves i18n na fonte e paridade entre idiomas.
 - Helpers puros compartilhados para cálculo de win chance, bloqueio de sessão Steam e regras de giveaway.
 - Trava no snapshot de SteamGifts para evitar carregamento de scripts externos de ads.
+- `.nvmrc` com a versão LTS padrão (24) e `.npmrc` com `engine-strict`, `package-lock` e `fund=false`.
+- `.prettierignore` listando `build/`, `dist/`, `node_modules/` e diretórios de ferramentas, para não depender do `--ignore-path .gitignore` (removido no Prettier 4).
+- Campos `engines` e `devEngines` no `package.json` declarando o runtime Node.js suportado e o npm como gerenciador de pacotes.
 
 ### ✨ Melhorado
 
+- Font Awesome empacotado atualizado de `6.0.0` (2022) para `7.3.1`: CSS regerado a partir do `all.css` oficial com os caminhos de fonte em `./webfonts/` (como `js/autoentry.js` espera) e as quatro fontes `woff2` substituídas pelas oficiais. As 30 classes de ícone usadas pela extensão continuam existindo na v7; as únicas classes legadas (`fa-clock-o`, `fa-times`, etc.) que a v7 não define são seletores do HTML do SteamGifts, não ícones próprios.
+- Dependências de desenvolvimento atualizadas: ESLint `10.12.0`, `globals` `17.13.0`, Prettier `3.9.10` e lockfile regenerado via `npm ci`.
+- Node 20 (fim de vida em 2026-04-30) removido do `engines` e da matriz de testes; o CI agora roda em Node 22, 24 e 26, com Node 24 como versão padrão dos jobs.
+- Workflows do GitHub Actions com `timeout-minutes`, `persist-credentials: false` no checkout e auto-merge do Dependabot removendo a branch após o merge.
+- Dependabot com `cooldown` por severidade SemVer (reduz risco de supply chain), agendamento semanal explícito e prefixos de commit `chore`/`ci`.
 - ESLint migrado da v8 (fim de vida) para a v10 com flat config (`eslint.config.mjs`); `eslint-config-airbnb-base` e `eslint-plugin-import`, ambos sem manutenção e travando o upgrade, foram removidos.
 - `scripts/*.mjs` passaram a ser cobertos por lint e format check.
 - Job de build do CI passou a usar `npm run package`, gerando o mesmo `.zip` do build local em vez de um zip ad-hoc que incluía arquivos internos do repositório.
@@ -39,6 +49,10 @@ e este projeto segue [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - `js/backgroundpage.js` e `js/core/giveaway.js` agora delegam lógica pura para helpers testáveis.
 - `TO-DO.md` foi sincronizado com as entregas concluídas.
 
+### 🗑️ Removido
+
+- Fontes `ttf` (`fa-brands-400`, `fa-regular-400`, `fa-solid-900`, `fa-v4compatibility`) removidas de `css/fontawesome/webfonts/` e de `web_accessible_resources`: a Font Awesome 7 só publica `woff2`, suportado por todos os navegadores alvo. Isso reduz o pacote em ~550 KB.
+
 ### 🐛 Corrigido
 
 - Os 8 alertas da primeira análise do CodeQL:
@@ -47,6 +61,7 @@ e este projeto segue [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   - `js/remote-property-injection`: `AutoJoinUtils.getUrlParams` acumulava chaves da query string via escrita dinâmica de propriedade, permitindo `?__proto__=`. Passou a usar `Object.fromEntries`, que define propriedades próprias e não aciona setters.
   - `js/comparison-between-incompatible-types`: guarda duplicada de `cacheData` em `autoentry-giveaway.js`.
 - Alertas abertos do Dependabot (`js-yaml` e `brace-expansion`, ambos `high`) resolvidos via atualização do `package-lock.json`; era essa a causa da falha recorrente do job `🔒 Security Audit` no CI.
+- `brace-expansion` `5.0.9` → `5.0.12` no lockfile (GHSA-q2hr-2g5m-vwhr, GHSA-qhr7-859c-m2p7 e GHSA-6j4f-fj2g-mc7p); `npm audit` volta a reportar zero vulnerabilidades.
 - `js/core/page-enhancements.js`: declaração `let` sem bloco dentro de `case` do atalho `Alt+S` (vazava o binding para os demais `case`).
 - `js/backgroundpage.js`: atribuições iniciais mortas em `latestSteamKeyRedeemResponse` e `linkToUse`.
 - Bindings de `catch` não utilizados substituídos por optional catch binding.
